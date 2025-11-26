@@ -34,7 +34,7 @@ export class AuthenticateComponent {
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
-      this.router.navigate(['/admin']);
+      this.navigateToURL('/admin');
     }
   }
 
@@ -51,16 +51,15 @@ export class AuthenticateComponent {
 
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
+        localStorage.setItem('accessToken', data.accessToken);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
 
-
-        this.router.navigate(['/admin']);
+        this.navigateToURL('/admin');
       },
 
       error: err => {
-
 
         this.isLoginFailed = true;
 
@@ -76,8 +75,19 @@ export class AuthenticateComponent {
     });
   }
 
-
   goToRegister() {
-    this.router.navigate(['/register']);
+    this.navigateToURL('/register');
+  }
+
+  protected navigateToURL(url: string): void {
+    this.router.navigate([url.replace(/^\//, '')])
+      .then(success => {
+        if (!success) {
+          console.warn('Navigarea a eșuat către', url);
+        }
+      })
+      .catch(err => {
+        console.error('Eroare la navigare:', err);
+      });
   }
 }

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CP_GWT.main.iml" filepath="$PROJECT_DIR$/.idea/modules/CP_GWT.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/CP_PRT/CP_PRT.iml" filepath="$PROJECT_DIR$/CP_PRT/CP_PRT.iml" />
       <module fileurl="file://$PROJECT_DIR$/portal.iml" filepath="$PROJECT_DIR$/portal.iml" />
     </modules>
