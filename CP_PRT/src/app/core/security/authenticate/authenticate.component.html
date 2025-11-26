@@ -1,0 +1,42 @@
+<div class="login-wrapper">
+
+  <div class="login-box">
+    <h2>Autentificare</h2>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Utilizator</label>
+        <input
+          type="text"
+          [(ngModel)]="form.username"
+          name="username"
+          placeholder="Introdu username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Parolă</label>
+        <input
+          type="password"
+          [(ngModel)]="form.password"
+          name="password"
+          placeholder="Introdu parola"
+          required
+        />
+      </div>
+
+      <button class="btn" [disabled]="loading">
+        {{ loading ? 'Se autentifică...' : 'Autentificare' }}
+      </button>
+    </form>
+
+    @if (isLoginFailed) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <a class="register-link" (click)="goToRegister()">Nu ai cont? Creează unul</a>
+  </div>
+
+</div>

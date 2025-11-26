@@ -1,0 +1,58 @@
+<div class="login-wrapper">
+
+  <div class="login-box">
+    <h2>Înregistrare</h2>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Utilizator</label>
+        <input
+          type="text"
+          [(ngModel)]="form.username"
+          name="username"
+          placeholder="Introdu un username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Parolă</label>
+        <input
+          type="password"
+          [(ngModel)]="form.password"
+          name="password"
+          placeholder="Introdu parola"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Confirmare Parolă</label>
+        <input
+          type="password"
+          [(ngModel)]="form.confirmPassword"
+          name="confirmPassword"
+          placeholder="Confirmă parola"
+          required
+        />
+      </div>
+
+      <button class="btn" [disabled]="loading">
+        {{ loading ? 'Se înregistrează...' : 'Creează cont' }}
+      </button>
+
+    </form>
+
+    @if (registrationFailed) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    @if (registrationSuccess) {
+      <p class="success">Cont creat cu succes! Se redirecționează...</p>
+    }
+
+    <a class="register-link" (click)="goToLogin()">Ai deja cont? Autentifică-te</a>
+  </div>
+
+</div>

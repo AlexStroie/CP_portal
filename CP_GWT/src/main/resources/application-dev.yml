@@ -1,0 +1,8 @@
+server:
+  port: 8080
+gateway-services:
+  service:
+    url: localhost
+    port: 8081
+angular:
+  url: http://localhost:4200

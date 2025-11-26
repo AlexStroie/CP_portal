@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: CP_GWT
+  cache:
+    type: NONE
+  http:
+    multipart:
+      max-file-size: 100Mb
+      max-request-size: 150Mb
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 150MB
+server:
+  compression:
+    enabled: true
+  tomcat:
+    max-http-form-post-size: 6291456
+    max-swallow-size: 100000000
+endpoints:
+  restart:
+    enabled: true
+cp:
+  app:
+    secureToken: tJ3GggA1puJssXmSheJ_-2djEJ0DD554
