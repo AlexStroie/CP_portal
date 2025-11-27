@@ -1,47 +1,39 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-enum StorageKeys {
-  TOKEN = 'auth-token',
-  USER = 'auth-user',
-  MODULES = 'modules'
-}
+const TOKEN_KEY = 'accessToken';
+const USER_KEY = 'user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenStorageService {
-  constructor() {
-  }
 
+  constructor() {}
+
+  // 🔹 Ștergem TOT din storage
   signOut(): void {
-    window.sessionStorage.clear();
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   }
 
-  public saveToken(token: string): void {
-    window.sessionStorage.removeItem(StorageKeys.TOKEN);
-    window.sessionStorage.setItem(StorageKeys.TOKEN, token);
+  // 🔹 Salvează tokenul JWT
+  saveToken(token: string): void {
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
-  public getToken(): string | null {
-    return window.sessionStorage.getItem(StorageKeys.TOKEN);
+  // 🔹 Returnează tokenul (sau null)
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
   }
 
-  public saveUser(user: any): void {
-    window.sessionStorage.removeItem(StorageKeys.USER);
-    window.sessionStorage.setItem(StorageKeys.USER, JSON.stringify(user));
+  // 🔹 Salvează userul (stringificat)
+  saveUser(user: any): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
-  public getUser(): any | null {
-    const user = window.sessionStorage.getItem(StorageKeys.USER);
+  // 🔹 Returnează userul (deserializat)
+  getUser(): any | null {
+    const user = localStorage.getItem(USER_KEY);
     return user ? JSON.parse(user) : null;
-  }
-
-  public saveModules(modules: string): void {
-    window.sessionStorage.removeItem(StorageKeys.MODULES);
-    window.sessionStorage.setItem(StorageKeys.MODULES, modules);
-  }
-
-  public getModules(): string | null {
-    return window.sessionStorage.getItem(StorageKeys.MODULES);
   }
 }

@@ -20,7 +20,7 @@ export const appConfig: IAppConfig = {
   webEndpoint: "http://localhost:8080/web/v1/",
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideZoneChangeDetection(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes)
   ]
 };

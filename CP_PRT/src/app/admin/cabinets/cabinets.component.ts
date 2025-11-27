@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-cabinete',
   imports: [],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './cabinets.component.html',
+  styleUrl: './cabinets.component.css',
 })
-export class HomeComponent {
+export class CabinetsComponent {
 
   public constructor(protected router: Router) {
   }

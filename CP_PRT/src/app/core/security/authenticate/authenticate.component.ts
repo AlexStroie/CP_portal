@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../authentication.service';
-import { TokenStorageService } from '../token-storage.service';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Router, RouterModule} from '@angular/router';
+import {AuthenticationService} from '../authentication.service';
+import {TokenStorageService} from '../token-storage.service';
 
 @Component({
   selector: 'app-authenticate',
@@ -12,7 +12,7 @@ import { TokenStorageService } from '../token-storage.service';
   templateUrl: './authenticate.component.html',
   styleUrls: ['./authenticate.component.css']
 })
-export class AuthenticateComponent {
+export class AuthenticateComponent implements OnInit{
 
   form = {
     username: '',
@@ -23,7 +23,6 @@ export class AuthenticateComponent {
   loading = false;
   errorMessage = '';
   isLoginFailed = false;
-  loginInProgress = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -56,7 +55,7 @@ export class AuthenticateComponent {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
 
-        this.navigateToURL('/admin');
+        this.redirectByRole(data.role)
       },
 
       error: err => {
@@ -73,6 +72,26 @@ export class AuthenticateComponent {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  redirectByRole(role: string) {
+    switch (role) {
+      case 'SUPER_ADMIN':
+        this.navigateToURL('/super-admin/dashboard');
+        break;
+
+      case 'ADMIN_CABINET':
+        this.navigateToURL('/admin/dashboard');
+        break;
+
+      case 'USER':this.navigateToURL('/portal');
+        break;
+
+      default:
+        // fallback
+        this.navigateToURL('/login');
+        break;
+    }
   }
 
   goToRegister() {
