@@ -29,7 +29,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
         </div>
 
         <button type="submit" [disabled]="form.invalid">Salvează</button>
-        <button class="back" routerLink="/super-admin/cabinets">Înapoi</button>
+        <button class="back" routerLink="/admin/cabinets">Înapoi</button>
 
       </form>
     </div>
@@ -121,6 +121,6 @@ export class EditCabinetComponent implements OnInit {
       console.log("Update cabinet:", this.form.value);
     }
 
-    this.router.navigate(['/super-admin/cabinets']);
+    this.router.navigate(['/admin/cabinets']);
   }
 }

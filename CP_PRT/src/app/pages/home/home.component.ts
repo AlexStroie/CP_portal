@@ -20,7 +20,7 @@ export class HomeComponent {
         }
       })
       .catch(err => {
-        console.error('Eroare la navigare:', err);
+        console.error(err);
       });
   }
 }

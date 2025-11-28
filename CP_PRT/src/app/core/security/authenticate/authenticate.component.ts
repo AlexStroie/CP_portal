@@ -77,7 +77,7 @@ export class AuthenticateComponent implements OnInit{
   redirectByRole(role: string) {
     switch (role) {
       case 'SUPER_ADMIN':
-        this.navigateToURL('/super-admin/dashboard');
+        this.navigateToURL('/admin/dashboard');
         break;
 
       case 'ADMIN_CABINET':

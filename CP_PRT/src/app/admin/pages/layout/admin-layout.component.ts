@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 
 @Component({
-  selector: 'app-super-admin-layout',
+  selector: 'app-admin-layout',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterOutlet],
   template: `
@@ -14,11 +14,11 @@ import {TokenStorageService} from '../../../core/security/token-storage.service'
         <h2>Super Admin</h2>
 
         <nav>
-          <a routerLink="/super-admin/dashboard" routerLinkActive="active">Dashboard</a>
-          <a routerLink="/super-admin/cabinets" routerLinkActive="active">Cabinete</a>
-          <a routerLink="/super-admin/users" routerLinkActive="active">Utilizatori</a>
-          <a routerLink="/super-admin/profile" routerLinkActive="active">Profil</a>
-          <a routerLink="/super-admin/change-password" routerLinkActive="active">Schimbă parola</a>
+          <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+          <a routerLink="/admin/cabinets" routerLinkActive="active">Cabinete</a>
+          <a routerLink="/admin/users" routerLinkActive="active">Utilizatori</a>
+          <a routerLink="/admin/profile" routerLinkActive="active">Profil</a>
+          <a routerLink="/admin/change-password" routerLinkActive="active">Schimbă parola</a>
         </nav>
 
         <div class="logout-container">
@@ -101,7 +101,7 @@ import {TokenStorageService} from '../../../core/security/token-storage.service'
     }
   `]
 })
-export class SuperAdminLayoutComponent {
+export class AdminLayoutComponent {
 
   constructor(
     private tokenStorage: TokenStorageService,

@@ -8,6 +8,8 @@ import ro.cabinetpro.cp_gwt.dto.auth.LoginRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.LoginResponse;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterResponse;
+import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
+import ro.cabinetpro.cp_gwt.ms.Microservice;
 
 @Service
 public class AuthService extends AbstractService {
@@ -26,7 +28,6 @@ public class AuthService extends AbstractService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credentials");
         }
 
-        // LoginResponse implementează MicroserviceAware -> USR
         return postEntity("auth/login", request, LoginResponse.class);
     }
 
@@ -34,5 +35,7 @@ public class AuthService extends AbstractService {
         return postEntity("auth/register", request, RegisterResponse.class);
     }
 
-
+    public void activateAccount(ActivateAccountRequest request) {
+        postVoid(Microservice.GWY, "auth/activate", request);
+    }
 }

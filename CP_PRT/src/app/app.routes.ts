@@ -2,8 +2,7 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from './pages/home/home.component';
 import {AuthenticateComponent} from './core/security/authenticate/authenticate.component';
 import {RegisterComponent} from './core/security/register/register.component';
-import {AuthGuard} from './interceptors/auth.guard';
-import {AdminComponent} from './admin/admin/admin.component';
+import {ActivateComponent} from './core/security/activate/activate.component';
 
 export const routes: Routes = [
   {
@@ -22,14 +21,13 @@ export const routes: Routes = [
   },
 
   {
-    path: 'admin',
-    canActivate: [AuthGuard],
-    component: AdminComponent
+    path: 'activate',
+    component: ActivateComponent
   },
 
   {
-    path: 'super-admin',
-    loadChildren: () => import('./super-admin/super-admin.routes')
-      .then(m => m.SUPER_ADMIN_ROUTES)
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes')
+      .then(m => m.ADMIN_ROUTES)
   },
 ];

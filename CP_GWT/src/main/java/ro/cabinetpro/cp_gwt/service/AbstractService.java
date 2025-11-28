@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -44,13 +45,14 @@ public abstract class AbstractService {
     protected <T extends MicroserviceAware> List<T> getListEntity(Class<T> type, String command) {
         String url = buildUrl(type, command);
         log.info("[GWY] GET LIST {}", url);
-
+        SecurityContextHolder.getContext().getAuthentication();
         try {
             @SuppressWarnings("unchecked")
             Class<T[]> arrayType = (Class<T[]>) Array.newInstance(type, 0).getClass();
             T[] arr = restTemplate.getForObject(url, arrayType);
             return arr != null ? Arrays.asList(arr) : List.of();
         } catch (HttpClientErrorException e) {
+            log.error("[GWY] Error calling {}", url, e);
             throw translateClientException(e);
         } catch (RestClientException e) {
             log.error("[GWY] Error calling {}", url, e);

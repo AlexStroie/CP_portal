@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-super-admin-change-password',
+  selector: 'app-admin-change-password',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -101,7 +101,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
     }
   `]
 })
-export class SuperAdminChangePasswordComponent {
+export class AdminChangePasswordComponent {
 
   form: FormGroup;
 

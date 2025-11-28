@@ -1,0 +1,54 @@
+<div class="edit-container">
+
+  <h2>
+    @if (id()) {
+      Edit User
+    } @else {
+      Create User
+    }
+  </h2>
+
+  <div class="card">
+
+    <form [formGroup]="form">
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input formControlName="fullName" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input formControlName="username" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input formControlName="email" type="email">
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <select formControlName="role">
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+          <option value="SUPER_ADMIN">Super Admin</option>
+        </select>
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" formControlName="enabled">
+          Active account
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" (click)="save()">Save</button>
+        <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/users'])">Cancel</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

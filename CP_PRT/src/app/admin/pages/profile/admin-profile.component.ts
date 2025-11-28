@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-super-admin-profile',
+  selector: 'app-admin-profile',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
@@ -86,7 +86,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
     }
   `]
 })
-export class SuperAdminProfileComponent implements OnInit {
+export class AdminProfileComponent implements OnInit {
 
   form!: FormGroup;
 

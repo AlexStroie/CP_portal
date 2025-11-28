@@ -10,7 +10,7 @@ import {RouterLink} from '@angular/router';
     <h1>Cabinete</h1>
 
     <div class="top-actions">
-      <button routerLink="/super-admin/cabinets/0">+ Adaugă Cabinet</button>
+      <button routerLink="/admin/cabinets/0">+ Adaugă Cabinet</button>
     </div>
 
     <table class="table">
@@ -31,7 +31,7 @@ import {RouterLink} from '@angular/router';
             <td>{{ cab.name }}</td>
             <td>{{ cab.ownerName }}</td>
             <td>
-              <button [routerLink]="['/super-admin/cabinets', cab.id]">Editează</button>
+              <button [routerLink]="['/admin/cabinets', cab.id]">Editează</button>
             </td>
           </tr>
         }

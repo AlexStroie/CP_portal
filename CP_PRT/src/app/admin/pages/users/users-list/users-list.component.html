@@ -1,0 +1,68 @@
+<div class="users-header">
+  <h2>Users</h2>
+  <button class="btn-primary" [routerLink]="['/admin/users/create']">
+    + Add User
+  </button>
+</div>
+
+<table class="users-table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Status</th>
+    <th class="actions-col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (user of users(); track user.id) {
+      <tr>
+        <td>{{ user.fullName }}</td>
+
+        <td class="email-col">{{ user.email }}</td>
+
+        <td>
+          <span class="badge" [ngClass]="roleClass(user.role)">
+            {{ user.role }}
+          </span>
+        </td>
+
+        <td>
+          <span class="status" [ngClass]="user.enabled ? 'active' : 'inactive'">
+            {{ user.enabled ? 'Enabled' : 'Disabled' }}
+          </span>
+        </td>
+
+        <td class="actions-col">
+          <button class="icon-button edit" [routerLink]="['/admin/users', user.id]">
+            ✏️
+          </button>
+
+          <button
+            class="icon-button delete"
+            (click)="askDelete(user)"
+            [disabled]="isDeleteDisabled(user)"
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (userToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Delete User</h3>
+      <p>Are you sure you want to delete <b>{{ userToDelete()?.fullName }}</b>?</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

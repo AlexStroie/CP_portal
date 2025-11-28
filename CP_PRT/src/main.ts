@@ -1,18 +1,13 @@
-import {bootstrapApplication} from '@angular/platform-browser';
-import {AppComponent} from './app/app.component';
-import {HTTP_INTERCEPTORS, provideHttpClient} from '@angular/common/http';
-import {provideRouter} from '@angular/router';
-import {routes} from './app/app.routes';
-import {APP_CONFIG, appConfig} from './app/app.config';
-import {TINYMCE_SCRIPT_SRC} from '@tinymce/tinymce-angular';
-import {AuthInterceptor} from './app/interceptors/auth.interceptor';
+import 'zone.js';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { appConfig, APP_CONFIG } from './app/app.config';
+import { TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes),
-    provideHttpClient(),
+    ...appConfig.providers,
     { provide: APP_CONFIG, useValue: appConfig },
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
-}).catch(err => console.error());
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+  ]
+});

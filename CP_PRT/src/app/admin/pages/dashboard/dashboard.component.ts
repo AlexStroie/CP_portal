@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 // import { UsersService } from '../services/users.service';
 
 @Component({
-  selector: 'app-super-admin-dashboard',
+  selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
@@ -26,9 +26,9 @@ import { RouterLink } from '@angular/router';
     </div>
 
     <div class="quick-actions">
-      <button routerLink="/super-admin/cabinets">Gestionare Cabinete</button>
-      <button routerLink="/super-admin/users">Gestionare Utilizatori</button>
-      <button routerLink="/super-admin/profile">Profil</button>
+      <button routerLink="/admin/cabinets">Gestionare Cabinete</button>
+      <button routerLink="/admin/users">Gestionare Utilizatori</button>
+      <button routerLink="/admin/profile">Profil</button>
     </div>
   `,
   styles: [`

@@ -7,33 +7,27 @@ import {UserResponse} from '../../core/model/user.model';
 @Injectable({providedIn: 'root'})
 export class UsersService {
 
-  private apiUrl = 'http://localhost:8080/api/super-admin/users';
-
   constructor(private http: HttpClient,
               @Inject(APP_CONFIG) private config: IAppConfig) {
   }
 
   getAll(): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>(this.config.webEndpoint + "api/super-admin/users", httpOptions);
+    return this.http.get<UserResponse[]>(this.config.webEndpoint + "api/admin/users", httpOptions);
   }
 
   getById(id: number): Observable<any> {
-    return this.http.get<UserResponse[]>(this.config.webEndpoint + "api/super-admin/users/" + id, httpOptions);
+    return this.http.get<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, httpOptions);
   }
 
   create(user: any): Observable<any> {
-    return this.http.post<UserResponse[]>(this.config.webEndpoint + "api/super-admin/users", user, httpOptions);
+    return this.http.post<UserResponse[]>(this.config.webEndpoint + "api/admin/users", user, httpOptions);
   }
 
   update(id: number, user: any): Observable<any> {
-    return this.http.put<UserResponse[]>(this.config.webEndpoint + "api/super-admin/users/" + id, user, httpOptions);
+    return this.http.put<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, user, httpOptions);
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
-  }
-
-  getStats(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/stats/count`);
+    return this.http.delete<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, httpOptions);
   }
 }

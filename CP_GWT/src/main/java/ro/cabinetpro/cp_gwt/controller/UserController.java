@@ -1,5 +1,6 @@
 package ro.cabinetpro.cp_gwt.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import ro.cabinetpro.cp_gwt.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/super-admin/users")
+@RequestMapping("/web/v1/api/admin/users")
 @RequiredArgsConstructor
 public class UserController {
 
