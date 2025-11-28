@@ -1,15 +1,17 @@
-export class User {
+export interface UserResponse {
   id: number;
+  fullName: string;
   username: string;
-  password: string;
   email: string;
   role: string;
+  enabled: boolean;
+  createdAt: string;
+}
 
-  constructor(id: number, username: string, password: string, email: string, role: string) {
-    this.id = id;
-    this.username = username;
-    this.password = password;
-    this.email = email;
-    this.role = role;
-  }
+export interface UserRequest {
+  fullName: string;
+  username: string;
+  email: string;
+  role: string;
+  enabled: boolean;
 }

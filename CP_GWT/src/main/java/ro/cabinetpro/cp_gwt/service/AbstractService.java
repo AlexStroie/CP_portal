@@ -1,79 +1,152 @@
 package ro.cabinetpro.cp_gwt.service;
 
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
-import ro.cabinetpro.cp_gwt.dto.AbstractTypeDTO;
+import ro.cabinetpro.cp_gwt.dto.types.MicroserviceAware;
+import ro.cabinetpro.cp_gwt.ms.Microservice;
 
-public class AbstractService {
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
+@RequiredArgsConstructor
+public abstract class AbstractService {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractService.class);
 
-    @Value("${gateway-services.service.url}")
-    private String gatewayWebServiceURL;
-    @Value("${gateway-services.service.port}")
-    private String gatewayWebServicePort;
+    private final RestTemplate restTemplate;
+    private final ServiceRegistry registry;
 
+    /* ============ GET single ============ */
 
-    protected <T extends AbstractTypeDTO> T postGatewayService(String command, Object request, Class<T> type) {
-        if (request == null) {
-            return null;
-        }
-        final String url = "http://" + gatewayWebServiceURL + ":" + gatewayWebServicePort + "/" + command;
-        return postService(url, request, type);
-    }
-
-    private <T extends AbstractTypeDTO> T postService(String url, Object request, Class<T> type) {
-
-        log.info("Sending request to: " + url);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-
-        // Forward Authorization header if present
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attr != null) {
-            HttpServletRequest incomingRequest = attr.getRequest();
-            String authHeader = incomingRequest.getHeader("Authorization");
-            if (authHeader != null) {
-                headers.set("Authorization", authHeader);
-            }
-        }
-
-        HttpEntity<Object> entity = new HttpEntity<>(request, headers);
+    protected <T extends MicroserviceAware> T getObjectEntity(Class<T> type, String command) {
+        String url = buildUrl(type, command);
+        log.info("[GWY] GET {}", url);
 
         try {
-            ResponseEntity<T> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    entity,
-                    type
-            );
-            return response.getBody();
+            return restTemplate.getForObject(url, type);
         } catch (HttpClientErrorException e) {
-            // propagate status code and error body back to Angular
-            throw new ResponseStatusException(
-                    e.getStatusCode(),
-                    e.getResponseBodyAsString()
-            );
-
-        } catch (Exception e) {
-            log.error("Unexpected error forwarding request", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Gateway processing error");
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
         }
     }
 
+    /* ============ GET list ============ */
+
+    protected <T extends MicroserviceAware> List<T> getListEntity(Class<T> type, String command) {
+        String url = buildUrl(type, command);
+        log.info("[GWY] GET LIST {}", url);
+
+        try {
+            @SuppressWarnings("unchecked")
+            Class<T[]> arrayType = (Class<T[]>) Array.newInstance(type, 0).getClass();
+            T[] arr = restTemplate.getForObject(url, arrayType);
+            return arr != null ? Arrays.asList(arr) : List.of();
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
+    /* ============ POST with response ============ */
+
+    protected <T extends MicroserviceAware> T postEntity(String command, Object body, Class<T> type) {
+        if (body == null) {
+            return null;
+        }
+        String url = buildUrl(type, command);
+        log.info("[GWY] POST {}", url);
+
+        try {
+            return restTemplate.postForObject(url, body, type);
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
+    /* ============ POST void ============ */
+
+    protected void postVoid(Microservice ms, String command, Object body) {
+        if (body == null) {
+            return;
+        }
+        String url = registry.getServiceUrl(ms) + "/" + command;
+        log.info("[GWY] POST (void) {}", url);
+
+        try {
+            restTemplate.postForEntity(url, body, Void.class);
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
+    /* ============ PUT with response ============ */
+
+    protected <T extends MicroserviceAware> T putEntity(String command, Object body, Class<T> type) {
+        if (body == null) {
+            return null;
+        }
+        String url = buildUrl(type, command);
+        log.info("[GWY] PUT {}", url);
+
+        HttpEntity<Object> entity = new HttpEntity<>(body);
+
+        try {
+            ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.PUT, entity, type);
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
+    /* ============ DELETE ============ */
+
+    protected void deleteEntity(Microservice ms, String command) {
+        String url = registry.getServiceUrl(ms) + "/" + command;
+        log.info("[GWY] DELETE {}", url);
+
+        try {
+            restTemplate.delete(url);
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
+    /* ============ helper methods ============ */
+
+    private RuntimeException translateClientException(HttpClientErrorException e) {
+        return new ResponseStatusException(e.getStatusCode(), e.getResponseBodyAsString());
+    }
+
+    private <T extends MicroserviceAware> String buildUrl(Class<T> type, String command) {
+        try {
+            // folosim constructorul fără argumente ca să luăm microserviciul
+            Microservice ms = type.getDeclaredConstructor().newInstance().getMicroservice();
+            return registry.getServiceUrl(ms) + "/" + command;
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot determine microservice for type " + type.getName(), e);
+        }
+    }
 }

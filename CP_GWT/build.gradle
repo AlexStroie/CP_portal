@@ -28,27 +28,9 @@ dependencies {
 // Spring Boot starters
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // OAuth2 (Spring Security 6 + Boot 3.5.x)
-    implementation 'org.springframework.security:spring-security-oauth2-client'
-    implementation 'org.springframework.security:spring-security-oauth2-jose'
 
-    // Kafka
-    implementation 'org.springframework.kafka:spring-kafka'
-
-    // JWT
-
-    implementation("com.maxmind.geoip2:geoip2:4.4.0")
-
-    // JAXB compatibilitate cod vechi
-    implementation 'javax.xml.bind:jaxb-api:2.3.0'
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.1'
-
-    // Commons / JSON
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
-    implementation 'com.google.code.gson:gson:2.12.1'
-    implementation 'org.json:json:20230227'
+    implementation 'org.apache.httpcomponents.client5:httpclient5'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

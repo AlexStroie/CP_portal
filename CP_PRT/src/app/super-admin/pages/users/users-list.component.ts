@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import {ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {UsersService} from '../../../shared/service/users.service';
+import {UserResponse} from '../../../core/model/user.model';
+import {TokenStorageService} from '../../../core/security/token-storage.service';
 
 @Component({
   selector: 'app-users-list',
@@ -15,27 +18,59 @@ import { RouterLink } from '@angular/router';
 
     <table class="table">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nume</th>
-          <th>Email</th>
-          <th>Rol</th>
-          <th>Acțiuni</th>
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>Nume</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Status</th>
+        <th>Acțiuni</th>
+      </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
-          <td>
-            <button [routerLink]="['/super-admin/users', user.id]">Editează</button>
-          </td>
-        </tr>
+        @for (user of users(); track user.id) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.fullName }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+              @if (user.enabled) {
+                <span style="color: green">✔ Enabled</span>
+              } @else {
+                <span style="color: red">✘ Disabled</span>
+              }
+            </td>
+            <td>
+              <button class="btn-edit" [routerLink]="['/super-admin/users', user.id]">
+                Editează
+              </button>
+              <button class="btn-delete"
+                      (click)="askDelete(user)"
+                      [disabled]="user.role === 'SUPER_ADMIN' && user.username === currentUser()?.username"
+              >Delete
+              </button>
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
+
+    <!-- DELETE CONFIRMATION -->
+    @if (userToDelete()) {
+      <div class="modal">
+        <div class="modal-body">
+          <h3>Delete User</h3>
+          <p>Are you sure you want to delete <b>{{ userToDelete()?.fullName }}</b>?</p>
+
+          <button (click)="confirmDelete()" style="color:red">Confirm</button>
+          <button (click)="cancelDelete()">Cancel</button>
+        </div>
+      </div>
+    }
   `,
   styles: [`
     h1 {
@@ -65,7 +100,7 @@ import { RouterLink } from '@angular/router';
       background: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
     }
 
     table th {
@@ -83,7 +118,7 @@ import { RouterLink } from '@angular/router';
       font-size: 14px;
     }
 
-    table button {
+    .btn-edit {
       background: #0ea5e9;
       border: none;
       padding: 6px 12px;
@@ -92,20 +127,92 @@ import { RouterLink } from '@angular/router';
       cursor: pointer;
     }
 
-    table button:hover {
+    .btn-edit:hover {
       background: #0284c7;
     }
+
+    .btn-delete {
+      background-color: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s ease;
+    }
+
+    .btn-delete:hover {
+      background-color: #e60000;
+    }
+
+    .btn-delete:disabled {
+      background-color: #ccc !important;
+      color: #666 !important;
+      border-color: #bbb !important;
+      opacity: 1;
+      cursor: not-allowed;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-body {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 300px;
+      text-align: center;
+    }
+
   `]
 })
 export class UsersListComponent implements OnInit {
+  users = signal<UserResponse[]>([]);
+  userToDelete = signal<UserResponse | null>(null);
+  currentUser = signal<UserResponse | null>(null);
 
-  users = [
-    { id: 1, name: 'Alex Super Admin', email: 'alex@mail.com', role: 'SUPER_ADMIN' },
-    { id: 2, name: 'Andreea Admin', email: 'andreea@cabinet.ro', role: 'ADMIN_CABINET' },
-    { id: 3, name: 'Maria User', email: 'maria@cabinet.ro', role: 'USER' }
-  ];
+  constructor(private tokenStorageService: TokenStorageService,
+              private usersService: UsersService) {
+  }
 
   ngOnInit(): void {
-    // În realitate: this.usersService.getAll().subscribe(data => this.users = data);
+    this.currentUser.set(this.tokenStorageService.getUser());
+    this.usersService.getAll().subscribe(data => {
+      this.users.set(data);
+    });
+  }
+
+  refresh() {
+    this.usersService.getAll().subscribe(data => {
+      this.users.set(data);
+    });
+  }
+
+  askDelete(user: UserResponse) {
+    this.userToDelete.set(user);
+  }
+
+  confirmDelete() {
+    const user = this.userToDelete();
+    if (!user) return;
+
+    this.usersService.delete(user.id).subscribe(() => {
+      this.userToDelete.set(null);
+      this.refresh();
+    });
+  }
+
+  cancelDelete() {
+    this.userToDelete.set(null);
   }
 }

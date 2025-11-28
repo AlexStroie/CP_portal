@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-cabinets-list',
@@ -15,23 +15,26 @@ import { RouterLink } from '@angular/router';
 
     <table class="table">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nume</th>
-          <th>Proprietar</th>
-          <th>Acțiuni</th>
-        </tr>
+      <tr>
+        <th>ID</th>
+        <th>Nume</th>
+        <th>Proprietar</th>
+        <th>Acțiuni</th>
+      </tr>
       </thead>
 
+
       <tbody>
-        <tr *ngFor="let cab of cabinets">
-          <td>{{ cab.id }}</td>
-          <td>{{ cab.name }}</td>
-          <td>{{ cab.ownerName }}</td>
-          <td>
-            <button [routerLink]="['/super-admin/cabinets', cab.id]">Editează</button>
-          </td>
-        </tr>
+        @for (cab of cabinets; track cab.id) {
+          <tr>
+            <td>{{ cab.id }}</td>
+            <td>{{ cab.name }}</td>
+            <td>{{ cab.ownerName }}</td>
+            <td>
+              <button [routerLink]="['/super-admin/cabinets', cab.id]">Editează</button>
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   `,
@@ -63,7 +66,7 @@ import { RouterLink } from '@angular/router';
       background: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
     }
 
     table th {
@@ -98,8 +101,8 @@ import { RouterLink } from '@angular/router';
 export class CabinetsListComponent implements OnInit {
 
   cabinets = [
-    { id: 1, name: 'Cabinet Test 1', ownerName: 'Ion Popescu' },
-    { id: 2, name: 'Cabinet Test 2', ownerName: 'Maria Ionescu' }
+    {id: 1, name: 'Cabinet Test 1', ownerName: 'Ion Popescu'},
+    {id: 2, name: 'Cabinet Test 2', ownerName: 'Maria Ionescu'}
   ];
 
   ngOnInit(): void {

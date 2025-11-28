@@ -5,9 +5,10 @@ import {
   provideZoneChangeDetection
 } from '@angular/core';
 
-import {provideRouter} from '@angular/router';
+import {provideRouter, RouteReuseStrategy} from '@angular/router';
 import {routes} from './app.routes';
 import {HttpHeaders} from "@angular/common/http";
+import {DisableRouteReuseStrategy} from './core/disable-route-reuse.strategy';
 
 
 export let APP_CONFIG = new InjectionToken("app.config");
@@ -21,7 +22,11 @@ export const appConfig: IAppConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes)
+    provideRouter(routes),
+    {
+      provide: RouteReuseStrategy,
+      useClass: DisableRouteReuseStrategy
+    }
   ]
 };
 
