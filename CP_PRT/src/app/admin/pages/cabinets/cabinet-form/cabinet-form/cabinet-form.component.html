@@ -1,0 +1,52 @@
+<div class="edit-container">
+
+  <h2>
+    @if (id()) {
+      Edit Cabinet
+    } @else {
+      Create Cabinet
+    }
+  </h2>
+
+  <div class="card">
+
+    <form [formGroup]="form">
+
+      <div class="form-group">
+        <label>Cabinet Name</label>
+        <input formControlName="name" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <input formControlName="address" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input formControlName="phone" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input formControlName="email" type="email">
+      </div>
+
+      <div class="form-group checkbox">
+        <label>
+          <input type="checkbox" formControlName="active">
+          Active cabinet
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" (click)="save()">Save</button>
+        <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/cabinets'])">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

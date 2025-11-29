@@ -1,35 +1,34 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {APP_CONFIG, httpOptions, IAppConfig} from '../../app.config';
+import {Cabinet} from '../../core/model/cabinet.model';
 
 @Injectable({ providedIn: 'root' })
 export class CabinetsService {
 
-  private apiUrl = 'http://localhost:8080/api/admin/cabinets';
-
-  constructor(private http: HttpClient) {}
-
-  getAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  constructor(private http: HttpClient,
+              @Inject(APP_CONFIG) private config: IAppConfig) {
   }
 
+  getAll(): Observable<any[]> {
+    return this.http.get<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets", httpOptions);
+  }
+
+
   getById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
 
   create(cabinet: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, cabinet);
+    return this.http.post<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets", cabinet, httpOptions);
   }
 
   update(id: number, cabinet: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, cabinet);
+    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, cabinet, httpOptions);
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
-  }
-
-  getStats(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/stats/count`);
+    return this.http.delete<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
 }

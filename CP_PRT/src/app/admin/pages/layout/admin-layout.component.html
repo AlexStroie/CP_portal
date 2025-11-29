@@ -1,0 +1,22 @@
+<div class="layout">
+
+  <aside>
+    <h2>Admin</h2>
+
+    <nav>
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/admin/cabinets" routerLinkActive="active">Cabinete</a>
+      <a routerLink="/admin/users" routerLinkActive="active">Utilizatori</a>
+      <a routerLink="/admin/profile" routerLinkActive="active">Profil</a>
+      <a routerLink="/admin/change-password" routerLinkActive="active">Schimbă parola</a>
+    </nav>
+
+    <div class="logout-container">
+      <button (click)="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

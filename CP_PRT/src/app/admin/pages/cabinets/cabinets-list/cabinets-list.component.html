@@ -1,0 +1,66 @@
+<div class="cabinets-header">
+  <h2>Cabinets</h2>
+  <button class="btn-primary" [routerLink]="['/admin/cabinets/create']">
+    + Add Cabinet
+  </button>
+</div>
+
+<table class="cabinets-table">
+  <thead>
+  <tr>
+    <th>Nume</th>
+    <th>Email Contact</th>
+    <th>Telefon Contact</th>
+    <th>Adresa</th>
+    <th>Status</th>
+    <th class="actions-col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (cabinet of cabinets(); track cabinet.id) {
+      <tr>
+        <td>{{ cabinet.name }}</td>
+
+        <td class="email-col">{{ cabinet.email }}</td>
+        <td class="email-col">{{ cabinet.phone }}</td>
+        <td class="email-col">{{ cabinet.address }}</td>
+        <td class="email-col">{{ cabinet.address }}</td>
+
+        <td>
+          <span class="status" [ngClass]="cabinet.active ? 'active' : 'inactive'">
+            {{ cabinet.active ? 'Activ' : 'Dezactivat' }}
+          </span>
+        </td>
+
+        <td class="actions-col">
+          <button class="icon-button edit" [routerLink]="['/admin/cabinets', cabinet.id]">
+            ✏️
+          </button>
+
+          <button
+            class="icon-button delete"
+            (click)="askDelete(cabinet)"
+            [disabled]="isDeleteDisabled(cabinet)"
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (cabinetToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Delete Cabinet</h3>
+      <p>Are you sure you want to delete <b>{{ cabinetToDelete()?.name }}</b>?</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}
