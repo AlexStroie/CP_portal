@@ -1,8 +1,12 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {Component, Inject, inject, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UsersService} from '../../../../shared/service/users.service';
 import {UserRequest, UserResponse} from '../../../../core/model/user.model';
+import {TokenStorageService} from '../../../../core/security/token-storage.service';
+import {Cabinet} from '../../../../core/model/cabinet.model';
+import {CabinetsService} from '../../../../shared/service/cabinets.service';
+import {APP_CONFIG, IAppConfig} from '../../../../app.config';
 
 @Component({
   standalone: true,
@@ -15,8 +19,12 @@ import {UserRequest, UserResponse} from '../../../../core/model/user.model';
 })
 export class EditUserComponent implements OnInit {
 
+  isSuperAdmin: boolean = false;
   id = signal<number | null>(null);
   user = signal<UserResponse | null>(null);
+  cabinets = signal<Cabinet[]>([]);
+  currentCabinet = signal<any | null>(null);
+  activationLink: string = "";
 
   form = new FormGroup({
     fullName: new FormControl('', Validators.required),
@@ -30,11 +38,21 @@ export class EditUserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public router: Router,
+    private tokenService: TokenStorageService,
+    private cabinetService: CabinetsService,
     private usersService: UsersService
-  ) {}
+  ) {
+    this.isSuperAdmin = false;
+  }
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
+
+    this.isSuperAdmin = this.tokenService.isSuperAdmin();
+
+    if (this.isSuperAdmin) {
+      this.cabinetService.getAll().subscribe(data => this.cabinets.set(data));
+    }
 
     if (idParam) {
       this.id.set(Number(idParam));
@@ -54,6 +72,9 @@ export class EditUserComponent implements OnInit {
         enabled: user.enabled,
         password: ''
       });
+
+      const baseUrl = window.location.origin;
+      this.activationLink = baseUrl + '/activate?token='+user.activationLink;
     });
   }
 

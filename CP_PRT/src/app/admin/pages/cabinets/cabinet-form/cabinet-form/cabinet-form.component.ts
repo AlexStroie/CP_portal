@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit, signal} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Cabinet} from '../../../../../core/model/cabinet.model';
 import {CabinetsService} from '../../../../../shared/service/cabinets.service';
 
@@ -30,7 +30,8 @@ export class CabinetFormComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     private cabinetsService: CabinetsService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -65,7 +66,7 @@ export class CabinetFormComponent implements OnInit {
 
     const data = this.form.value as Cabinet;
 
-    if (this.id() !== null) {   // <-- aici verificăm
+    if (this.id() !== null && !isNaN(this.id()!)) {
       this.cabinetsService.update(this.id() as number, data).subscribe(() => {
         this.router.navigate(['/admin/cabinets']);
       });

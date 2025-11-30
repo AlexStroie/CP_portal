@@ -36,4 +36,21 @@ export class TokenStorageService {
     const user = localStorage.getItem(USER_KEY);
     return user ? JSON.parse(user) : null;
   }
+
+  getRole(): string | null {
+    const user = this.getUser();
+    return user ? user.role : null;
+  }
+
+  isSuperAdmin(): boolean {
+    return this.getRole() === 'SUPER_ADMIN';
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
+  }
+
+  isUser(): boolean {
+    return this.getRole() === 'USER';
+  }
 }

@@ -19,8 +19,7 @@ export class CabinetsListComponent implements OnInit {
   currentCabinet = signal<any | null>(null);
 
   constructor(
-    private cabinetService: CabinetsService,
-    private tokenStorage: TokenStorageService
+    private cabinetService: CabinetsService
   ) {}
 
   ngOnInit(): void {

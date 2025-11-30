@@ -6,6 +6,7 @@ export interface UserResponse {
   role: string;
   enabled: boolean;
   createdAt: string;
+  activationLink: string;
 }
 
 export interface UserRequest {

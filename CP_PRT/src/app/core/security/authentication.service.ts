@@ -25,7 +25,7 @@ export class AuthenticationService {
     }, httpOptions);
   }
 
-  activateAccount(req: { token: string, password: string }) {
+  activateAccount(req: { token: string, newPassword: string }) {
     return this.http.post(this.config.webEndpoint + 'api/auth/activate', req, { responseType: 'text' });
   }
 }

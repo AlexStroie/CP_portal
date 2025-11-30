@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <h1>Profil Super Admin</h1>
+    <h1>Profil Admin</h1>
 
     <div class="profile-container">
       <form [formGroup]="form" (ngSubmit)="saveProfile()">

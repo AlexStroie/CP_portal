@@ -56,7 +56,7 @@ export class ActivateComponent {
 
     this.authService.activateAccount({
       token: this.token()!,
-      password: pwd
+      newPassword: pwd
     }).subscribe({
       next: () => {
         this.success.set(true);

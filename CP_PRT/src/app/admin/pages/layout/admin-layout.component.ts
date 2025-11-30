@@ -12,10 +12,12 @@ import {TokenStorageService} from '../../../core/security/token-storage.service'
 })
 export class AdminLayoutComponent {
 
+  isSuperAdmin: boolean = false;
   constructor(
     private tokenStorage: TokenStorageService,
     private router: Router
   ) {
+    this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
   }
 
   logout() {

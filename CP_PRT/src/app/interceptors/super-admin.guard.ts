@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
+export class SuperAdminGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
@@ -10,7 +10,7 @@ export class AdminGuard implements CanActivate {
     if (!userStr) return this.deny();
     const user = JSON.parse(userStr);
 
-    if (user.role.includes('ADMIN') || user.role.includes('SUPER_ADMIN')) {
+    if (user.role.includes('SUPER_ADMIN')) {
       return true;
     }
 
@@ -18,7 +18,7 @@ export class AdminGuard implements CanActivate {
   }
 
   deny() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/admin']);
     return false;
   }
 }

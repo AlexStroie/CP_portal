@@ -5,8 +5,10 @@
 
     <nav>
       <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/admin/cabinets" routerLinkActive="active">Cabinete</a>
-      <a routerLink="/admin/users" routerLinkActive="active">Utilizatori</a>
+      @if (isSuperAdmin) {
+        <a routerLink="/admin/cabinets" routerLinkActive="active">Cabinete</a>
+        <a routerLink="/admin/users" routerLinkActive="active">Utilizatori</a>
+      }
       <a routerLink="/admin/profile" routerLinkActive="active">Profil</a>
       <a routerLink="/admin/change-password" routerLinkActive="active">Schimbă parola</a>
     </nav>

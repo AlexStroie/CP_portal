@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <h1>Dashboard Super Admin</h1>
+    <h1>Dashboard Admin</h1>
 
     <div class="stats">
       <div class="stat-box">
@@ -91,7 +91,7 @@ import { RouterLink } from '@angular/router';
     }
   `]
 })
-export class SuperAdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit {
 
   stats = {
     cabinets: 0,
