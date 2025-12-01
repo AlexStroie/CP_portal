@@ -35,4 +35,8 @@ public class UserService extends AbstractService {
     public void deleteUser(Long id) {
         deleteEntity(Microservice.GWY, "admin/users/" + id);
     }
+
+    public Integer count() {
+        return (Integer) getObjectData(Microservice.GWY, "admin/users/count");
+    }
 }

@@ -46,4 +46,9 @@ public class CabinetController {
     public void delete(@PathVariable Long id) {
         cabinetService.deleteCabinet(id);
     }
+
+    @GetMapping("/count")
+    public Integer countUsers() {
+        return cabinetService.count();
+    }
 }

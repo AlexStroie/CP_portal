@@ -1,9 +1,10 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
+import {RouterLink} from '@angular/router';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {UserResponse} from '../../../core/model/user.model';
 import {CabinetsService} from '../../../shared/service/cabinets.service';
+import {UsersService} from '../../../shared/service/users.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,6 +24,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   };
 
   constructor(
+    private usersService: UsersService,
     private cabinetService: CabinetsService,
     private tokenStorage: TokenStorageService,
     private cdr: ChangeDetectorRef
@@ -47,6 +49,14 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   loadStats() {
+    if (this.isSuperAdmin) {
+      this.usersService.getStats().subscribe(count => {
+        this.stats.users = count;
+      });
 
+      this.cabinetService.getStats().subscribe(count => {
+        this.stats.cabinets = count;
+      });
+    }
   }
 }

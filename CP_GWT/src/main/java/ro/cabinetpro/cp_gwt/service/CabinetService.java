@@ -34,4 +34,8 @@ public class CabinetService extends AbstractService {
     public void deleteCabinet(Long id) {
         deleteEntity(Microservice.GWY, "admin/cabinets/" + id);
     }
+
+    public Integer count() {
+        return (Integer) getObjectData(Microservice.GWY, "admin/cabinets/count");
+    }
 }

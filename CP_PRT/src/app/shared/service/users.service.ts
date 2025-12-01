@@ -30,4 +30,8 @@ export class UsersService {
   delete(id: number): Observable<any> {
     return this.http.delete<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, httpOptions);
   }
+
+  getStats(): Observable<number> {
+    return this.http.get<number>(this.config.webEndpoint + "api/admin/users/count", httpOptions);
+  }
 }

@@ -136,6 +136,21 @@ public abstract class AbstractService {
         }
     }
 
+    /* ============ GET OBJECT (String, Long ...) ============ */
+
+    protected Object getObjectData(Microservice ms, String command) {
+        String url = registry.getServiceUrl(ms) + "/" + command;
+        log.info("[GWY] GET OBJECT {}", url);
+        try {
+            return restTemplate.getForObject(url, Object.class);
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
     /* ============ helper methods ============ */
 
     private RuntimeException translateClientException(HttpClientErrorException e) {

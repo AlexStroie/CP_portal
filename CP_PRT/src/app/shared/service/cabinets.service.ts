@@ -31,4 +31,8 @@ export class CabinetsService {
   delete(id: number): Observable<any> {
     return this.http.delete<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
+
+  getStats(): Observable<number> {
+    return this.http.get<number>(this.config.webEndpoint + "api/admin/cabinets/count", httpOptions);
+  }
 }

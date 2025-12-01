@@ -8,7 +8,6 @@ import ro.cabinetpro.cp_gwt.dto.auth.LoginRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.LoginResponse;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterResponse;
-import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetResponse;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
