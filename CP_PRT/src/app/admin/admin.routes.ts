@@ -9,6 +9,8 @@ import {AdminGuard} from '../interceptors/admin.guard';
 import {CabinetsListComponent} from './pages/cabinets/cabinets-list/cabinets-list.component';
 import {CabinetFormComponent} from './pages/cabinets/cabinet-form/cabinet-form/cabinet-form.component';
 import {SuperAdminGuard} from '../interceptors/super-admin.guard';
+import {PatientsListComponent} from './pages/patients/patients-list/patients-list.component';
+import {PatientFormComponent} from './pages/patients/patient-form/patient-form.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -20,6 +22,9 @@ export const ADMIN_ROUTES: Routes = [
       {path: 'dashboard', component: AdminDashboardComponent},
       {path: 'profile', component: AdminProfileComponent},
       {path: 'change-password', component: AdminChangePasswordComponent},
+
+      {path: 'patients', component: PatientsListComponent},
+      {path: 'patients/:id', component: PatientFormComponent},
 
       {
         path: 'cabinets',

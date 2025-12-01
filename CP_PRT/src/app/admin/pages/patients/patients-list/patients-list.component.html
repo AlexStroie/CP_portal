@@ -1,0 +1,62 @@
+<div class="patients">
+  <h2>Patients</h2>
+  <button class="btn-primary" [routerLink]="['/admin/patients/create']">
+    + Add Patients
+  </button>
+</div>
+
+<table class="patients-table">
+  <thead>
+  <tr>
+    <th>Nume</th>
+    <th>Telefon Contact</th>
+    <th>Email Contact</th>
+    @if (isSuperAdmin) {
+      <th>Cabinet</th>
+    }
+    <th class="actions-col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (patient of patients(); track patient.id) {
+      <tr>
+        <td>{{ patient.lastName }} {{ patient.firstName }}</td>
+        <td>{{ patient.phone }}</td>
+        <td>{{ patient.email }}</td>
+
+        @if (isSuperAdmin) {
+          <td>{{ cabinetMap.get(patient.cabinetId) }}</td>
+        }
+
+        <td class="actions-col">
+          <button class="icon-button edit" [routerLink]="['/admin/patients', patient.id]">
+            ✏️
+          </button>
+
+          <button
+            class="icon-button delete"
+            (click)="askDelete(patient)"
+            [disabled]="isDeleteDisabled(patient)"
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (patientToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Delete Cabinet</h3>
+      <p>Are you sure you want to delete <b>{{ patientToDelete()?.firstName }}</b>?</p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

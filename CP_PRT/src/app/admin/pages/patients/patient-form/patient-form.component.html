@@ -1,0 +1,50 @@
+<div class="edit-container">
+
+  <h2>
+    @if (id()) {
+      Edit Patient
+    } @else {
+      Create Patient
+    }
+  </h2>
+
+  <div class="card">
+
+    <form [formGroup]="form">
+
+      <div class="form-group">
+        <label>Prenume</label>
+        <input formControlName="firstName" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Nume</label>
+        <input formControlName="lastName" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Telefon</label>
+        <input formControlName="phone" type="text">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input formControlName="email" type="email">
+      </div>
+
+      <div class="form-group">
+        <label>notite</label>
+        <input formControlName="notes" type="text">
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn-primary" (click)="save()">Save</button>
+        <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/patients'])">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
