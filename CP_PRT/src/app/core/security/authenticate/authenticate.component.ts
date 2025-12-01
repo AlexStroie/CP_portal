@@ -50,7 +50,7 @@ export class AuthenticateComponent implements OnInit{
 
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
-        localStorage.setItem('accessToken', data.accessToken);
+        sessionStorage.setItem('accessToken', data.accessToken);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
@@ -80,7 +80,7 @@ export class AuthenticateComponent implements OnInit{
         this.navigateToURL('/admin/dashboard');
         break;
 
-      case 'ADMIN_CABINET':
+      case 'ADMIN':
         this.navigateToURL('/admin/dashboard');
         break;
 

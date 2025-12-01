@@ -1,5 +1,5 @@
 import {Component, Inject, inject, OnInit, signal} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UsersService} from '../../../../shared/service/users.service';
 import {UserRequest, UserResponse} from '../../../../core/model/user.model';
@@ -12,7 +12,8 @@ import {APP_CONFIG, IAppConfig} from '../../../../app.config';
   standalone: true,
   selector: 'app-users-edit',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
@@ -25,13 +26,14 @@ export class EditUserComponent implements OnInit {
   cabinets = signal<Cabinet[]>([]);
   currentCabinet = signal<any | null>(null);
   activationLink: string = "";
+  cabinetId: string = "";
 
   form = new FormGroup({
     fullName: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     role: new FormControl('USER', Validators.required),
-    enabled: new FormControl(true),
+    enabled: new FormControl(false),
     password: new FormControl('')
   });
 
@@ -73,8 +75,10 @@ export class EditUserComponent implements OnInit {
         password: ''
       });
 
+      this.cabinetId =  user.cabinetId;
+
       const baseUrl = window.location.origin;
-      this.activationLink = baseUrl + '/activate?token='+user.activationLink;
+      this.activationLink = baseUrl + '/activate?token=' + user.activationLink;
     });
   }
 
@@ -89,7 +93,8 @@ export class EditUserComponent implements OnInit {
       username: this.form.value.username!,
       email: this.form.value.email!,
       role: this.form.value.role!,
-      enabled: this.form.value.enabled!
+      enabled: this.form.value.enabled!,
+      cabinetId: this.cabinetId
     };
 
     if (this.id()) {
@@ -100,6 +105,13 @@ export class EditUserComponent implements OnInit {
       this.usersService.create(req).subscribe(() => {
         this.router.navigate(['/admin/users']);
       });
+    }
+  }
+
+  setCabinetId(event: Event) {
+    const newValue = (event.target as HTMLInputElement).value;
+    if (newValue) {
+     this.cabinetId = newValue;
     }
   }
 }

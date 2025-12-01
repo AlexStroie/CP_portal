@@ -39,7 +39,7 @@
 
         <div class="form-group">
           <label>Cabinet</label>
-          <select formControlName="cabinetId">
+          <select (change)="setCabinetId($event)" [value]="cabinetId">
             @for (cab of cabinets(); track cab.id) {
               <option [value]="cab.id">{{ cab.name }}</option>
             }
@@ -60,7 +60,7 @@
 
       <div class="form-group checkbox">
         <label>
-          <input type="checkbox" formControlName="enabled">
+          <input type="checkbox" [checked]="form.get('enabled')?.value" disabled>
           Active account
         </label>
       </div>

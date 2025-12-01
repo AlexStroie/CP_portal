@@ -8,6 +8,7 @@ import ro.cabinetpro.cp_gwt.dto.auth.LoginRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.LoginResponse;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterRequest;
 import ro.cabinetpro.cp_gwt.dto.auth.RegisterResponse;
+import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetResponse;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
@@ -28,7 +29,17 @@ public class AuthService extends AbstractService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credentials");
         }
 
-        return postEntity("auth/login", request, LoginResponse.class);
+        LoginResponse loginResponse = postEntity("auth/login", request, LoginResponse.class);
+
+        if (loginResponse != null) {
+            if ("admin".equalsIgnoreCase(loginResponse.getRole())) {
+                if (loginResponse.getCabinetId() == null) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid cabinet");
+                }
+            }
+        }
+
+        return loginResponse;
     }
 
     public RegisterResponse register(RegisterRequest request) {

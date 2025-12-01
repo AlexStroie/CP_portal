@@ -93,7 +93,7 @@ export class AdminProfileComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
     this.form = this.fb.group({
       email: [{ value: user.email, disabled: true }, Validators.required],
@@ -106,13 +106,13 @@ export class AdminProfileComponent implements OnInit {
     if (this.form.invalid) return;
 
     const updatedUser = {
-      ...JSON.parse(localStorage.getItem('user') || '{}'),
+      ...JSON.parse(sessionStorage.getItem('user') || '{}'),
       ...this.form.value
     };
 
     // TODO În mod real, ai face request către backend:
     // this.accountService.updateProfile(updatedUser).subscribe(...)
 
-    localStorage.setItem('user', JSON.stringify(updatedUser));
+    sessionStorage.setItem('user', JSON.stringify(updatedUser));
   }
 }

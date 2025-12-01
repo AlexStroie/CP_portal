@@ -1,0 +1,19 @@
+<h1>{{ title }}</h1>
+
+<div class="stats">
+  <div class="stat-box">
+    <div class="label">Cabinete</div>
+    <div class="value">{{ stats.cabinets }}</div>
+  </div>
+
+  <div class="stat-box">
+    <div class="label">Utilizatori</div>
+    <div class="value">{{ stats.users }}</div>
+  </div>
+</div>
+
+<div class="quick-actions">
+  <button routerLink="/admin/cabinets">Gestionare Cabinete</button>
+  <button routerLink="/admin/users">Gestionare Utilizatori</button>
+  <button routerLink="/admin/profile">Profil</button>
+</div>

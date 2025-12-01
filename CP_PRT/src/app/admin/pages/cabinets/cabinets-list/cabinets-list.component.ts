@@ -16,7 +16,6 @@ export class CabinetsListComponent implements OnInit {
 
   cabinets = signal<Cabinet[]>([]);
   cabinetToDelete = signal<Cabinet | null>(null);
-  currentCabinet = signal<any | null>(null);
 
   constructor(
     private cabinetService: CabinetsService
@@ -29,7 +28,6 @@ export class CabinetsListComponent implements OnInit {
   refresh() {
     this.cabinetService.getAll().subscribe(data => this.cabinets.set(data));
   }
-
 
   askDelete(cabinet: Cabinet) {
     this.cabinetToDelete.set(cabinet);

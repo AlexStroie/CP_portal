@@ -16,8 +16,8 @@ export class CabinetsService {
   }
 
 
-  getById(id: number): Observable<any> {
-    return this.http.get<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
+  getById(id: number): Observable<Cabinet> {
+    return this.http.get<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
 
   create(cabinet: any): Observable<any> {

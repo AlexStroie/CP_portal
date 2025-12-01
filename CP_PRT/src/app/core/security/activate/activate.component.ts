@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {ChangeDetectorRef, Component, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -30,17 +30,20 @@ export class ActivateComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
   ngOnInit(): void {
     this.token.set(this.route.snapshot.queryParamMap.get('token'));
+    this.cdr.detectChanges();
   }
 
   save() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.error.set("Invalid Password");
       return;
     }
 

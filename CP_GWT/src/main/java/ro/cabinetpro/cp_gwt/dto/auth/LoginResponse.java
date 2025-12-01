@@ -18,6 +18,7 @@ public class LoginResponse extends AbstractDTO implements MicroserviceAware {
     private Long expiresIn;       // în secunde
     private String username;      // numele utilizatorului logat
     private String role;          // rolul (ADMIN / USER / THERAPIST)
+    private Long cabinetId;
 
     @Override
     public Microservice getMicroservice() {

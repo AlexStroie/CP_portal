@@ -7,6 +7,7 @@ export interface UserResponse {
   enabled: boolean;
   createdAt: string;
   activationLink: string;
+  cabinetId: string;
 }
 
 export interface UserRequest {
@@ -15,4 +16,5 @@ export interface UserRequest {
   email: string;
   role: string;
   enabled: boolean;
+  cabinetId: string;
 }

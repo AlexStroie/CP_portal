@@ -19,6 +19,7 @@ public class UserResponse extends AbstractDTO implements MicroserviceAware {
     private boolean enabled;
     private String createdAt;
     private String activationLink;
+    private Long cabinetId;
 
     @Override
     @JsonIgnore
