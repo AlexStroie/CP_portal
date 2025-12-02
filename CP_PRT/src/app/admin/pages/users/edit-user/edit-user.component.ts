@@ -1,4 +1,4 @@
-import {Component, Inject, inject, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UsersService} from '../../../../shared/service/users.service';
@@ -6,7 +6,6 @@ import {UserRequest, UserResponse} from '../../../../core/model/user.model';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
 import {CabinetsService} from '../../../../shared/service/cabinets.service';
-import {APP_CONFIG, IAppConfig} from '../../../../app.config';
 
 @Component({
   standalone: true,

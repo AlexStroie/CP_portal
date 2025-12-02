@@ -3,6 +3,9 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {ActivatedRoute, Router} from '@angular/router';
 import {Patient} from '../../../../core/model/patient.model';
 import {PatientsService} from '../../../../shared/service/patient.service';
+import {TokenStorageService} from '../../../../core/security/token-storage.service';
+import {Cabinet} from '../../../../core/model/cabinet.model';
+import {CabinetsService} from '../../../../shared/service/cabinets.service';
 
 @Component({
   standalone: true,
@@ -14,33 +17,46 @@ import {PatientsService} from '../../../../shared/service/patient.service';
   styleUrls: ['./patient-form.component.css']
 })
 export class PatientFormComponent implements OnInit {
+  isSuperAdmin: boolean = false;
 
   id = signal<number | null>(null);
   patient = signal<Patient | null>(null);
+  cabinets = signal<Cabinet[]>([]);
+  cabinetId: string = '';
 
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
+    cnp: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required),
     email: new FormControl('', Validators.email),
+    cabinetId: new FormControl('', Validators.required),
     notes: new FormControl(''),
   });
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
-    private patientsService: PatientsService
+    private patientsService: PatientsService,
+    private cabinetService: CabinetsService,
+    private tokenStorage: TokenStorageService
   ) {
   }
 
   ngOnInit() {
+    this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
     const idParam = this.route.snapshot.paramMap.get('id');
+
+    if (this.isSuperAdmin) {
+      this.cabinetService.getAll().subscribe(data => this.cabinets.set(data));
+    }
 
     if (idParam) {
       const parsed = Number(idParam);
       this.id.set(parsed);
-
-      this.loadPatient(parsed);
+      if (!isNaN(this.id()!)) {
+        this.loadPatient(parsed);
+      }
     }
   }
 
@@ -69,6 +85,15 @@ export class PatientFormComponent implements OnInit {
     this.patientsService.save(data).subscribe(() => {
       this.router.navigate(['/admin/patients']);
     });
+  }
+
+  setCabinetId(event: Event) {
+    const newValue = (event.target as HTMLInputElement).value;
+    if (newValue) {
+      this.form.patchValue({
+        cabinetId: newValue
+      });
+    }
   }
 
 }

@@ -20,6 +20,7 @@ public class PatientResponse extends AbstractDTO implements MicroserviceAware {
     private Long cabinetId;
     private String firstName;
     private String lastName;
+    private String cnp;
     private String phone;
     private String email;
     private String notes;

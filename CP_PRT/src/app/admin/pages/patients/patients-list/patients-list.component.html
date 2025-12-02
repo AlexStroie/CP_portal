@@ -5,6 +5,45 @@
   </button>
 </div>
 
+<br/>
+
+<div class="filters-container">
+  <input type="text"
+         placeholder="Caută după nume..."
+         [formControl]="name">
+
+  <input type="text"
+         placeholder="Caută CNP..."
+         [formControl]="cnp">
+
+  @if (isSuperAdmin) {
+    <select [formControl]="cabinetId">
+      <option value="">Toate cabinetele</option>
+      @for (cab of cabinets(); track cab.id) {
+        <option [value]="cab.id">{{ cab.name }}</option>
+      }
+    </select>
+  }
+
+  <select #sf (change)="sortField.set(sf.value)">
+    <option value="">Fără sortare</option>
+    <option value="name">Nume</option>
+    <option value="cnp">CNP</option>
+    @if (isSuperAdmin) {
+      <option value="cabinet">Cabinet</option>
+    }
+  </select>
+
+  <select #sd (change)="sortDir.set(sd.value)">
+    <option value="asc">Ascendent</option>
+    <option value="desc">Descendent</option>
+  </select>
+
+
+</div>
+
+<hr>
+
 <table class="patients-table">
   <thead>
   <tr>
@@ -19,7 +58,7 @@
   </thead>
 
   <tbody>
-    @for (patient of patients(); track patient.id) {
+    @for (patient of filteredPatients(); track patient.id) {
       <tr>
         <td>{{ patient.lastName }} {{ patient.firstName }}</td>
         <td>{{ patient.phone }}</td>
