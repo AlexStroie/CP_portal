@@ -1,0 +1,113 @@
+<div class="appointments-header">
+  <h2>Programări</h2>
+  <button class="btn-primary" [routerLink]="['/admin/appointments/create']">
+    + Adauga programare
+  </button>
+</div>
+
+<br/>
+
+<div class="filters-container">
+
+  <!-- Filtru nume pacient -->
+  <input type="text"
+         placeholder="Caută pacient..."
+         [formControl]="patientName">
+
+  <!-- Filtru dată -->
+  <input type="date"
+         [formControl]="date">
+
+  <!-- Filtru status -->
+  <select [formControl]="status">
+    <option value="">Toate statusurile</option>
+    <option value="SCHEDULED">Programat</option>
+    <option value="COMPLETED">Finalizat</option>
+    <option value="CANCELLED">Anulat</option>
+  </select>
+
+  <!-- Sort field -->
+  <select #sf (change)="sortField.set(sf.value)">
+    <option value="">Fără sortare</option>
+    <option value="patient">Pacient</option>
+    <option value="date">Data</option>
+    <option value="status">Status</option>
+  </select>
+
+  <!-- Sort direction -->
+  <select #sd (change)="sortDir.set(sd.value)">
+    <option value="asc">Asc</option>
+    <option value="desc">Desc</option>
+  </select>
+
+</div>
+
+<hr>
+
+<table class="patients-table">
+  <thead>
+  <tr>
+    <th>Pacient</th>
+    <th>Data</th>
+    <th>Interval</th>
+    <th>Terapeut</th>
+    <th>Status</th>
+    <th class="actions-col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (ap of filteredAppointments(); track ap.id) {
+      <tr>
+        <td>{{ ap.patientName }}</td>
+        <td>{{ ap.date }}</td>
+        <td>{{ ap.startTime }} – {{ ap.endTime }}</td>
+        <td>{{ ap.userFullName }}</td>
+
+        <td>
+          <span class="badge"
+                [ngClass]="{
+                  'badge-admin': ap.status === 'SCHEDULED',
+                  'badge-user': ap.status === 'COMPLETED',
+                  'badge-super': ap.status === 'CANCELLED'
+                }">
+            {{ ap.status }}
+          </span>
+        </td>
+
+        <td class="actions-col">
+          <button class="icon-button edit"
+                  [routerLink]="['/admin/appointments', ap.id]">
+            ✏️
+          </button>
+
+          <button class="icon-button delete"
+                  (click)="askDelete(ap)"
+                  [disabled]="isDeleteDisabled(ap)">
+            🗑️
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<!-- DELETE MODAL -->
+@if (appointmentToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Delete Appointment</h3>
+
+      <p>
+        Are you sure you want to delete the appointment for
+        <b>{{ appointmentToDelete()?.patientName }}</b> on
+        <b>{{ appointmentToDelete()?.date }}</b>?
+      </p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
+        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

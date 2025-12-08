@@ -1,0 +1,22 @@
+<div class="time-picker">
+
+  <input
+    class="time-input"
+    type="text"
+    [value]="value"
+    (focus)="toggle()"
+    (input)="filter($event)"
+    readonly
+  />
+
+  @if (show) {
+    <div class="dropdown">
+      @for (t of filtered; track t) {
+        <div class="option" (click)="select(t)">
+          {{ t }}
+        </div>
+      }
+    </div>
+  }
+
+</div>

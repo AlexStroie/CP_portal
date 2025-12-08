@@ -1,0 +1,55 @@
+.time-picker {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* INPUT MAI MIC, COMPACT */
+.time-input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;             /* redus față de 9px 12px */
+  font-size: 13px;               /* micșorat */
+  border: 1px solid #c8c8c8;
+  border-radius: 5px;            /* mai mic */
+  background: white;
+  cursor: pointer;
+  height: 34px;                  /* FIX pentru consistență */
+  transition: border-color 0.2s ease;
+}
+
+.time-input:focus {
+  border-color: #4a73ff;
+  outline: none;
+}
+
+/* DROPDOWN MAI ÎNGUST / COMPACT */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+
+  max-height: 180px;             /* redus de la 250px */
+  overflow-y: auto;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  z-index: 50;
+}
+
+/* OPȚIUNI MAI MICI */
+.option {
+  padding: 6px 10px;             /* redus de la 10px 12px */
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #eef2ff;
+}

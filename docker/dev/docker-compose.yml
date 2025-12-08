@@ -1,0 +1,30 @@
+services:
+  # ==================
+  # Angular UI (CP_PRT)
+  # ==================
+  cp_prt:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ../../CP_PRT:/app
+    command: sh -c "npm install --legacy-peer-deps && npm start"
+    ports:
+      - "4200:4200"
+    depends_on:
+      - cp_gwt   # corect, frontend depinde de gateway-ul backend
+
+
+  # ==================
+  # Backend Gateway (CP_GWT)
+  # ==================
+  cp_gwt:
+    image: eclipse-temurin:21
+    container_name: cp_gwt
+    working_dir: /app
+    volumes:
+      - ../../CP_GWT:/app
+    command: ["./gradlew", "bootRun"]
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev

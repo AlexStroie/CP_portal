@@ -1,5 +1,5 @@
 /* Header */
-.patients {
+.appointments-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,30 +60,9 @@
   color: white;
 }
 
-.badge-admin {
-  background-color: #4a90e2;
-}
-
-.badge-super {
-  background-color: #ff4d4d;
-}
-
-.badge-user {
-  background-color: #42b983;
-}
-
-/* Status */
-.status {
-  font-weight: 600;
-}
-
-.status.active {
-  color: #28a745;
-}
-
-.status.inactive {
-  color: #d9534f;
-}
+.badge-admin { background-color: #4a90e2; }
+.badge-user { background-color: #42b983; }
+.badge-super { background-color: #ff4d4d; }
 
 /* Actions */
 .actions-col {
@@ -142,30 +121,4 @@
   margin-top: 20px;
   display: flex;
   justify-content: space-evenly;
-}
-
-.btn-danger {
-  background: #ff4d4d;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-danger:hover {
-  background: #d00000;
-}
-
-.btn-secondary {
-  background: #ddd;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background: #ccc;
 }

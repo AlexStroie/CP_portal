@@ -1,16 +1,16 @@
 /* ===== PAGE LAYOUT ===== */
 
 .edit-container {
-  max-width: 900px;        /* Card suficient de lat pentru 2 coloane */
-  margin: 0 auto;          /* Centrare */
+  max-width: 1100px;        /* Mai lat decât Patients (care e pe 2 coloane) */
+  margin: 0 auto;
   padding-bottom: 30px;
 }
 
 .card {
   background: #ffffff;
-  padding: 25px 30px;
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 /* ===== HEADER ===== */
@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   margin: 15px auto 25px auto;
-  max-width: 900px;
+  max-width: 1100px;
 }
 
 .page-header .left {
@@ -43,22 +43,23 @@
   cursor: pointer;
   padding: 0 6px;
   color: #555;
+  transition: 0.2s;
 }
 
 .back-btn:hover {
-  color: #222;
+  color: #000;
 }
 
-/* ===== GRID FORM ===== */
+/* ===== FORM GRID ===== */
 
 .form-grid {
   display: grid;
-  gap: 18px 20px;          /* vertical x horizontal spacing */
+  gap: 20px 24px;        /* vertical | horizontal spacing */
   margin-top: 10px;
 }
 
-.form-grid-2 {
-  grid-template-columns: 1fr 1fr;
+.form-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .form-group {
@@ -67,7 +68,7 @@
 }
 
 .form-group.full-width {
-  grid-column: 1 / -1;     /* întinde pe lățime completă */
+  grid-column: 1 / -1;
 }
 
 /* ===== INPUTS ===== */
@@ -79,19 +80,26 @@
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
   padding: 9px 12px;
   border-radius: 6px;
-  border: 1px solid #c9c9c9;
+  border: 1px solid #c8c8c8;
   font-size: 14px;
   background: #fff;
   transition: border-color 0.15s ease;
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
   border-color: #4a73ff;
   outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
 }
 
 /* ===== BUTTONS ===== */
@@ -100,10 +108,10 @@
   background: #4a73ff;
   color: white;
   border: none;
-  padding: 8px 18px;
+  padding: 9px 20px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   transition: 0.2s;
 }
 
@@ -113,9 +121,17 @@
 
 /* ===== RESPONSIVE ===== */
 
-@media (max-width: 800px) {
-  .form-grid-2 {
-    grid-template-columns: 1fr;  /* cade pe 1 coloană */
+/* Când ecranul e mai mic, trecem la 2 coloane */
+@media (max-width: 1050px) {
+  .form-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Pe mobil → 1 coloană */
+@media (max-width: 700px) {
+  .form-grid-3 {
+    grid-template-columns: 1fr;
   }
 
   .page-header {
@@ -123,4 +139,14 @@
     align-items: flex-start;
     gap: 10px;
   }
+}
+
+app-time-picker {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+form-group {
+  min-width: 0;
 }

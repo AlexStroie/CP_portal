@@ -1,0 +1,7 @@
+server:
+  port: 8080
+angular:
+  url: http://cp_prt:4200
+cp:
+  gwy:
+    base-url: http://cp_gwy:8081
