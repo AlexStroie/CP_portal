@@ -19,6 +19,11 @@ public class PatientService extends AbstractService {
         return getListEntity(PatientResponse.class, "admin/patients");
     }
 
+
+    public List<PatientResponse> getAllPatientsByCabinet(Long id) {
+        return getListEntity(PatientResponse.class, "admin/patients/cabinet/" + id);
+    }
+
     public PatientResponse getPatient(Long id) {
         return getObjectEntity(PatientResponse.class, "admin/patients/" + id);
     }

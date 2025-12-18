@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {UserResponse} from '../model/user.model';
 
 const TOKEN_KEY = 'accessToken';
 const USER_KEY = 'user';
@@ -35,6 +36,15 @@ export class TokenStorageService {
   getUser(): any | null {
     const user = sessionStorage.getItem(USER_KEY);
     return user ? JSON.parse(user) : null;
+  }
+
+  // 🔹 Returnează cabinetID (deserializat)
+  getCabinetId(): string | null {
+    const userStr = sessionStorage.getItem(USER_KEY);
+    if (!userStr) return null;
+
+    const user = JSON.parse(userStr) as UserResponse;
+    return user.cabinetId ?? null;
   }
 
   getRole(): string | null {

@@ -22,7 +22,7 @@ export class PatientFormComponent implements OnInit {
   id = signal<number | null>(null);
   patient = signal<Patient | null>(null);
   cabinets = signal<Cabinet[]>([]);
-  cabinetId: string = '';
+  cabinetId: string | null = '';
 
   form = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -46,6 +46,13 @@ export class PatientFormComponent implements OnInit {
   ngOnInit() {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
     const idParam = this.route.snapshot.paramMap.get('id');
+
+    if ('create' === idParam) {
+      this.cabinetId = this.tokenStorage.getCabinetId();
+      this.form.patchValue({
+        cabinetId: this.cabinetId
+      });
+    }
 
     if (this.isSuperAdmin) {
       this.cabinetService.getAll().subscribe(data => this.cabinets.set(data));
@@ -76,6 +83,12 @@ export class PatientFormComponent implements OnInit {
 
   save() {
     if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach(key => {
+        const control = this.form.get(key);
+        if (control?.invalid) {
+          console.log(key, control.errors);
+        }
+      });
       this.form.markAllAsTouched();
       return;
     }

@@ -1,0 +1,58 @@
+<div class="dialog-wrapper">
+
+  <div class="dialog-header">
+    <h2>{{ data.id ? 'Editează programarea' : 'Programare nouă' }}</h2>
+    <button class="close-btn" (click)="close()">✕</button>
+  </div>
+
+  <div class="dialog-body">
+
+    <!-- GRID: Data + Ora -->
+    <div class="info-grid">
+      <div>
+        <label>Data</label>
+        <span>{{ data.date | date:'dd MMM yyyy' }}</span>
+      </div>
+
+      <div>
+        <label>Ora început</label>
+        <span>{{ data.startHour }}:{{ data.startMinute | number:'2.0' }}</span>
+      </div>
+    </div>
+
+    <!-- Ora sfârșit -->
+    <div>
+      <label>Ora sfârșit  </label>
+      <span>
+      <input matInput type="time" [(ngModel)]="data.endTime">
+      </span>
+    </div>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Pacient</mat-label>
+
+      <input
+        type="text"
+        matInput
+        [formControl]="patientControl"
+        [matAutocomplete]="auto">
+
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onPatientSelected($event)">
+
+        @for (p of filteredPatients; track p.id) {
+          <mat-option [value]="p.firstName + ' ' + p.lastName">
+            {{ p.firstName + ' ' + p.lastName }}
+          </mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div class="dialog-footer">
+    <button class="btn-secondary" (click)="close()">Anulează</button>
+    <button class="btn-primary" (click)="save()">Salvează</button>
+  </div>
+
+</div>

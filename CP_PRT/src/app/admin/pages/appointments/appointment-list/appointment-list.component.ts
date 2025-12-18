@@ -1,23 +1,22 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
-import {AppointmentExtended} from '../../../../core/model/appointment.model';
+import {Component, OnInit, signal} from '@angular/core';
+import {AppointmentCalendar, AppointmentExtended} from '../../../../core/model/appointment.model';
 import {AppointmentService} from '../../../../shared/service/appointment.service';
 import {RouterLink} from '@angular/router';
-import {NgClass} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CabinetsService} from '../../../../shared/service/cabinets.service';
 import {PatientsService} from '../../../../shared/service/patient.service';
-import {UsersService} from '../../../../shared/service/users.service';
-import {debounceTime} from 'rxjs/operators';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
-import {UserResponse} from '../../../../core/model/user.model';
+import {AppointmentCalendarComponent} from '../appointment-calendar/appointment-calendar.component';
+import {MatDialog} from '@angular/material/dialog';
+import {AppointmentCreateDialogComponent} from '../appointment-create-dialog/appointment-create-dialog.component';
+import {Patient} from '../../../../core/model/patient.model';
 
 @Component({
   selector: 'app-appointment-list',
   imports: [
     RouterLink,
-    NgClass,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppointmentCalendarComponent
   ],
   templateUrl: './appointment-list.component.html',
   styleUrl: './appointment-list.component.css',
@@ -29,165 +28,84 @@ export class AppointmentListComponent implements OnInit {
   // =========================
 
   appointments = signal<AppointmentExtended[]>([]);
-  appointmentToDelete = signal<AppointmentExtended | null>(null);
+  patients = signal<Patient[]>([]);
+  appointmentsCalendar = signal<AppointmentCalendar[]>([]);
 
-  // filters
-  patientName = new FormControl('');
+  selectedDate = new Date();
   date = new FormControl('');
   status = new FormControl('');
 
-  // maps for readable names
-  cabinetMap = new Map<number, string>();
-  patientMap = new Map<number, string>();
-  userMap = new Map<number, string>();
-
-  // sorting
-  sortField = signal<string | null>(null);
-  sortDir = signal<string>('asc');
-
-  private filterState = signal({
-    patientName: '',
-    date: '',
-    status: ''
-  });
 
   constructor(
     private appointmentService: AppointmentService,
-    private cabinetsService: CabinetsService,
     private patientsService: PatientsService,
-    private userService: UsersService,
-    private tokenStorage: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private dialog: MatDialog
   ) {
+
   }
+
 
   ngOnInit(): void {
-    this.loadMaps();
-    this.bindFilters();
-    this.refresh();
+    this.loadPatients();
+    this.loadAppointments();
   }
 
-  // =========================
-  // Load map data
-  // =========================
-
-  loadMaps() {
-    this.cabinetsService.getAll().subscribe(cabs => {
-      cabs.forEach(c => this.cabinetMap.set(c.id, c.name));
-    });
-
-    this.patientsService.getAll().subscribe(ps => {
-      ps.forEach(p => this.patientMap.set(p.id, `${p.lastName} ${p.firstName}`));
-    });
-
-    this.userService.getAll().subscribe(users => {
-      users.forEach(u => this.userMap.set(u.id, u.fullName));
-    });
+  private loadPatients() {
+    this.patientsService.getAll().subscribe(data => this.patients.set(data));
   }
 
-  // =========================
-  // Filter binding
-  // =========================
-
-  private bindFilters() {
-    this.patientName.valueChanges.pipe(debounceTime(300))
-      .subscribe(() => this.updateFilterState());
-
-    this.date.valueChanges.subscribe(() => this.updateFilterState());
-    this.status.valueChanges.subscribe(() => this.updateFilterState());
+  private loadAppointments() {
+    const cabinetId = Number(this.tokenStorageService.getCabinetId());
+    this.appointmentService
+      .getExtendedForCabinet(cabinetId)
+      .subscribe(data => {
+        this.appointments.set(data);
+        this.appointmentsCalendar.set(this.mapToCalendar(data));
+      });
   }
 
-  private updateFilterState() {
-    this.filterState.set({
-      patientName: this.patientName.value ?? '',
-      date: this.date.value ?? '',
-      status: this.status.value ?? ''
-    });
+  private mapToCalendar(data: AppointmentExtended[]): AppointmentCalendar[] {
+    return data.map(a => ({
+      id: a.id,
+      patientName: a.patientName,
+      cabinetName: a.cabinetName,
+      start: `${a.date}T${a.startTime}`,
+      end: `${a.date}T${a.endTime}`,
+      color: '#5b9bd5'
+    }));
   }
 
-  // =========================
-  // Filtered + Sorted computed list
-  // =========================
+  openCreateDialog(event: { date: Date; startHour: number; startMinute: number }) {
 
-  filteredAppointments = computed(() => {
-    const list = this.appointments();
-    const f = this.filterState();
-
-    let result = list.filter(ap => {
-      if (f.patientName) {
-        const pn = (ap.patientName ?? '').toLowerCase();
-        if (!pn.includes(f.patientName.toLowerCase())) return false;
+    const dialogRef = this.dialog.open(AppointmentCreateDialogComponent, {
+      width: '400px',
+      data: {
+        date: event.date,
+        startHour: event.startHour,
+        startMinute: event.startMinute,
+        patients: this.patients,
       }
-
-      if (f.date && ap.date !== f.date) return false;
-
-      if (f.status && ap.status !== f.status) return false;
-
-      return true;
     });
 
-    return this.sortList(result);
-  });
-
-  private sortList(list: AppointmentExtended[]) {
-    const field = this.sortField();
-    const dir = this.sortDir();
-
-    if (!field) return list;
-
-    return [...list].sort((a, b) => {
-      const valA = this.getSortValue(a, field);
-      const valB = this.getSortValue(b, field);
-
-      if (valA < valB) return dir === 'asc' ? -1 : 1;
-      if (valA > valB) return dir === 'asc' ? 1 : -1;
-      return 0;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Creare:', result);
+      }
     });
   }
 
-  private getSortValue(ap: AppointmentExtended, field: string): any {
-    switch (field) {
-      case 'patient':
-        return ap.patientName.toLowerCase();
-      case 'date':
-        return ap.date;
-      case 'status':
-        return ap.status;
-      default:
-        return '';
-    }
-  }
+  openEditDialog(appt: { date: Date; startHour: number; startMinute: number }) {
 
-  // =========================
-  // Actions
-  // =========================
-
-  refresh() {
-    const user: UserResponse = this.tokenStorage.getUser();
-    const cabinetId = user.cabinetId;
-
-    this.appointmentService.getExtendedForCabinet(Number(cabinetId))
-      .subscribe(data => this.appointments.set(data));
-  }
-
-  askDelete(ap: AppointmentExtended) {
-    this.appointmentToDelete.set(ap);
-  }
-
-  confirmDelete() {
-    const ap = this.appointmentToDelete();
-    if (!ap) return;
-
-    this.appointmentService.delete(ap.id).subscribe(() => {
-      this.appointmentToDelete.set(null);
-      this.refresh();
+    const dialogRef = this.dialog.open(AppointmentCreateDialogComponent, {
+      width: '400px',
+      data: {...appt}
     });
-  }
 
-  cancelDelete() {
-    this.appointmentToDelete.set(null);
-  }
-
-  isDeleteDisabled(ap: AppointmentExtended) {
-    return ap.status === 'COMPLETED';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Editare:', result);
+      }
+    });
   }
 }

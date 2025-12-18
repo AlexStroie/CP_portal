@@ -43,4 +43,16 @@ export interface AppointmentExtended {
 
   status: string;
   notes?: string;
+
+  color?: string;
+}
+
+// core/model/appointment.model.ts
+export interface AppointmentCalendar {
+  id?: number;
+  patientName: string;
+  cabinetName?: string;
+  start: string; // ISO string: '2025-12-11T10:30:00'
+  end: string;   // ISO string
+  color?: string;
 }

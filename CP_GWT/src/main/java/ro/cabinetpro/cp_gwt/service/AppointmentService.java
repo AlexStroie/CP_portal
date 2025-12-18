@@ -108,9 +108,6 @@ public class AppointmentService extends AbstractService {
         var cabinet = cabinetService.getCabinet(dto.getCabinetId());
         ext.setCabinetName(cabinet.getName());
 
-        var user = userService.getUser(dto.getUserId());
-        ext.setUserFullName(user.getFullName());
-
         return ext;
     }
 }

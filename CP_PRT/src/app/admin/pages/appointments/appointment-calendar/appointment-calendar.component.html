@@ -1,0 +1,150 @@
+<div class="calendar-container">
+
+  <!-- TOOLBAR -->
+  <div class="calendar-toolbar">
+    <div class="toolbar-left">
+      <button (click)="goToPrevious()">&lt;</button>
+      <button (click)="goToToday()">Astăzi</button>
+      <button (click)="goToNext()">&gt;</button>
+
+      @if (view === 'week') {
+        <span class="current-range">
+          Săptămâna {{ weekDays[0] | date:'dd.MM' }} - {{ weekDays[6] | date:'dd.MM.yyyy' }}
+        </span>
+      }
+
+      @if (view === 'day') {
+        <span class="current-range">
+          {{ currentDate | date:'EEEE, dd MMMM yyyy':'':'ro-RO' }}
+        </span>
+      }
+    </div>
+
+    <div class="toolbar-right">
+      <button
+        [class.active]="view === 'day'"
+        (click)="switchView('day')">
+        Zi
+      </button>
+
+      <button
+        [class.active]="view === 'week'"
+        (click)="switchView('week')">
+        Săptămână
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER ZILE -->
+  @if (view === 'week') {
+    <div class="calendar-header">
+      <div class="time-column-header"></div>
+
+      @for (day of weekDays; track day) {
+        <div class="day-header">
+          {{ formatDay(day) }}
+        </div>
+      }
+    </div>
+  }
+
+  @if (view === 'day') {
+    <div class="calendar-header">
+      <div class="time-column-header"></div>
+
+      @for (col of dayColumns; track col.key) {
+        <div class="day-header">{{ col.label }}</div>
+      }
+    </div>
+  }
+
+  <!-- BODY -->
+  <div class="calendar-body">
+
+    <!-- time column -->
+    <div class="time-column">
+      @for (h of hours; track h) {
+        <div class="time-slot-label">{{ h }}</div>
+      }
+    </div>
+
+    <!-- WEEK VIEW -->
+    @if (view === 'week') {
+      <div class="days-grid">
+        @for (day of weekDays; track day) {
+
+          <div class="day-column">
+
+            <!-- clickable grid -->
+            <div class="time-slot-grid">
+              @for (h of hours; let hi = $index; track hi) {
+                @for (slot of slotsPerHourArray; let mi = $index; track mi) {
+
+                  <div class="time-slot"
+                       (click)="onSlotClick(day, startHour + hi, mi * slotMinutes)">
+                  </div>
+
+                }
+              }
+            </div>
+
+            <!-- APPOINTMENTS -->
+            @for (appt of getAppointmentsForDay(day); track appt.id) {
+              <div
+                class="appointment-card"
+                [style.background]="appt.color || '#5b9bd5'"
+                [ngStyle]="getAppointmentStyle(appt)"
+              >
+                <div class="appt-title">{{ appt.patientName }}</div>
+                <div class="appt-subtitle">
+                  {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
+                  @if (appt.cabinetName) {
+                    · {{ appt.cabinetName }}
+                  }
+                </div>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+    }
+
+    <!-- DAY VIEW -->
+    @if (view === 'day') {
+      <div class="days-grid">
+        @for (col of dayColumns; track col.key) {
+
+          <div class="day-column">
+            <div class="time-slot-grid">
+              @for (h of hours; let hi = $index; track hi) {
+                @for (slot of slotsPerHourArray; let mi = $index; track mi) {
+
+                  <div class="time-slot"
+                       (click)="onSlotClick(currentDate, startHour + hi, mi * slotMinutes)">
+                  </div>
+
+                }
+              }
+            </div>
+
+            @for (appt of getAppointmentsForDayColumn(col.key); track appt.id) {
+              <div
+                class="appointment-card"
+                [style.background]="appt.color || '#5b9bd5'"
+                [ngStyle]="getAppointmentStyle(appt)">
+                <div class="appt-title">{{ appt.patientName }}</div>
+                <div class="appt-subtitle">
+                  {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
+                  @if (appt.cabinetName) { · {{ appt.cabinetName }} }
+                </div>
+              </div>
+            }
+
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

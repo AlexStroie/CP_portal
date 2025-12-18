@@ -1,0 +1,132 @@
+:host {
+  display: block;
+}
+
+/* TOT conținutul dialogului este într-o cutie fixă */
+.dialog-wrapper {
+  width: 380px;          /* fixăm lățimea ideală */
+  max-width: 100%;       /* prevenim depășirile */
+  overflow: hidden;      /* prevenim scroll orizontal */
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.dialog-header {
+  padding: 16px 20px;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.close-btn:hover {
+  opacity: 1;
+}
+
+/* BODY */
+.dialog-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  width: 100%;           /* prevenim lățimea peste container */
+  box-sizing: border-box;
+}
+
+/* GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.info-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-grid span {
+  padding: 8px 10px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  width: 100%;         /* important pentru prevenirea overflow-ului */
+  box-sizing: border-box;
+}
+
+/* FORM FIELDS */
+mat-form-field.full {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* FOOTER */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  background: #fafafa;
+  border-top: 1px solid #ececec;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+mat-option {
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+mat-autocomplete {
+  max-height: 300px;
+}
+
+input[type="time"] {
+  font-family: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
