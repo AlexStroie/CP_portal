@@ -7,6 +7,7 @@ import java.time.LocalTime;
 
 @Data
 public class AppointmentRequest {
+    private Long appointmentId;
     private Long patientId;
     private Long cabinetId;
     private Long userId;

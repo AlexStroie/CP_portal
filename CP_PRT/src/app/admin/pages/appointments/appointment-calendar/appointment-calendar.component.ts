@@ -7,12 +7,14 @@ import {
   OnChanges,
   OnInit,
   Output,
-  signal, SimpleChanges
+  signal,
+  SimpleChanges
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AppointmentCalendar} from '../../../../core/model/appointment.model';
 import {PatientsService} from '../../../../shared/service/patient.service';
 import {Patient} from '../../../../core/model/patient.model';
+import {CreateAppointmentEvent, EditAppointmentEvent} from '../events/appointment-event';
 
 
 type CalendarView = 'day' | 'week';
@@ -26,35 +28,24 @@ type CalendarView = 'day' | 'week';
 })
 export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterViewInit {
 
-
-  constructor(private patientsService: PatientsService,
-              private cdr: ChangeDetectorRef) {
-  }
-
   @Input() view: CalendarView = 'week';
   @Input() currentDate: Date = new Date();
   @Input() appointments: AppointmentCalendar[] = [];
 
-  @Output() createAppointment = new EventEmitter<{
-    date: Date;
-    startHour: number;
-    startMinute: number;
-    patients: Patient[];
-  }>();
+  @Output() createAppointment =new EventEmitter<CreateAppointmentEvent>();
+  @Output() editAppointment = new EventEmitter<EditAppointmentEvent>();
 
-  @Output() editAppointment = new EventEmitter<{
-    date: Date;
-    startHour: number;
-    startMinute: number;
-  }>();
+  patients = signal<Patient[]>([]);
 
   startHour = 8;
   endHour = 20;
   slotMinutes = 15;
-
-  patients = signal<Patient[]>([]);
-
   appointmentsByDay = new Map<string, AppointmentCalendar[]>();
+
+
+  constructor(private patientsService: PatientsService,
+              private cdr: ChangeDetectorRef) {
+  }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
@@ -146,11 +137,12 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
 
     const duration = (end.getTime() - start.getTime()) / 60000;
 
-    const pxPerMinute = 1;
+    const GRID_TOP_OFFSET = 0;      // ✔️ bun la tine
+    const PX_PER_MINUTE = 16 / 15; // 🔥 FIXUL REAL
 
     return {
-      top: `${minutesFromStart * pxPerMinute}px`,
-      height: `${Math.max(duration * pxPerMinute, 20)}px`
+      top: `${GRID_TOP_OFFSET + minutesFromStart * PX_PER_MINUTE}px`,
+      height: `${Math.max(duration * PX_PER_MINUTE, 20)}px`
     };
   }
 
@@ -192,5 +184,20 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
       patients: this.patients()
     });
   }
+
+  onAppointmentClick(appt: AppointmentCalendar, event: MouseEvent) {
+    event.stopPropagation();
+
+    const start = new Date(appt.start);
+
+    this.editAppointment.emit({
+      date: start,
+      startHour: start.getHours(),
+      startMinute: start.getMinutes(),
+      patients: this.patients(),
+      appointment: appt
+    });
+  }
+
 
 }

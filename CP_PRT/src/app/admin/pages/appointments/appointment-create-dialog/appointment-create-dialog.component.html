@@ -11,18 +11,34 @@
     <div class="info-grid">
       <div>
         <label>Data</label>
-        <span>{{ data.date | date:'dd MMM yyyy' }}</span>
+        @if (isEdit) {
+          <input
+            type="date"
+            matInput
+            [(ngModel)]="editDate">
+        }
+        @if (!isEdit) {
+          <span>{{ data.date | date:'dd MMM yyyy' }}</span>
+        }
       </div>
 
       <div>
         <label>Ora început</label>
-        <span>{{ data.startHour }}:{{ data.startMinute | number:'2.0' }}</span>
+        @if (isEdit) {
+          <input
+            type="time"
+            matInput
+            [(ngModel)]="editStartTime">
+        }
+        @if (!isEdit) {
+          <span>{{ data.startHour }}:{{ data.startMinute | number:'2.0' }}</span>
+        }
       </div>
     </div>
 
     <!-- Ora sfârșit -->
     <div>
-      <label>Ora sfârșit  </label>
+      <label>Ora sfârșit </label>
       <span>
       <input matInput type="time" [(ngModel)]="data.endTime">
       </span>
@@ -39,11 +55,12 @@
 
       <mat-autocomplete
         #auto="matAutocomplete"
+        [displayWith]="displayPatient"
         (optionSelected)="onPatientSelected($event)">
 
         @for (p of filteredPatients; track p.id) {
-          <mat-option [value]="p.firstName + ' ' + p.lastName">
-            {{ p.firstName + ' ' + p.lastName }}
+          <mat-option [value]="p">
+            {{ p.firstName }} {{ p.lastName }}
           </mat-option>
         }
       </mat-autocomplete>
@@ -51,8 +68,19 @@
   </div>
 
   <div class="dialog-footer">
-    <button class="btn-secondary" (click)="close()">Anulează</button>
-    <button class="btn-primary" (click)="save()">Salvează</button>
+
+    <div class="footer-left">
+      @if (isEdit) {
+        <button class="btn-danger" (click)="cancelAppointment()">
+          Anulează programarea
+        </button>
+      }
+    </div>
+
+    <div class="footer-right">
+      <button class="btn-secondary" (click)="close()">Închide</button>
+      <button class="btn-primary" (click)="save()">Salvează</button>
+    </div>
   </div>
 
 </div>

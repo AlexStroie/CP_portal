@@ -21,11 +21,11 @@
     </div>
 
     <div class="toolbar-right">
-      <button
-        [class.active]="view === 'day'"
-        (click)="switchView('day')">
-        Zi
-      </button>
+<!--      <button-->
+<!--        [class.active]="view === 'day'"-->
+<!--        (click)="switchView('day')">-->
+<!--        Zi-->
+<!--      </button>-->
 
       <button
         [class.active]="view === 'week'"
@@ -94,6 +94,7 @@
                 class="appointment-card"
                 [style.background]="appt.color || '#5b9bd5'"
                 [ngStyle]="getAppointmentStyle(appt)"
+                (click)="onAppointmentClick(appt, $event)"
               >
                 <div class="appt-title">{{ appt.patientName }}</div>
                 <div class="appt-subtitle">

@@ -14,6 +14,7 @@ export interface Appointment {
 }
 
 export interface AppointmentRequest {
+  appointmentID: number;
   patientId: number;
   cabinetId: number;
   userId: number;
@@ -51,6 +52,7 @@ export interface AppointmentExtended {
 export interface AppointmentCalendar {
   id?: number;
   patientName: string;
+  patientId?: number;
   cabinetName?: string;
   start: string; // ISO string: '2025-12-11T10:30:00'
   end: string;   // ISO string

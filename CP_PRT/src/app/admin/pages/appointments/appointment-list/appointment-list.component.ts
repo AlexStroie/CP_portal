@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import {AppointmentCalendar, AppointmentExtended} from '../../../../core/model/appointment.model';
 import {AppointmentService} from '../../../../shared/service/appointment.service';
 import {RouterLink} from '@angular/router';
@@ -21,7 +21,7 @@ import {Patient} from '../../../../core/model/patient.model';
   templateUrl: './appointment-list.component.html',
   styleUrl: './appointment-list.component.css',
 })
-export class AppointmentListComponent implements OnInit {
+export class AppointmentListComponent implements OnInit, OnChanges, AfterViewInit {
 
   // =========================
   // Signals
@@ -40,11 +40,18 @@ export class AppointmentListComponent implements OnInit {
     private appointmentService: AppointmentService,
     private patientsService: PatientsService,
     private tokenStorageService: TokenStorageService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
-
   }
 
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.cdr.detectChanges();
+  }
 
   ngOnInit(): void {
     this.loadPatients();
@@ -63,12 +70,14 @@ export class AppointmentListComponent implements OnInit {
         this.appointments.set(data);
         this.appointmentsCalendar.set(this.mapToCalendar(data));
       });
+
   }
 
   private mapToCalendar(data: AppointmentExtended[]): AppointmentCalendar[] {
     return data.map(a => ({
       id: a.id,
       patientName: a.patientName,
+      patientId: a.patientId,
       cabinetName: a.cabinetName,
       start: `${a.date}T${a.startTime}`,
       end: `${a.date}T${a.endTime}`,
@@ -76,27 +85,7 @@ export class AppointmentListComponent implements OnInit {
     }));
   }
 
-  openCreateDialog(event: { date: Date; startHour: number; startMinute: number }) {
-
-    const dialogRef = this.dialog.open(AppointmentCreateDialogComponent, {
-      width: '400px',
-      data: {
-        date: event.date,
-        startHour: event.startHour,
-        startMinute: event.startMinute,
-        patients: this.patients,
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Creare:', result);
-      }
-    });
-  }
-
-  openEditDialog(appt: { date: Date; startHour: number; startMinute: number }) {
-
+  openCreateDialog(appt: { date: Date; startHour: number; startMinute: number; patients: Patient[] }) {
     const dialogRef = this.dialog.open(AppointmentCreateDialogComponent, {
       width: '400px',
       data: {...appt}
@@ -104,7 +93,20 @@ export class AppointmentListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Editare:', result);
+        this.loadAppointments();
+      }
+    });
+  }
+
+  openEditDialog(appt: { date: Date; startHour: number; startMinute: number; patients: Patient[] }) {
+    const dialogRef = this.dialog.open(AppointmentCreateDialogComponent, {
+      width: '400px',
+      data: {...appt}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadAppointments();
       }
     });
   }
