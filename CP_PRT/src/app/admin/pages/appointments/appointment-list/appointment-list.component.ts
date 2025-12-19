@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import {AppointmentCalendar, AppointmentExtended} from '../../../../core/model/appointment.model';
 import {AppointmentService} from '../../../../shared/service/appointment.service';
-import {RouterLink} from '@angular/router';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PatientsService} from '../../../../shared/service/patient.service';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
@@ -9,11 +8,11 @@ import {AppointmentCalendarComponent} from '../appointment-calendar/appointment-
 import {MatDialog} from '@angular/material/dialog';
 import {AppointmentCreateDialogComponent} from '../appointment-create-dialog/appointment-create-dialog.component';
 import {Patient} from '../../../../core/model/patient.model';
+import {DateUtils} from '../utils/date-utils';
 
 @Component({
   selector: 'app-appointment-list',
   imports: [
-    RouterLink,
     FormsModule,
     ReactiveFormsModule,
     AppointmentCalendarComponent
@@ -81,8 +80,15 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
       cabinetName: a.cabinetName,
       start: `${a.date}T${a.startTime}`,
       end: `${a.date}T${a.endTime}`,
-      color: '#5b9bd5'
+      color: this.getColor(a)
     }));
+  }
+
+  private getColor(data: AppointmentExtended): string {
+    if (DateUtils.isBeforeOrToday(data.date)) {
+      return '#71788a';
+    }
+    return '#5b9bd5';
   }
 
   openCreateDialog(appt: { date: Date; startHour: number; startMinute: number; patients: Patient[] }) {
@@ -110,4 +116,5 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
       }
     });
   }
+
 }

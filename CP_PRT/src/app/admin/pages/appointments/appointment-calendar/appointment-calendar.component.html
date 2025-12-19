@@ -9,23 +9,23 @@
 
       @if (view === 'week') {
         <span class="current-range">
-          Săptămâna {{ weekDays[0] | date:'dd.MM' }} - {{ weekDays[6] | date:'dd.MM.yyyy' }}
+          Săptămâna {{ weekDays()[0] | date:'dd.MM' }} - {{ weekDays()[6] | date:'dd.MM.yyyy' }}
         </span>
       }
 
-      @if (view === 'day') {
-        <span class="current-range">
-          {{ currentDate | date:'EEEE, dd MMMM yyyy':'':'ro-RO' }}
-        </span>
-      }
+<!--      @if (view === 'day') {-->
+<!--        <span class="current-range">-->
+<!--          {{ currentDate | date:'EEEE, dd MMMM yyyy':'':'ro-RO' }}-->
+<!--        </span>-->
+<!--      }-->
     </div>
 
     <div class="toolbar-right">
-<!--      <button-->
-<!--        [class.active]="view === 'day'"-->
-<!--        (click)="switchView('day')">-->
-<!--        Zi-->
-<!--      </button>-->
+      <!--      <button-->
+      <!--        [class.active]="view === 'day'"-->
+      <!--        (click)="switchView('day')">-->
+      <!--        Zi-->
+      <!--      </button>-->
 
       <button
         [class.active]="view === 'week'"
@@ -40,23 +40,23 @@
     <div class="calendar-header">
       <div class="time-column-header"></div>
 
-      @for (day of weekDays; track day) {
+      @for (day of weekDays(); track day.getTime()) {
         <div class="day-header">
-          {{ formatDay(day) }}
+          <span>{{ formatDay(day) || 'EMPTY' }}</span>
         </div>
       }
     </div>
   }
 
-  @if (view === 'day') {
-    <div class="calendar-header">
-      <div class="time-column-header"></div>
+<!--  @if (view === 'day') {-->
+<!--    <div class="calendar-header">-->
+<!--      <div class="time-column-header"></div>-->
 
-      @for (col of dayColumns; track col.key) {
-        <div class="day-header">{{ col.label }}</div>
-      }
-    </div>
-  }
+<!--      @for (col of dayColumns; track col.key) {-->
+<!--        <div class="day-header">{{ col.label }}</div>-->
+<!--      }-->
+<!--    </div>-->
+<!--  }-->
 
   <!-- BODY -->
   <div class="calendar-body">
@@ -71,7 +71,7 @@
     <!-- WEEK VIEW -->
     @if (view === 'week') {
       <div class="days-grid">
-        @for (day of weekDays; track day) {
+        @for (day of weekDays(); track day) {
 
           <div class="day-column">
 
@@ -79,10 +79,14 @@
             <div class="time-slot-grid">
               @for (h of hours; let hi = $index; track hi) {
                 @for (slot of slotsPerHourArray; let mi = $index; track mi) {
-
-                  <div class="time-slot"
-                       (click)="onSlotClick(day, startHour + hi, mi * slotMinutes)">
-                  </div>
+                  @if (!DateUtils.isBeforeToday(day)) {
+                    <div class="time-slot"
+                         (click)="onSlotClick(day, startHour + hi, mi * slotMinutes)">
+                    </div>
+                  }
+                  @if (DateUtils.isBeforeToday(day)) {
+                    <div class="time-slot-disabled"></div>
+                  }
 
                 }
               }
@@ -90,20 +94,32 @@
 
             <!-- APPOINTMENTS -->
             @for (appt of getAppointmentsForDay(day); track appt.id) {
-              <div
-                class="appointment-card"
-                [style.background]="appt.color || '#5b9bd5'"
-                [ngStyle]="getAppointmentStyle(appt)"
-                (click)="onAppointmentClick(appt, $event)"
-              >
-                <div class="appt-title">{{ appt.patientName }}</div>
-                <div class="appt-subtitle">
-                  {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
-                  @if (appt.cabinetName) {
-                    · {{ appt.cabinetName }}
-                  }
+              @if (!DateUtils.isBeforeToday(day)) {
+                <div
+                  class="appointment-card"
+                  [style.background]="appt.color || '#5b9bd5'"
+                  [ngStyle]="getAppointmentStyle(appt)"
+                  (click)="onAppointmentClick(appt, $event)"
+                >
+                  <div class="appt-title">{{ appt.patientName }}</div>
+                  <div class="appt-subtitle">
+                    {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
+                  </div>
                 </div>
-              </div>
+              }
+
+              @if (DateUtils.isBeforeToday(day)) {
+                <div
+                  class="appointment-card"
+                  [style.background]="appt.color || '#71788a'"
+                  [ngStyle]="getAppointmentStyle(appt)"
+                >
+                  <div class="appt-title">{{ appt.patientName }}</div>
+                  <div class="appt-subtitle">
+                    {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
+                  </div>
+                </div>
+              }
             }
 
           </div>
@@ -137,7 +153,9 @@
                 <div class="appt-title">{{ appt.patientName }}</div>
                 <div class="appt-subtitle">
                   {{ appt.start | date:'HH:mm' }} - {{ appt.end | date:'HH:mm' }}
-                  @if (appt.cabinetName) { · {{ appt.cabinetName }} }
+                  @if (appt.cabinetName) {
+                    · {{ appt.cabinetName }}
+                  }
                 </div>
               </div>
             }

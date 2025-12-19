@@ -1,7 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component,
+  Component, computed,
   EventEmitter,
   Input,
   OnChanges,
@@ -15,6 +15,7 @@ import {AppointmentCalendar} from '../../../../core/model/appointment.model';
 import {PatientsService} from '../../../../shared/service/patient.service';
 import {Patient} from '../../../../core/model/patient.model';
 import {CreateAppointmentEvent, EditAppointmentEvent} from '../events/appointment-event';
+import {DateUtils} from '../utils/date-utils';
 
 
 type CalendarView = 'day' | 'week';
@@ -54,7 +55,6 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
   ngOnChanges(changes: SimpleChanges) {
     if (changes['appointments'] && this.appointments.length > 0) {
       this.buildCalendar();
-      console.log('appointments input:', this.appointments);
     }
   }
 
@@ -91,14 +91,16 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
   }
 
   // Week days
-  get weekDays(): Date[] {
-    const start = this.getStartOfWeek(this.currentDate);
-    return Array.from({length: 7}, (_, i) => {
+  currentDateHeader = signal(new Date());
+
+  weekDays = computed(() => {
+    const start = this.getStartOfWeek(this.currentDateHeader());
+    return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
       return d;
     });
-  }
+  });
 
   get dayColumns() {
     return [{key: 'default', label: 'Programări'}];
@@ -199,5 +201,5 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
     });
   }
 
-
+  protected readonly DateUtils = DateUtils;
 }
