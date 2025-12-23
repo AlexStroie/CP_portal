@@ -1,8 +1,8 @@
 export class DateUtils {
 
   static isBeforeToday(date: Date | string): boolean {
-    const inputDate = new Date(date);
-    const today = new Date();
+    const inputDate = this.parseLocalDate(date);
+    const today = this.addDays(new Date(), 0);
 
     // resetăm ora
     inputDate.setHours(0, 0, 0, 0);
@@ -14,7 +14,7 @@ export class DateUtils {
   static isBeforeOrToday(date: Date | string): boolean {
     const inputDate = this.parseLocalDate(date);
 
-    const today = this.addDays(new Date(), -1);
+    const today = this.addDays(new Date(), 0);
     today.setHours(0, 0, 0, 0);
 
     return inputDate < today;

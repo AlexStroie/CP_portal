@@ -27,10 +27,11 @@
     @for (appt of todayAppointments(); track appt.id) {
       <div
         class="today-appt">
-        <div class="time">
-          <!--        [class.past]="isPast(appt)"-->
-          {{ formatTime(appt.startTime) }} – {{ formatTime(appt.endTime) }}
-        </div>
+          <div class="time"
+               [class.past]="isPast(appt)">
+            {{ formatTime(appt.startTime) }} – {{ formatTime(appt.endTime) }}
+          </div>
+
 
         <div class="info">
           <div class="patient">{{ appt.patientName }}</div>

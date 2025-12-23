@@ -76,7 +76,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   isPast(appt: AppointmentExtended): boolean {
-    return new Date(appt.endTime) < this.now();
+    return appt.endTime.substring(0, 5) < this.now().getHours() + ':' + this.now().getMinutes();
   }
 
   isNext(appt: AppointmentExtended):

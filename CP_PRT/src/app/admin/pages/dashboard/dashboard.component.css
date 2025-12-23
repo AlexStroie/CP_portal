@@ -83,8 +83,13 @@ h1 {
   font-weight: 600;
 }
 
-.patient {
-  font-weight: 500;
+.time {
+  min-width: 80px;
+  font-weight: 600;
+}
+
+.time.past {
+  opacity: 0.5;
 }
 
 .empty {
