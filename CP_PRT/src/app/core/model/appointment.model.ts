@@ -14,7 +14,7 @@ export interface Appointment {
 }
 
 export interface AppointmentRequest {
-  appointmentID: number;
+  appointmentId: number;
   patientId: number;
   cabinetId: number;
   userId: number;

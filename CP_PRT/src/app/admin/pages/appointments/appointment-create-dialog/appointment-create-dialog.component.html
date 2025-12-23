@@ -46,24 +46,31 @@
 
     <mat-form-field appearance="fill" class="full">
       <mat-label>Pacient</mat-label>
+      @if (isEdit) {
+        <input
+          type="text"
+          matInput
+          [(ngModel)]="patientName"
+          [disabled]="true">
+      } @else {
+        <input
+          type="text"
+          matInput
+          [formControl]="patientControl"
+          [matAutocomplete]="auto">
 
-      <input
-        type="text"
-        matInput
-        [formControl]="patientControl"
-        [matAutocomplete]="auto">
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayPatient"
+          (optionSelected)="onPatientSelected($event)">
 
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        [displayWith]="displayPatient"
-        (optionSelected)="onPatientSelected($event)">
-
-        @for (p of filteredPatients; track p.id) {
-          <mat-option [value]="p">
-            {{ p.firstName }} {{ p.lastName }}
-          </mat-option>
-        }
-      </mat-autocomplete>
+          @for (p of filteredPatients; track p.id) {
+            <mat-option [value]="p">
+              {{ p.firstName }} {{ p.lastName }}
+            </mat-option>
+          }
+        </mat-autocomplete>
+      }
     </mat-form-field>
   </div>
 

@@ -64,7 +64,7 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
       (this.endHour + 1 - this.startHour) * this.HOUR_HEIGHT;
 
     if (top < 0) top = 0;
-    if (top > maxTop) top = maxTop;
+    if (top > maxTop + 50) top = 0;
 
     this.nowLineTop = top;
   }

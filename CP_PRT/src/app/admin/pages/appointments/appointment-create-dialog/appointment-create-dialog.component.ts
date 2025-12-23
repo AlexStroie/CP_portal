@@ -42,6 +42,7 @@ export class AppointmentCreateDialogComponent {
   editDate!: string;      // yyyy-MM-dd
   editStartTime!: string; // HH:mm
   private appointmentId: number = 0;
+  patientName: string = "";
 
   constructor(
     private dialog: MatDialog,
@@ -79,7 +80,7 @@ export class AppointmentCreateDialogComponent {
       );
 
       if (patient) {
-        this.patientControl.setValue(patient, { emitEvent: false });
+        this.patientControl.setValue(patient, {emitEvent: false});
       }
     }
 
@@ -87,17 +88,25 @@ export class AppointmentCreateDialogComponent {
       this.appointmentId = this.data.appointment.id;
       const start = new Date(this.data.appointment.start);
 
+      var patientEdit = this.patients.find(
+        p => p.id === this.data.appointment.patientId
+      );
+      if (patientEdit) {
+        this.patientName = patientEdit.firstName + ' ' + patientEdit.lastName;
+      }
+
       this.editDate = start.toISOString().split('T')[0]; // yyyy-MM-dd
       this.editStartTime = `${start.getHours().toString().padStart(2, '0')}:${start
         .getMinutes()
         .toString()
         .padStart(2, '0')}`;
-    }
+    } else {
 
-    // 👇 filtrare la tastare
-    this.patientControl.valueChanges.subscribe(value => {
-      this.filterPatients(value);
-    });
+      // 👇 filtrare la tastare
+      this.patientControl.valueChanges.subscribe(value => {
+        this.filterPatients(value);
+      });
+    }
   }
 
   onPatientSelected(event: MatAutocompleteSelectedEvent) {
@@ -144,7 +153,7 @@ export class AppointmentCreateDialogComponent {
     }
 
     const request: AppointmentRequest = {
-      appointmentID: this.appointmentId,
+      appointmentId: this.appointmentId,
       patientId: selectedPatient.id,
       cabinetId: Number(this.tokenStorage.getCabinetId()),
       userId: Number(this.tokenStorage.getUser().userId),
@@ -206,6 +215,6 @@ export class AppointmentCreateDialogComponent {
     this.appointmentService.delete(this.data.appointment.id).subscribe(() =>
       this.router.navigate(['/admin/appointments'])
     );
-    this.dialogRef.close({ cancelled: true });
+    this.dialogRef.close({cancelled: true});
   }
 }
