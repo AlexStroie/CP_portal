@@ -114,12 +114,11 @@ public class AppointmentService extends AbstractService {
         ext.setCabinetId(dto.getCabinetId());
         ext.setUserId(dto.getUserId());
 
-        // 3. Apeluri interne către celelalte microservicii
-        var patient = patientService.getPatient(dto.getPatientId());
-        ext.setPatientName(patient.getFirstName() + " " + patient.getLastName());
+        ext.setCabinetName(dto.getCabinetName());
+        ext.setPatientName(dto.getPatientName());
 
-        var cabinet = cabinetService.getCabinet(dto.getCabinetId());
-        ext.setCabinetName(cabinet.getName());
+//        ext.setPatientName(patient.getFirstName() + " " + patient.getLastName());
+//        ext.setCabinetName(cabinet.getName());
 
         return ext;
     }
