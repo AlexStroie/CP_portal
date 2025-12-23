@@ -1,10 +1,12 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {UserResponse} from '../../../core/model/user.model';
 import {CabinetsService} from '../../../shared/service/cabinets.service';
 import {UsersService} from '../../../shared/service/users.service';
+import {Appointment, AppointmentExtended} from '../../../core/model/appointment.model';
+import {AppointmentService} from '../../../shared/service/appointment.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,8 +25,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     users: 0
   };
 
+  todayAppointments = signal<AppointmentExtended[]>([]);
+  now = signal(new Date());
+
   constructor(
     private usersService: UsersService,
+    private appointmentService: AppointmentService,
     private cabinetService: CabinetsService,
     private tokenStorage: TokenStorageService,
     private cdr: ChangeDetectorRef
@@ -41,6 +47,15 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       });
     }
 
+    const cabinetId = Number(this.tokenStorage.getCabinetId());
+    this.appointmentService
+      .getTodayExtendedForCabinet(cabinetId)
+      .subscribe(data => {
+        this.todayAppointments.set(data)
+      });
+
+    // refresh "now" la fiecare minut
+    setInterval(() => this.now.set(new Date()), 60000);
     this.loadStats();
   }
 
@@ -58,5 +73,20 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
         this.stats.cabinets = count;
       });
     }
+  }
+
+  isPast(appt: AppointmentExtended): boolean {
+    return new Date(appt.endTime) < this.now();
+  }
+
+  isNext(appt: AppointmentExtended):
+    boolean {
+    const now = this.now().getTime();
+    return new Date(appt.startTime).getTime() > now;
+  }
+
+  formatTime(time: string): string {
+    if (!time) return '';
+    return time.substring(0, 5);
   }
 }

@@ -107,11 +107,11 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
   }
 
   private getStartOfWeek(date: Date): Date {
-    const d = new Date(date);
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const day = d.getDay(); // Sunday = 0
     const diff = (day === 0 ? -6 : 1) - day;
     d.setDate(d.getDate() + diff);
-    d.setHours(0, 0, 0, 0);
+    d.setHours(12, 0, 0, 0); // 👈 NU midnight
     return d;
   }
 
@@ -153,6 +153,7 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
     const d = new Date(this.currentDate);
     d.setDate(d.getDate() + delta);
     this.currentDate = d;
+    this.currentDateHeader.set(d);
   }
 
   goToNext() {
@@ -160,10 +161,12 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
     const d = new Date(this.currentDate);
     d.setDate(d.getDate() + delta);
     this.currentDate = d;
+    this.currentDateHeader.set(d);
   }
 
   goToToday() {
     this.currentDate = new Date();
+    this.currentDateHeader.set(new Date());
   }
 
   switchView(view: CalendarView) {

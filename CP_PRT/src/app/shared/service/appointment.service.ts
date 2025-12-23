@@ -38,4 +38,8 @@ export class AppointmentService {
   getExtendedForCabinet(cabinetId: number) {
     return this.http.get<AppointmentExtended[]>(this.config.webEndpoint + "api/admin/appointments/extended/cabinet/" + cabinetId, httpOptions);
   }
+
+  getTodayExtendedForCabinet(cabinetId: number) {
+    return this.http.get<AppointmentExtended[]>(this.config.webEndpoint + "api/admin/appointments/extended/today/cabinet/" + cabinetId, httpOptions);
+  }
 }

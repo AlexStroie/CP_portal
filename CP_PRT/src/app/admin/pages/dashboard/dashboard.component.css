@@ -55,3 +55,39 @@ h1 {
 .quick-actions button:hover {
   background: #2563eb;
 }
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.today-appt {
+  display: flex;
+  gap: 12px;
+  padding: 8px 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.today-appt:last-child {
+  border-bottom: none;
+}
+
+.today-appt.past {
+  opacity: 0.5;
+}
+
+.time {
+  min-width: 80px;
+  font-weight: 600;
+}
+
+.patient {
+  font-weight: 500;
+}
+
+.empty {
+  color: #777;
+  font-style: italic;
+}

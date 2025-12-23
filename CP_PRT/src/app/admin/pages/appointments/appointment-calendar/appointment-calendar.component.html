@@ -80,7 +80,7 @@
               @for (h of hours; let hi = $index; track hi) {
                 @for (slot of slotsPerHourArray; let mi = $index; track mi) {
                   @if (DateUtils.isBeforeToday(day)) {
-                    <div class="time-slot-disabled"></div>
+                    <div class="time-slot time-slot--disabled"></div>
                   } @else {
                     <div class="time-slot"
                          (click)="onSlotClick(day, startHour + hi, mi * slotMinutes)">
@@ -94,7 +94,7 @@
             @for (appt of getAppointmentsForDay(day); track appt.id) {
               @if (DateUtils.isBeforeToday(day)) {
                 <div
-                  class="appointment-card"
+                  class="appointment-card appointment-card--disabled"
                   [style.background]="appt.color || '#71788a'"
                   [ngStyle]="getAppointmentStyle(appt)"
                 >

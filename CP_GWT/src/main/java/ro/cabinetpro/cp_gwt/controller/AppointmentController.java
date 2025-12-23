@@ -71,8 +71,14 @@ public class AppointmentController {
     @GetMapping("/extended/cabinet/{cabinetId}")
     public List<AppointmentExtendedResponse> extendedForCabinet(
             @PathVariable Long cabinetId) {
-
         return appointmentService.getExtendedForCabinet(cabinetId);
+    }
+
+
+    @GetMapping("/extended/today/cabinet/{cabinetId}")
+    public List<AppointmentExtendedResponse> todayExtendedForCabinet(
+            @PathVariable Long cabinetId) {
+        return appointmentService.getTodayExtendedForCabinet(cabinetId);
     }
 
     @GetMapping("/count")

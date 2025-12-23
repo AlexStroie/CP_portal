@@ -17,6 +17,9 @@ public class AppointmentResponse extends AbstractDTO implements MicroserviceAwar
     private Long cabinetId;
     private Long userId;
 
+    private String patientName;
+    private String cabinetName;
+
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;

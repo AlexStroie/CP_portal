@@ -136,7 +136,6 @@
   background: rgba(0, 120, 212, 0.06);
 }
 
-
 .time-slot {
   height: 15px; /* 1px/min * 15 */
   border-bottom: 1px solid #f7f7f7;
@@ -150,6 +149,15 @@
 
 .time-slot:hover {
   background: rgba(0, 120, 212, 0.06);
+}
+
+.time-slot--disabled {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+
+.time-slot--disabled:hover {
+  background-color: #f3f3f3;
 }
 
 /* Card programare */
@@ -166,6 +174,10 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.appointment-card--disabled {
+  cursor: not-allowed;
 }
 
 .appt-title {

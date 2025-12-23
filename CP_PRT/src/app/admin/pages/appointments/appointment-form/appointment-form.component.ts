@@ -1,29 +1,22 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {Component, OnInit, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { PatientsService } from '../../../../shared/service/patient.service';
-import { CabinetsService } from '../../../../shared/service/cabinets.service';
+import {PatientsService} from '../../../../shared/service/patient.service';
+import {CabinetsService} from '../../../../shared/service/cabinets.service';
 
-import { Patient } from '../../../../core/model/patient.model';
-import { Cabinet } from '../../../../core/model/cabinet.model';
+import {Patient} from '../../../../core/model/patient.model';
+import {Cabinet} from '../../../../core/model/cabinet.model';
 import {UserResponse} from '../../../../core/model/user.model';
 import {UsersService} from '../../../../shared/service/users.service';
 import {AppointmentService} from '../../../../shared/service/appointment.service';
 import {Appointment, AppointmentRequest} from '../../../../core/model/appointment.model';
-import {TimePickerComponent} from '../../../../core/utils/time-picker/time-picker.component';
 
 @Component({
   selector: 'app-appointment-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TimePickerComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './appointment-form.component.html',
   styleUrl: './appointment-form.component.css',
 })

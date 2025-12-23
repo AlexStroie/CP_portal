@@ -14,6 +14,37 @@
   </div>
 }
 
+<div class="stats">
+  <div class="dashboard-card">
+    <h3>Programările de azi</h3>
+
+    @if (todayAppointments().length === 0) {
+      <div class="empty">
+        Nu ai programări astăzi 🎉
+      </div>
+    }
+
+    @for (appt of todayAppointments(); track appt.id) {
+      <div
+        class="today-appt">
+        <div class="time">
+          <!--        [class.past]="isPast(appt)"-->
+          {{ formatTime(appt.startTime) }} – {{ formatTime(appt.endTime) }}
+        </div>
+
+        <div class="info">
+          <div class="patient">{{ appt.patientName }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="stat-box">
+    <div class="label"></div>
+    <div class="value"></div>
+  </div>
+</div>
+
 <!--<div class="quick-actions">-->
 <!--  <button routerLink="/admin/cabinets">Gestionare Cabinete</button>-->
 <!--  <button routerLink="/admin/users">Gestionare Utilizatori</button>-->

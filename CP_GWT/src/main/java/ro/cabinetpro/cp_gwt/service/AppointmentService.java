@@ -7,6 +7,8 @@ import ro.cabinetpro.cp_gwt.dto.appointment.AppointmentRequest;
 import ro.cabinetpro.cp_gwt.dto.appointment.AppointmentResponse;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,6 +79,17 @@ public class AppointmentService extends AbstractService {
         List<AppointmentResponse> list = getByCabinet(cabinetId);
 
         return list.stream()
+                .map(this::toExtended)
+                .collect(Collectors.toList());
+    }
+
+    public List<AppointmentExtendedResponse> getTodayExtendedForCabinet(Long cabinetId) {
+        List<AppointmentResponse> list = getByCabinet(cabinetId);
+
+        LocalDate today = LocalDate.now(ZoneId.of("Europe/Bucharest"));
+
+        return list.stream()
+                .filter(a -> today.equals(a.getDate()))
                 .map(this::toExtended)
                 .collect(Collectors.toList());
     }
