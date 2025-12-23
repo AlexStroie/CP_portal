@@ -11,7 +11,7 @@ import {AppointmentService} from '../../../shared/service/appointment.service';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -79,14 +79,46 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     return appt.endTime.substring(0, 5) < this.now().getHours() + ':' + this.now().getMinutes();
   }
 
-  isNext(appt: AppointmentExtended):
-    boolean {
-    const now = this.now().getTime();
-    return new Date(appt.startTime).getTime() > now;
+  isNow(appt: AppointmentExtended): boolean {
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    const [sh, sm] = appt.startTime.substring(0, 5).split(':').map(Number);
+    const [eh, em] = appt.endTime.substring(0, 5).split(':').map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+  }
+
+  isNext(a: AppointmentExtended): boolean {
+    return this.getNextAppointment()?.id === a.id;
   }
 
   formatTime(time: string): string {
     if (!time) return '';
     return time.substring(0, 5);
+  }
+
+  getNextAppointment(): AppointmentExtended | null {
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    return this.todayAppointments().find(a => {
+      const [h, m] = a.startTime.substring(0, 5).split(':').map(Number);
+      const apptMinutes = h * 60 + m;
+      return apptMinutes >= nowMinutes;
+    }) ?? null;
+  }
+
+  getMinutesUntil(startTime: string): number {
+    const now = new Date();
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+
+    const [h, m] = startTime.substring(0, 5).split(':').map(Number);
+    const apptMin = h * 60 + m;
+
+    return apptMin - nowMin;
   }
 }

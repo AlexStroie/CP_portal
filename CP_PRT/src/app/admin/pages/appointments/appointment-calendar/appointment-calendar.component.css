@@ -110,6 +110,7 @@
   position: relative;
   border-right: 1px solid #f0f0f0;
   min-width: 140px;
+  overflow: visible;   /* CHEIA */
 }
 
 .day-column:last-child {
@@ -200,4 +201,18 @@
 .days-grid::-webkit-scrollbar-thumb {
   background: #d0d0d0;
   border-radius: 4px;
+}
+
+.time-slot-grid-wrapper {
+  position: relative;
+}
+
+.now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ef4444;
+  z-index: 50;
+  pointer-events: none;
 }

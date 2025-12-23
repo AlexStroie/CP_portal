@@ -1,14 +1,14 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component, computed,
+  Component, computed, ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   signal,
-  SimpleChanges
+  SimpleChanges, ViewChild
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AppointmentCalendar} from '../../../../core/model/appointment.model';
@@ -27,28 +27,55 @@ type CalendarView = 'day' | 'week';
   templateUrl: './appointment-calendar.component.html',
   styleUrls: ['./appointment-calendar.component.css']
 })
-export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterViewInit {
+export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() view: CalendarView = 'week';
   @Input() currentDate: Date = new Date();
   @Input() appointments: AppointmentCalendar[] = [];
 
-  @Output() createAppointment =new EventEmitter<CreateAppointmentEvent>();
+  @Output() createAppointment = new EventEmitter<CreateAppointmentEvent>();
   @Output() editAppointment = new EventEmitter<EditAppointmentEvent>();
+  HOUR_HEIGHT = 60; // px per oră (verifică CSS-ul tău)
 
   patients = signal<Patient[]>([]);
 
+  nowLineTop = 0;
   startHour = 8;
   endHour = 20;
   slotMinutes = 15;
   appointmentsByDay = new Map<string, AppointmentCalendar[]>();
 
-
   constructor(private patientsService: PatientsService,
               private cdr: ChangeDetectorRef) {
   }
 
+  updateNowLinePosition() {
+    const now = new Date();
+
+    const minutesFromStart =
+      (now.getHours() - this.startHour) * 60 +
+      now.getMinutes();
+
+    const PX_PER_MINUTE = 16 / 15;
+
+    let top = minutesFromStart * PX_PER_MINUTE;
+
+    const maxTop =
+      (this.endHour + 1 - this.startHour) * this.HOUR_HEIGHT;
+
+    if (top < 0) top = 0;
+    if (top > maxTop) top = maxTop;
+
+    this.nowLineTop = top;
+  }
+
   ngAfterViewInit() {
+    this.updateNowLinePosition();
+
+    setInterval(() => {
+      this.updateNowLinePosition();
+    }, 60_000);
+
     this.cdr.detectChanges();
   }
 
@@ -95,7 +122,7 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
 
   weekDays = computed(() => {
     const start = this.getStartOfWeek(this.currentDateHeader());
-    return Array.from({ length: 7 }, (_, i) => {
+    return Array.from({length: 7}, (_, i) => {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
       return d;
@@ -139,8 +166,8 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges,AfterView
 
     const duration = (end.getTime() - start.getTime()) / 60000;
 
-    const GRID_TOP_OFFSET = 0;      // ✔️ bun la tine
-    const PX_PER_MINUTE = 16 / 15; // 🔥 FIXUL REAL
+    const GRID_TOP_OFFSET = 0;
+    const PX_PER_MINUTE = 16 / 15;
 
     return {
       top: `${GRID_TOP_OFFSET + minutesFromStart * PX_PER_MINUTE}px`,

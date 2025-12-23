@@ -1,4 +1,4 @@
-<h1>{{ title }}</h1>
+<h1>Cabinet Pro</h1>
 
 @if (isSuperAdmin) {
   <div class="stats">
@@ -14,40 +14,74 @@
   </div>
 }
 
-<div class="stats">
-  <div class="dashboard-card">
-    <h3>Programările de azi</h3>
+<div class="dashboard-grid">
+
+  <!-- Programările de azi -->
+  <div class="card">
+    <div class="card-header">
+      <h3>Programările de azi</h3>
+    </div>
 
     @if (todayAppointments().length === 0) {
-      <div class="empty">
-        Nu ai programări astăzi 🎉
-      </div>
+      <div class="empty">Nu ai programări astăzi 🎉</div>
     }
 
     @for (appt of todayAppointments(); track appt.id) {
       <div
-        class="today-appt">
-          <div class="time"
-               [class.past]="isPast(appt)">
-            {{ formatTime(appt.startTime) }} – {{ formatTime(appt.endTime) }}
-          </div>
+        class="today-appt"
+        [class.next]="isNext(appt)"
+        [class.past]="isPast(appt)">
 
+        <div class="time">
+          {{ formatTime(appt.startTime) }} – {{ formatTime(appt.endTime) }}
+        </div>
 
-        <div class="info">
-          <div class="patient">{{ appt.patientName }}</div>
+        <div class="patient">
+          {{ appt.patientName }}
+
+          @if (isNow(appt)) {
+            <span class="badge-now">ACUM</span>
+          }
         </div>
       </div>
     }
   </div>
 
-  <div class="stat-box">
-    <div class="label"></div>
-    <div class="value"></div>
-  </div>
-</div>
+  <!-- Următoarea programare -->
+  <div class="card">
 
-<!--<div class="quick-actions">-->
-<!--  <button routerLink="/admin/cabinets">Gestionare Cabinete</button>-->
-<!--  <button routerLink="/admin/users">Gestionare Utilizatori</button>-->
-<!--  <button routerLink="/admin/profile">Profil</button>-->
-<!--</div>-->
+    @if (getNextAppointment(); as next) {
+      <div class="card-title">Următoarea programare</div>
+
+      <div class="next-time">
+        {{ next.startTime | slice:0:5 }} – {{ next.endTime | slice:0:5 }}
+      </div>
+
+      <div class="patient">
+        {{ next.patientName }}
+      </div>
+
+      <span class="badge">
+      începe în {{ getMinutesUntil(next.startTime) }} min
+    </span>
+
+      <div class="card-footer">
+        <a routerLink="/admin/appointments">Vezi calendarul →</a>
+      </div>
+    } @else {
+      <div class="card-title">Următoarea programare</div>
+      <div class="empty">Nu mai sunt programări azi</div>
+
+      <div class="card-footer">
+        <a routerLink="/admin/appointments">Vezi calendarul →</a>
+      </div>
+    }
+
+  </div>
+
+  <!-- Placeholder viitor -->
+  <div class="card empty muted">
+    Spațiu pentru statistici / venit
+  </div>
+
+</div>

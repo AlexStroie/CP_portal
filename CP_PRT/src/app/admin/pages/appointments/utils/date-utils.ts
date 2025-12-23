@@ -39,5 +39,13 @@ export class DateUtils {
     return result;
   }
 
+  static isToday(date: Date | string): boolean {
+    const inputDate = this.parseLocalDate(date);
+
+    const today = this.addDays(new Date(), 0);
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate.getDay() == today.getDay();
+  }
 
 }
