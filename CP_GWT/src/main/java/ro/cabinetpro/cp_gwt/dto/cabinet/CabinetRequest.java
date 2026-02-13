@@ -6,6 +6,7 @@ import lombok.Data;
 public class CabinetRequest {
     private String name;
     private String address;
+    private String description;
     private String phone;
     private String email;
     private boolean active;

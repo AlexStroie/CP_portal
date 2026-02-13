@@ -10,6 +10,8 @@ import ro.cabinetpro.cp_gwt.dto.types.AbstractDTO;
 import ro.cabinetpro.cp_gwt.dto.types.MicroserviceAware;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class PatientResponse extends AbstractDTO implements MicroserviceAware {
     private Long cabinetId;
     private String firstName;
     private String lastName;
-    private String cnp;
+    private LocalDate dateOfBirth;
     private String phone;
     private String email;
     private String notes;

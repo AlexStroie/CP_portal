@@ -89,8 +89,8 @@
 @if (patientToDelete()) {
   <div class="modal-backdrop">
     <div class="modal">
-      <h3>Delete Cabinet</h3>
-      <p>Are you sure you want to delete <b>{{ patientToDelete()?.firstName }}</b>?</p>
+      <h3>Stergi pacientul?</h3>
+      <p>Esti sigur ca vrei sa stergi <b>{{ patientToDelete()?.firstName }}</b>?</p>
 
       <div class="modal-actions">
         <button class="btn-danger" (click)="confirmDelete()">Delete</button>

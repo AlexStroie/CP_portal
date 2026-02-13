@@ -25,6 +25,7 @@ export class PatientFormComponent implements OnInit {
   cabinetId: string | null = '';
 
   form = new FormGroup({
+    id: new FormControl(0),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     cnp: new FormControl('', Validators.required),
@@ -72,8 +73,11 @@ export class PatientFormComponent implements OnInit {
       this.patient.set(c);
 
       this.form.patchValue({
+        id: c.id,
+        cabinetId: c.cabinetId,
         firstName: c.firstName,
         lastName: c.lastName,
+        cnp: c.cnp,
         phone: c.phone,
         email: c.email,
         notes: c.notes

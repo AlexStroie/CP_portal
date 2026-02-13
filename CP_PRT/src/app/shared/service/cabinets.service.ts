@@ -15,7 +15,6 @@ export class CabinetsService {
     return this.http.get<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets", httpOptions);
   }
 
-
   getById(id: number): Observable<Cabinet> {
     return this.http.get<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
@@ -34,5 +33,13 @@ export class CabinetsService {
 
   getStats(): Observable<number> {
     return this.http.get<number>(this.config.webEndpoint + "api/admin/cabinets/count", httpOptions);
+  }
+
+  getCabinetDetails(): Observable<any> {
+    return this.http.get<number>(this.config.webEndpoint + "api/admin/cabinets/details", httpOptions);
+  }
+
+  updateCabinetDetails(data: any): Observable<any> {
+    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/details", httpOptions);
   }
 }

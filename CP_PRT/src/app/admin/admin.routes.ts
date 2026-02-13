@@ -14,6 +14,7 @@ import {PatientFormComponent} from './pages/patients/patient-form/patient-form.c
 import {AppointmentListComponent} from './pages/appointments/appointment-list/appointment-list.component';
 import {AppointmentFormComponent} from './pages/appointments/appointment-form/appointment-form.component';
 import {Role} from '../shared/types/role';
+import {CabinetSettingsComponent} from './pages/cabinet-settings/cabinet-settings.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -24,6 +25,7 @@ export const ADMIN_ROUTES: Routes = [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: AdminDashboardComponent},
       {path: 'profile', component: AdminProfileComponent},
+      {path: 'cabinet-settings', component: CabinetSettingsComponent},
       {path: 'change-password', component: AdminChangePasswordComponent},
 
       {path: 'patients', component: PatientsListComponent},

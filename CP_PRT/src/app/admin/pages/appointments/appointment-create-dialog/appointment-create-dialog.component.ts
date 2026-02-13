@@ -165,10 +165,9 @@ export class AppointmentCreateDialogComponent {
       notes: this.data.notes
     };
 
-    this.appointmentService.create(request).subscribe(() =>
-      this.router.navigate(['/admin/appointments'])
-    );
-    this.dialogRef.close(this.data);
+    this.appointmentService.create(request).subscribe(() => {
+      this.dialogRef.close(true); // trimitem semnal că s-a creat
+    });
   }
 
   formatDate(date: Date): string {
@@ -212,9 +211,9 @@ export class AppointmentCreateDialogComponent {
   }
 
   private deleteAppointment() {
-    this.appointmentService.delete(this.data.appointment.id).subscribe(() =>
-      this.router.navigate(['/admin/appointments'])
+    this.appointmentService.delete(this.data.appointment.id).subscribe(() => {
+        this.dialogRef.close(true); // trimitem semnal că s-a creat
+      }
     );
-    this.dialogRef.close({cancelled: true});
   }
 }
