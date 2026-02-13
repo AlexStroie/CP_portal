@@ -1,9 +1,12 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
 import {CabinetsService} from '../../../../shared/service/cabinets.service';
+import {Role} from '../../../../shared/types/role';
+import {AuthenticationService} from '../../../../core/security/authentication.service';
+import {SwitchRequest} from '../../../../core/model/user.model';
 
 @Component({
   selector: 'app-cabinets-list',
@@ -14,14 +17,25 @@ import {CabinetsService} from '../../../../shared/service/cabinets.service';
 })
 export class CabinetsListComponent implements OnInit {
 
+  protected readonly Role = Role;
+  // dropdown state
+  openDropdownId = signal<number | null>(null);
+
+  isSuperAdmin: boolean = false;
+
   cabinets = signal<Cabinet[]>([]);
   cabinetToDelete = signal<Cabinet | null>(null);
 
   constructor(
-    private cabinetService: CabinetsService
-  ) {}
+    private authService: AuthenticationService,
+    private tokenStorage: TokenStorageService,
+    private cabinetService: CabinetsService,
+    public router: Router
+  ) {
+  }
 
   ngOnInit(): void {
+    this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
     this.refresh();
   }
 
@@ -51,4 +65,30 @@ export class CabinetsListComponent implements OnInit {
     return false;
   }
 
+  toggleDropdown(cabinetId: number) {
+    this.openDropdownId.update(current =>
+      current === cabinetId ? null : cabinetId
+    );
+  }
+
+  switchContext(cabinetId: number, role: Role) {
+
+    this.openDropdownId.set(null); // închide dropdown
+
+    const request: SwitchRequest = {
+      username: this.tokenStorage.getUser().username,
+      cabinetId: cabinetId,
+      role: role
+    };
+
+    this.authService.switchContext(request)
+      .subscribe({
+        next: () => {
+          window.location.reload();
+        },
+        error: err => {
+          console.error('Switch context failed', err);
+        }
+      });
+  }
 }

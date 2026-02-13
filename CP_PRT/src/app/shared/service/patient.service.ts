@@ -15,6 +15,10 @@ export class PatientsService {
     return this.http.get<Patient[]>(this.config.webEndpoint + "api/admin/patients", httpOptions);
   }
 
+  getAllByCabinet(cabinetId: string | null): Observable<any[]> {
+    return this.http.get<Patient[]>(this.config.webEndpoint + "api/admin/patients/cabinet/" + cabinetId, httpOptions);
+  }
+
   getById(id: number): Observable<Patient> {
     return this.http.get<Patient>(this.config.webEndpoint + "api/admin/patients/" + id, httpOptions);
   }

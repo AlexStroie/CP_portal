@@ -1,15 +1,15 @@
-package ro.cabinetpro.cp_gwt.dto.user;
+package ro.cabinetpro.cp_gwt.dto.auth;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ro.cabinetpro.cp_gwt.dto.types.Role;
 
 @Getter
 @Setter
-public class UserRequest {
-    private String fullName;
+@NoArgsConstructor
+public class SwitchRequest {
     private String username;
-    private String email;
-    private Role role;
     private Long cabinetId;
+    private Role role;
 }

@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {TokenStorageService} from '../token-storage.service';
+import {Role} from '../../../shared/types/role';
 
 @Component({
   selector: 'app-authenticate',
@@ -76,15 +77,15 @@ export class AuthenticateComponent implements OnInit{
 
   redirectByRole(role: string) {
     switch (role) {
-      case 'SUPER_ADMIN':
+      case Role.SUPER_ADMIN:
         this.navigateToURL('/admin/dashboard');
         break;
 
-      case 'ADMIN':
+      case Role.ADMIN:
         this.navigateToURL('/admin/dashboard');
         break;
 
-      case 'USER':this.navigateToURL('/portal');
+      case Role.USER:this.navigateToURL('/portal');
         break;
 
       default:

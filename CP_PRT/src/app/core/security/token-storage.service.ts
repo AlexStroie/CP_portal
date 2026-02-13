@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserResponse} from '../model/user.model';
+import {Role} from '../../shared/types/role';
 
 const TOKEN_KEY = 'accessToken';
 const USER_KEY = 'user';
@@ -49,18 +50,28 @@ export class TokenStorageService {
 
   getRole(): string | null {
     const user = this.getUser();
-    return user ? user.role : null;
+
+    if (!user) {
+      return null;
+    }
+
+    return user.activeRole ?? user.role ?? null;
+  }
+
+  isDelegated(): boolean {
+    const user = this.getUser();
+    return user?.delegated === true;
   }
 
   isSuperAdmin(): boolean {
-    return this.getRole() === 'SUPER_ADMIN';
+    return this.getRole() === Role.SUPER_ADMIN;
   }
 
   isAdmin(): boolean {
-    return this.getRole() === 'ADMIN';
+    return this.getRole() === Role.ADMIN;
   }
 
   isUser(): boolean {
-    return this.getRole() === 'USER';
+    return this.getRole() === Role.USER;
   }
 }

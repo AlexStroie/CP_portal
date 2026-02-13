@@ -66,3 +66,43 @@ main {
   padding: 30px;
   overflow-y: auto;
 }
+
+.impersonation-banner {
+  background: linear-gradient(90deg, #b71c1c, #c62828);
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.impersonation-text strong {
+  font-weight: 600;
+}
+
+.exit-button {
+  background: transparent;
+  border: 1.5px solid white;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.exit-button:hover {
+  background: white;
+  color: #b71c1c;
+}
+
+.impersonation-banner {
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

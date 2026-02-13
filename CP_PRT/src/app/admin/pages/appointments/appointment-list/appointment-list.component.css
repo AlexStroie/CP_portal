@@ -60,6 +60,7 @@
   color: white;
 }
 
+.badge-cabinet-admin { background-color: #4a90e2; }
 .badge-admin { background-color: #4a90e2; }
 .badge-user { background-color: #42b983; }
 .badge-super { background-color: #ff4d4d; }

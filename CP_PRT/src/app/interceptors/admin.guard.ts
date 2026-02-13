@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, Router} from '@angular/router';
+import {Role} from '../shared/types/role';
 
 @Injectable({ providedIn: 'root' })
 export class AdminGuard implements CanActivate {
@@ -10,7 +11,7 @@ export class AdminGuard implements CanActivate {
     if (!userStr) return this.deny();
     const user = JSON.parse(userStr);
 
-    if (user.role.includes('ADMIN') || user.role.includes('SUPER_ADMIN')) {
+    if (user.role.includes(Role.ADMIN) || user.role.includes(Role.SUPER_ADMIN)) {
       return true;
     }
 

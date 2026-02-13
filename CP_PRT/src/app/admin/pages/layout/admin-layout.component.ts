@@ -3,6 +3,7 @@ import {RouterLink, RouterOutlet, Router} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {UserResponse} from '../../../core/model/user.model';
+import {AuthenticationService} from '../../../core/security/authentication.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -15,15 +16,18 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
 
   isSuperAdmin: boolean = false;
   userFullName: string = 'Admin';
+  isDelegated: boolean = false;
 
   constructor(
-    private tokenStorage: TokenStorageService,
+    public tokenStorage: TokenStorageService,
+    public authService: AuthenticationService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
+    this.isDelegated = this.tokenStorage.isDelegated();
 
     const user: UserResponse = this.tokenStorage.getUser();
     if (user && user.username) {
@@ -38,5 +42,12 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   logout() {
     this.tokenStorage.signOut();
     this.router.navigate(['/login']);
+  }
+
+  exitImpersonation() {
+    this.authService.exitDelegation()
+      .subscribe(() => {
+        this.router.navigate(['/admin']);
+      });
   }
 }

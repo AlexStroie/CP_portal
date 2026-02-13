@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ro.cabinetpro.cp_gwt.dto.types.AbstractDTO;
 import ro.cabinetpro.cp_gwt.dto.types.MicroserviceAware;
+import ro.cabinetpro.cp_gwt.dto.types.Role;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
 @Data
@@ -17,7 +18,9 @@ public class LoginResponse extends AbstractDTO implements MicroserviceAware {
     private String tokenType;     // de obicei "Bearer"
     private Long expiresIn;       // în secunde
     private String username;      // numele utilizatorului logat
-    private String role;          // rolul (ADMIN / USER / THERAPIST)
+    private Role role;          // rolul (ADMIN / USER / THERAPIST)
+    private boolean delegated;
+    private Role activeRole;
     private Long cabinetId;
 
     @Override

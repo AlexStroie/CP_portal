@@ -48,7 +48,7 @@ public class CabinetController {
     }
 
     @GetMapping("/count")
-    public Integer countUsers() {
+    public Integer countCabinets() {
         return cabinetService.count();
     }
 }

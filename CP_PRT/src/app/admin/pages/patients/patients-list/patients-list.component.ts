@@ -122,9 +122,12 @@ export class PatientsListComponent implements OnInit {
     });
   }
 
-
   refresh() {
-    this.patientService.getAll().subscribe(data => this.patients.set(data));
+    if (this.isSuperAdmin) {
+      this.patientService.getAll().subscribe(data => this.patients.set(data));
+    } else {
+      this.patientService.getAllByCabinet(this.tokenStorage.getCabinetId()).subscribe(data => this.patients.set(data));
+    }
   }
 
   askDelete(patient: Patient) {

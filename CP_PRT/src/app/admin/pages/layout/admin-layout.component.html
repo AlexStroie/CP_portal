@@ -3,6 +3,19 @@
   <aside>
     <h2>{{ userFullName }}</h2>
 
+    @if (isDelegated) {
+      <div class="impersonation-banner">
+        <div class="impersonation-text">
+          🔒 You are viewing as
+          <strong>{{ tokenStorage.getRole() }}</strong>
+          (Cabinet {{ tokenStorage.getCabinetId() }})
+        </div>
+        <button class="exit-button" (click)="exitImpersonation()">
+          Exit impersonation
+        </button>
+      </div>
+    }
+
     <nav>
       <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
       @if (isSuperAdmin) {

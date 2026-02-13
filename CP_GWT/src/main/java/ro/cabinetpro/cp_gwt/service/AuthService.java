@@ -1,13 +1,14 @@
 package ro.cabinetpro.cp_gwt.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-import ro.cabinetpro.cp_gwt.dto.auth.LoginRequest;
-import ro.cabinetpro.cp_gwt.dto.auth.LoginResponse;
-import ro.cabinetpro.cp_gwt.dto.auth.RegisterRequest;
-import ro.cabinetpro.cp_gwt.dto.auth.RegisterResponse;
+import ro.cabinetpro.cp_gwt.dto.auth.*;
+import ro.cabinetpro.cp_gwt.dto.types.Role;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
@@ -31,7 +32,7 @@ public class AuthService extends AbstractService {
         LoginResponse loginResponse = postEntity("auth/login", request, LoginResponse.class);
 
         if (loginResponse != null) {
-            if ("admin".equalsIgnoreCase(loginResponse.getRole())) {
+            if (Role.ADMIN.equals(loginResponse.getRole())) {
                 if (loginResponse.getCabinetId() == null) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid cabinet");
                 }
@@ -47,5 +48,19 @@ public class AuthService extends AbstractService {
 
     public void activateAccount(ActivateAccountRequest request) {
         postVoid(Microservice.GWY, "auth/activate", request);
+    }
+
+    public LoginResponse switchContext(SwitchRequest request) {
+        return postEntity("auth/switchContext", request, LoginResponse.class);
+    }
+
+    public LoginResponse exitDelegation(HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        return postEntity("auth/exitDelegation", entity, LoginResponse.class);
     }
 }

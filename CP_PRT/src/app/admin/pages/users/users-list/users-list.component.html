@@ -10,6 +10,7 @@
   <tr>
     <th>Name</th>
     <th>Email</th>
+    <th>Cabinet</th>
     <th>Role</th>
     <th>Status</th>
     <th class="actions-col">Actions</th>
@@ -22,6 +23,8 @@
         <td>{{ user.fullName }}</td>
 
         <td class="email-col">{{ user.email }}</td>
+
+        <td class="cabinet-col">{{ getCabinetName(user.cabinetId) }}</td>
 
         <td>
           <span class="badge" [ngClass]="roleClass(user.role)">

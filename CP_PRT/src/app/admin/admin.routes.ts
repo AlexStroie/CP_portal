@@ -13,6 +13,7 @@ import {PatientsListComponent} from './pages/patients/patients-list/patients-lis
 import {PatientFormComponent} from './pages/patients/patient-form/patient-form.component';
 import {AppointmentListComponent} from './pages/appointments/appointment-list/appointment-list.component';
 import {AppointmentFormComponent} from './pages/appointments/appointment-form/appointment-form.component';
+import {Role} from '../shared/types/role';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -35,27 +36,27 @@ export const ADMIN_ROUTES: Routes = [
         path: 'cabinets',
         component: CabinetsListComponent,
         canActivate: [SuperAdminGuard],
-        data: {roles: ['SUPER_ADMIN']}
+        data: {roles: [Role.SUPER_ADMIN]}
       },
       {
         path: 'cabinets/:id',
         component: CabinetFormComponent,
         canActivate: [SuperAdminGuard],
-        data: {roles: ['SUPER_ADMIN']}
+        data: {roles: [Role.SUPER_ADMIN]}
       },
 
       {
         path: 'users',
         component: UsersListComponent,
         canActivate: [SuperAdminGuard],
-        data: {roles: ['SUPER_ADMIN']}
+        data: {roles: [Role.SUPER_ADMIN]}
       },
 
       {
         path: 'users/:id',
         component: EditUserComponent,
         canActivate: [SuperAdminGuard],
-        data: {roles: ['SUPER_ADMIN']}
+        data: {roles: [Role.SUPER_ADMIN]}
       },
     ]
   }

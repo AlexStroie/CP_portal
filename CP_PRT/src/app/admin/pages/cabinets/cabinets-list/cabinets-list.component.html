@@ -25,7 +25,6 @@
         <td class="email-col">{{ cabinet.email }}</td>
         <td class="email-col">{{ cabinet.phone }}</td>
         <td class="email-col">{{ cabinet.address }}</td>
-        <td class="email-col">{{ cabinet.address }}</td>
 
         <td>
           <span class="status" [ngClass]="cabinet.active ? 'active' : 'inactive'">
@@ -34,17 +33,45 @@
         </td>
 
         <td class="actions-col">
-          <button class="icon-button edit" [routerLink]="['/admin/cabinets', cabinet.id]">
+
+          <!-- Edit -->
+          <button
+            class="icon-button edit"
+            [routerLink]="['/admin/cabinets', cabinet.id]">
             ✏️
           </button>
 
+          <!-- Delete -->
           <button
             class="icon-button delete"
             (click)="askDelete(cabinet)"
-            [disabled]="isDeleteDisabled(cabinet)"
-          >
+            [disabled]="isDeleteDisabled(cabinet)">
             🗑️
           </button>
+
+          <!-- Login As (doar SUPER_ADMIN) -->
+          @if (isSuperAdmin && cabinet.active) {
+            <div class="login-wrapper">
+
+              <button
+                class="icon-button login"
+                (click)="toggleDropdown(cabinet.id)">
+                🔑
+              </button>
+
+              @if (openDropdownId() === cabinet.id) {
+                <div class="dropdown-menu">
+                  <button (click)="switchContext(cabinet.id, Role.ADMIN)">
+                    As Admin
+                  </button>
+                  <button (click)="switchContext(cabinet.id, Role.USER)">
+                    As User
+                  </button>
+                </div>
+              }
+
+            </div>
+          }
         </td>
       </tr>
     }
