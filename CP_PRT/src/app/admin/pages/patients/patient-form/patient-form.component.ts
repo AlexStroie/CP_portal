@@ -28,7 +28,7 @@ export class PatientFormComponent implements OnInit {
     id: new FormControl(0),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    cnp: new FormControl('', Validators.required),
+    dateOfBirth: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required),
     email: new FormControl('', Validators.email),
     cabinetId: new FormControl('', Validators.required),
@@ -77,7 +77,7 @@ export class PatientFormComponent implements OnInit {
         cabinetId: c.cabinetId,
         firstName: c.firstName,
         lastName: c.lastName,
-        cnp: c.cnp,
+        dateOfBirth: c.dateOfBirth,
         phone: c.phone,
         email: c.email,
         notes: c.notes
@@ -102,15 +102,6 @@ export class PatientFormComponent implements OnInit {
     this.patientsService.save(data).subscribe(() => {
       this.router.navigate(['/admin/patients']);
     });
-  }
-
-  setCabinetId(event: Event) {
-    const newValue = (event.target as HTMLInputElement).value;
-    if (newValue) {
-      this.form.patchValue({
-        cabinetId: newValue
-      });
-    }
   }
 
 }

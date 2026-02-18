@@ -1,7 +1,7 @@
 <div class="patients">
-  <h2>Patients</h2>
+  <h2>Pacienți</h2>
   <button class="btn-primary" [routerLink]="['/admin/patients/create']">
-    + Add Patients
+    + Adaugă pacient
   </button>
 </div>
 
@@ -11,10 +11,6 @@
   <input type="text"
          placeholder="Caută după nume..."
          [formControl]="name">
-
-  <input type="text"
-         placeholder="Caută CNP..."
-         [formControl]="cnp">
 
   @if (isSuperAdmin) {
     <select [formControl]="cabinetId">
@@ -28,7 +24,6 @@
   <select #sf (change)="sortField.set(sf.value)">
     <option value="">Fără sortare</option>
     <option value="name">Nume</option>
-    <option value="cnp">CNP</option>
     @if (isSuperAdmin) {
       <option value="cabinet">Cabinet</option>
     }
@@ -53,7 +48,7 @@
     @if (isSuperAdmin) {
       <th>Cabinet</th>
     }
-    <th class="actions-col">Actions</th>
+    <th class="actions-col">Acțiuni</th>
   </tr>
   </thead>
 

@@ -32,6 +32,7 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
 })
 export class AppointmentCreateDialogComponent {
 
+  errorMessage = '';
   isEdit = false;
   patients: Patient[] = [];
   filteredPatients: Patient[] = [];
@@ -138,7 +139,11 @@ export class AppointmentCreateDialogComponent {
     const selectedPatient = this.patientControl.value;
 
     if (!selectedPatient) {
-      alert('Selectează un pacient');
+      this.errorMessage = 'Selectează un pacient';
+
+      setTimeout(() => {
+        this.errorMessage = '';
+      }, 10000);
       return;
     }
 
@@ -165,8 +170,18 @@ export class AppointmentCreateDialogComponent {
       notes: this.data.notes
     };
 
-    this.appointmentService.create(request).subscribe(() => {
-      this.dialogRef.close(true); // trimitem semnal că s-a creat
+    this.appointmentService.create(request).subscribe({
+      next: () => {
+        this.dialogRef.close(true);
+        this.router.navigate(['/admin/appointments']);
+      },
+      error: (err) => {
+        this.errorMessage = '⚠ ' + err.error?.message || '⚠ ';
+
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 10000)
+      }
     });
   }
 

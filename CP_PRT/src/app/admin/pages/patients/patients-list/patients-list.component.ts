@@ -26,7 +26,6 @@ export class PatientsListComponent implements OnInit {
 
   // Form controls pentru filtre
   name = new FormControl('');
-  cnp = new FormControl('');
   cabinetId = new FormControl(null);
 
   cabinetMap = new Map<string, string>();
@@ -55,7 +54,6 @@ export class PatientsListComponent implements OnInit {
 
     // 🔥 legăm filtrarea live pe valueChanges
     this.name.valueChanges.pipe(debounceTime(250)).subscribe(() => this._updateFilters());
-    this.cnp.valueChanges.pipe(debounceTime(250)).subscribe(() => this._updateFilters());
     this.cabinetId.valueChanges.subscribe(() => this._updateFilters());
 
     this.refresh();
@@ -64,7 +62,6 @@ export class PatientsListComponent implements OnInit {
   private _updateFilters() {
     this.filterState.set({
       name: this.name.value ?? '',
-      cnp: this.cnp.value ?? '',
       cabinetId: this.cabinetId.value,
     });
   }
@@ -80,7 +77,6 @@ export class PatientsListComponent implements OnInit {
         const fullName = (p.firstName + ' ' + p.lastName).toLowerCase();
         if (!fullName.includes(f.name.toLowerCase())) return false;
       }
-      if (f.cnp && !p.cnp.includes(f.cnp)) return false;
       if (f.cabinetId && p.cabinetId !== f.cabinetId) return false;
       return true;
     });
@@ -103,11 +99,6 @@ export class PatientsListComponent implements OnInit {
         case 'name':
           valA = (a.firstName + ' ' + a.lastName).toLowerCase();
           valB = (b.firstName + ' ' + b.lastName).toLowerCase();
-          break;
-
-        case 'cnp':
-          valA = a.cnp;
-          valB = b.cnp;
           break;
 
         case 'cabinet':

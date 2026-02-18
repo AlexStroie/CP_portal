@@ -146,3 +146,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   opacity: 0.6;
   cursor: pointer;
 }
+
+.error-banner {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}

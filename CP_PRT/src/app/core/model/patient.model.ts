@@ -3,7 +3,7 @@ export interface Patient {
   cabinetId: string;
   firstName: string;
   lastName: string;
-  cnp: string;
+  dateOfBirth: string;
   phone: string;
   email: string;
   notes: string;
@@ -13,6 +13,5 @@ export interface Patient {
 
 export interface PatientFilter {
   name?: string;
-  cnp?: string;
   cabinetId?: string | null;
 }

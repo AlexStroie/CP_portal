@@ -96,13 +96,23 @@ export class AppointmentFormComponent implements OnInit {
     const data = this.form.value as AppointmentRequest;
 
     if (this.id()) {
-      this.appointmentService.update(this.id()!, data).subscribe(() =>
-        this.router.navigate(['/admin/appointments'])
-      );
+      this.appointmentService.update(this.id()!, data).subscribe({
+        next: () => this.router.navigate(['/admin/appointments']),
+        error: (err) => {
+          const msg = err.error?.message || 'Eroare la salvare';
+          alert(msg);
+        }
+      });
+
     } else {
-      this.appointmentService.create(data).subscribe(() =>
-        this.router.navigate(['/admin/appointments'])
-      );
+      this.appointmentService.create(data).subscribe({
+        next: () => this.router.navigate(['/admin/appointments']),
+        error: (err) => {
+          const msg = err.error?.message || 'Eroare la salvare';
+          alert(msg);
+        }
+      });
     }
+
   }
 }

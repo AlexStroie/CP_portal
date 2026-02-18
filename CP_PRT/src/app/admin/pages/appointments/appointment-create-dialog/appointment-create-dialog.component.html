@@ -72,6 +72,13 @@
         </mat-autocomplete>
       }
     </mat-form-field>
+
+
+    @if (errorMessage) {
+      <div class="error-banner">
+        {{ errorMessage }}
+      </div>
+    }
   </div>
 
   <div class="dialog-footer">
