@@ -1,111 +1,213 @@
-<div class="cabinets-header">
+<div class="page-header">
   <h2>{{ 'cabinets.title' | translate }}</h2>
-  <button class="btn-primary" [routerLink]="['/admin/cabinets/create']">
-    + {{ 'cabinets.addCabinet' | translate }}
+
+  <button class="btn-primary"
+          [routerLink]="['/admin/cabinets/create']">
+    + {{ 'cabinets.add' | translate }}
   </button>
 </div>
 
-<table class="cabinets-table">
-  <thead>
-  <tr>
-    <th>{{ 'cabinets.columns.name' | translate }}</th>
-    <th>{{ 'cabinets.columns.email' | translate }}</th>
-    <th>{{ 'cabinets.columns.phone' | translate }}</th>
-    <th>{{ 'cabinets.columns.address' | translate }}</th>
-    <th>{{ 'cabinets.columns.status' | translate }}</th>
-    <th class="actions-col">{{ 'cabinets.columns.actions' | translate }}</th>
-  </tr>
-  </thead>
+<div class="table-wrapper">
+  <table class="premium-table">
+    <thead>
+    <tr>
+      <th>{{ 'cabinets.columns.cabinet' | translate }}</th>
+      <th>{{ 'cabinets.columns.plan' | translate }}</th>
+      <th>{{ 'cabinets.columns.status' | translate }}</th>
+      <th>{{ 'cabinets.columns.expires' | translate }}</th>
+      <th>{{ 'cabinets.columns.users' | translate }}</th>
+      <th>{{ 'cabinets.columns.patients' | translate }}</th>
+      <th>{{ 'cabinets.columns.price' | translate }}</th>
+      <th>{{ 'cabinets.columns.actions' | translate }}</th>
+    </tr>
+    </thead>
 
-  <tbody>
-    @for (cabinet of cabinets(); track cabinet.id) {
-      <tr>
-        <td>{{ cabinet.name }}</td>
+    <tbody>
+      @for (cabinet of cabinets(); track cabinet.id) {
+        <tr [class.expired]="cabinet.subscriptionStatus === 'EXPIRED'">
 
-        <td class="email-col">{{ cabinet.email }}</td>
-        <td class="email-col">{{ cabinet.phone }}</td>
-        <td class="email-col">{{ cabinet.address }}</td>
+          <td>
+            <div class="cabinet-name">{{ cabinet.name }}</div>
+            <div class="sub-info">{{ cabinet.email }}</div>
+          </td>
 
-        <td>
-          <span class="status" [ngClass]="cabinet.active ? 'active' : 'inactive'">
-            {{
-              cabinet.active
-                ? ('cabinets.status.active' | translate)
-                : ('cabinets.status.inactive' | translate)
-            }}
-          </span>
-        </td>
+          <td>
+            <span [class]="getPlanClass(cabinet.planCode)">
+              {{ ('plans.' + cabinet.planCode) | translate }}
+            </span>
+          </td>
 
-        <td class="actions-col">
+          <td>
+            <span [class]="getStatusClass(cabinet.subscriptionStatus)">
+              {{ ('subscription.status.' + cabinet.subscriptionStatus) | translate }}
+            </span>
+          </td>
 
-          <!-- Edit -->
-          <button
-            class="icon-button edit"
-            [routerLink]="['/admin/cabinets', cabinet.id]"
-            [attr.title]="'cabinets.actions.edit' | translate">
-            ✏️
-          </button>
+          <td>
+            @if (getDaysRemaining(cabinet) !== null) {
+              <span [class.warning]="getDaysRemaining(cabinet)! < 7">
+                {{ getDaysRemaining(cabinet) }}
+                {{ 'cabinets.days' | translate }}
+              </span>
+            }
+          </td>
 
-          <!-- Delete -->
-          <button
-            class="icon-button delete"
-            (click)="askDelete(cabinet)"
-            [disabled]="isDeleteDisabled(cabinet)"
-            [attr.title]="'cabinets.actions.delete' | translate">
-            🗑️
-          </button>
+          <td>{{ cabinet.maxUsers }}</td>
+          <td>{{ cabinet.maxPatients }}</td>
 
-          <!-- Login As (doar SUPER_ADMIN) -->
-          @if (isSuperAdmin && cabinet.active) {
-            <div class="login-wrapper">
+          <td>
+            {{ cabinet.price }}
+            {{ ('currency.' + cabinet.currency) | translate }}
+          </td>
 
-              <button
-                class="icon-button login"
-                (click)="toggleDropdown(cabinet.id)"
-                [attr.title]="'cabinets.actions.loginAs' | translate">
+          <td class="actions-col">
+            <button class="icon-btn"
+                    [attr.title]="'common.view' | translate"
+                    (click)="openDetails(cabinet)">
+              👁
+            </button>
+
+            <button class="icon-btn"
+                    [attr.title]="'common.edit' | translate"
+                    [routerLink]="['/admin/cabinets', cabinet.id]">
+              ✏️
+            </button>
+
+            @if (isSuperAdmin && isActive(cabinet)) {
+              <button class="icon-btn"
+                      [attr.title]="'common.loginAs' | translate"
+                      (click)="switchContext(cabinet.id, Role.ADMIN)">
                 🔑
               </button>
+            }
+          </td>
 
-              @if (openDropdownId() === cabinet.id) {
-                <div class="dropdown-menu">
-                  <button (click)="switchContext(cabinet.id, Role.ADMIN)">
-                    {{ 'cabinets.actions.asAdmin' | translate }}
-                  </button>
-                  <button (click)="switchContext(cabinet.id, Role.USER)">
-                    {{ 'cabinets.actions.asUser' | translate }}
-                  </button>
-                </div>
-              }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+@if (selectedCabinet()) {
 
-            </div>
-          }
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+  <!-- BACKDROP -->
+  <div
+    class="drawer-backdrop"
+    (click)="closeDetails()">
+  </div>
 
-@if (cabinetToDelete()) {
-  <div class="modal-backdrop">
-    <div class="modal">
-      <h3>{{ 'cabinets.delete.title' | translate }}</h3>
+  <!-- DRAWER -->
+  <div
+    class="drawer"
+    (click)="$event.stopPropagation()">
 
-      <p>
-        {{
-          'cabinets.delete.confirm'
-            | translate:{ name: cabinetToDelete()?.name }
-        }}
-      </p>
-
-      <div class="modal-actions">
-        <button class="btn-danger" (click)="confirmDelete()">
-          {{ 'cabinets.delete.confirmButton' | translate }}
-        </button>
-
-        <button class="btn-secondary" (click)="cancelDelete()">
-          {{ 'cabinets.delete.cancelButton' | translate }}
-        </button>
-      </div>
+    <div class="drawer-header">
+      <h3>{{ selectedCabinet()?.name }}</h3>
+      <button class="close-btn"
+              (click)="closeDetails()">
+        ✕
+      </button>
     </div>
+
+    <div class="drawer-content">
+
+      <!-- ===================== -->
+      <!-- BASIC INFO -->
+      <!-- ===================== -->
+      <div class="detail-section">
+        <h4>{{ 'cabinets.sections.info' | translate }}</h4>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.email' | translate }}</span>
+          <strong>{{ selectedCabinet()?.email || '-' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.phone' | translate }}</span>
+          <strong>{{ selectedCabinet()?.phone || '-' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.address' | translate }}</span>
+          <strong>{{ selectedCabinet()?.address || '-' }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.description' | translate }}</span>
+          <strong>{{ selectedCabinet()?.description || '-' }}</strong>
+        </div>
+      </div>
+
+      <!-- ===================== -->
+      <!-- SUBSCRIPTION -->
+      <!-- ===================== -->
+      <div class="detail-section">
+        <h4>{{ 'cabinets.sections.subscription' | translate }}</h4>
+
+        <div class="detail-row">
+          <span class="plan-badge basic">{{ 'cabinets.form.plan' | translate }}</span>
+          <strong>
+            {{ ('plans.' + selectedCabinet()?.planCode) | translate }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.status' | translate }}</span>
+          <strong>
+            {{ ('subscription.status.' + selectedCabinet()?.subscriptionStatus) | translate }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.startDate' | translate }}</span>
+          <strong>
+            {{ selectedCabinet()?.startDate | date:'mediumDate' }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.endDate' | translate }}</span>
+          <strong>
+            {{ selectedCabinet()?.endDate | date:'mediumDate' }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.trialEndDate' | translate }}</span>
+          <strong>
+            {{ selectedCabinet()?.trialEndDate | date:'mediumDate' }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.price' | translate }}</span>
+          <strong>
+            {{ selectedCabinet()?.price }}
+            {{ selectedCabinet()?.currency }}
+          </strong>
+        </div>
+
+        <div class="detail-row">
+          <span>{{ 'cabinets.form.autoRenew' | translate }}</span>
+          <strong>
+            {{
+              selectedCabinet()?.autoRenew
+                ? ('common.yes' | translate)
+                : ('common.no' | translate)
+            }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn-primary"
+              [routerLink]="['/admin/cabinets', selectedCabinet()?.id]">
+        {{ 'common.edit' | translate }}
+      </button>
+    </div>
+
   </div>
 }
+

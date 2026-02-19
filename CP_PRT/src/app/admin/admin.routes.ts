@@ -6,7 +6,7 @@ import {AdminChangePasswordComponent} from './pages/change-password/admin-change
 import {AdminProfileComponent} from './pages/profile/admin-profile.component';
 import {AdminLayoutComponent} from './pages/layout/admin-layout.component';
 import {AdminGuard} from '../interceptors/admin.guard';
-import {CabinetsListComponent} from './pages/cabinets/cabinets-list/cabinets-list.component';
+import CabinetsListComponent from './pages/cabinets/cabinets-list/cabinets-list.component';
 import {CabinetFormComponent} from './pages/cabinets/cabinet-form/cabinet-form/cabinet-form.component';
 import {SuperAdminGuard} from '../interceptors/super-admin.guard';
 import {PatientsListComponent} from './pages/patients/patients-list/patients-list.component';

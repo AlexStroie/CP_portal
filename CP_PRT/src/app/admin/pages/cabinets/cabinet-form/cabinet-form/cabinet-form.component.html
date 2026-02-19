@@ -1,52 +1,267 @@
-<div class="edit-container">
+<div class="page-container">
 
-  <h2>
-    @if (id()) {
-      Edit Cabinet
-    } @else {
-      Create Cabinet
-    }
-  </h2>
+  <div class="page-header">
+    <h2>{{ pageTitleKey | translate }}</h2>
+    <p class="subtitle">
+      {{ pageSubtitleKey | translate }}
+    </p>
+  </div>
 
-  <div class="card">
 
-    <form [formGroup]="form">
 
-      <div class="form-group">
-        <label>Cabinet Name</label>
-        <input formControlName="name" type="text">
-      </div>
+  <form [formGroup]="form">
 
-      <div class="form-group">
-        <label>Address</label>
-        <input formControlName="address" type="text">
-      </div>
+    <!-- ========================= -->
+    <!-- CABINET INFORMATION -->
+    <!-- ========================= -->
+
+    <div class="card">
+      <h3>{{ 'cabinets.sections.info' | translate }}</h3>
 
       <div class="form-group">
-        <label>Phone</label>
-        <input formControlName="phone" type="text">
-      </div>
-
-      <div class="form-group">
-        <label>Email</label>
-        <input formControlName="email" type="email">
-      </div>
-
-      <div class="form-group checkbox">
         <label>
-          <input type="checkbox" formControlName="active">
-          Active cabinet
+          {{ 'cabinets.form.name' | translate }} *
+        </label>
+
+        <input
+          formControlName="name"
+          class="form-control"
+        />
+
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+          <div class="error">
+            {{ 'validation.required' | translate }}
+          </div>
+        }
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label>
+            {{ 'cabinets.form.email' | translate }}
+          </label>
+          <input
+            formControlName="email"
+            class="form-control"
+          />
+        </div>
+
+        <div>
+          <label>
+            {{ 'cabinets.form.phone' | translate }}
+          </label>
+          <input
+            formControlName="phone"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          {{ 'cabinets.form.address' | translate }}
+        </label>
+        <input
+          formControlName="address"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>
+          {{ 'cabinets.form.description' | translate }}
+        </label>
+        <textarea
+          formControlName="description"
+          class="form-control"
+          rows="3">
+        </textarea>
+      </div>
+
+      <div class="form-group">
+        <label>
+          {{ 'cabinets.form.logoUrl' | translate }}
+        </label>
+        <input
+          formControlName="logoUrl"
+          class="form-control"
+        />
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- SUBSCRIPTION CONFIG -->
+    <!-- ========================= -->
+
+    <div class="card subscription-card">
+      <h3>{{ 'cabinets.sections.subscription' | translate }}</h3>
+
+      <div class="form-row">
+
+        <div>
+          <label>
+            {{ 'cabinets.form.plan' | translate }}
+          </label>
+
+          <select
+            formControlName="planCode"
+            class="form-control">
+
+            <option value="BASIC">
+              {{ 'plans.BASIC' | translate }}
+            </option>
+
+            <option value="PRO">
+              {{ 'plans.PRO' | translate }}
+            </option>
+
+            <option value="PREMIUM">
+              {{ 'plans.PREMIUM' | translate }}
+            </option>
+
+          </select>
+        </div>
+
+        <div>
+          <label>
+            {{ 'cabinets.form.status' | translate }}
+          </label>
+
+          <select
+            formControlName="subscriptionStatus"
+            class="form-control">
+
+            <option value="ACTIVE">
+              {{ 'subscription.status.ACTIVE' | translate }}
+            </option>
+
+            <option value="TRIAL">
+              {{ 'subscription.status.TRIAL' | translate }}
+            </option>
+
+            <option value="SUSPENDED">
+              {{ 'subscription.status.SUSPENDED' | translate }}
+            </option>
+
+            <option value="EXPIRED">
+              {{ 'subscription.status.EXPIRED' | translate }}
+            </option>
+
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label>
+            {{ 'cabinets.form.startDate' | translate }}
+          </label>
+          <input
+            type="date"
+            formControlName="startDate"
+            class="form-control"
+          />
+        </div>
+
+        <div>
+          <label>
+            {{ 'cabinets.form.endDate' | translate }}
+          </label>
+          <input
+            type="date"
+            formControlName="endDate"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      @if (form.get('subscriptionStatus')?.value === 'TRIAL') {
+        <div class="form-row">
+          <div>
+            <label>{{ 'cabinets.form.trialEndDate' | translate }}</label>
+            <input type="date"
+                   formControlName="trialEndDate"
+                   class="form-control"/>
+          </div>
+        </div>
+      }
+
+      @if (invalidPeriod) {
+        <div class="error">
+          {{ 'validation.invalidPeriod' | translate }}
+        </div>
+      }
+
+      <div class="form-row">
+        <div>
+          <label>
+            {{ 'cabinets.form.price' | translate }}
+          </label>
+          <input
+            type="number"
+            formControlName="price"
+            class="form-control"
+          />
+        </div>
+
+        <div>
+          <label>
+            {{ 'cabinets.form.currency' | translate }}
+          </label>
+
+          <select
+            formControlName="currency"
+            class="form-control">
+
+            <option value="RON">
+              {{ 'currency.RON' | translate }}
+            </option>
+
+            <option value="EUR">
+              {{ 'currency.EUR' | translate }}
+            </option>
+
+          </select>
+        </div>
+      </div>
+
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          formControlName="autoRenew"
+        />
+        <label>
+          {{ 'cabinets.form.autoRenew' | translate }}
         </label>
       </div>
 
-      <div class="actions">
-        <button type="button" class="btn-primary" (click)="save()">Save</button>
-        <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/cabinets'])">
-          Cancel
-        </button>
-      </div>
+    </div>
 
-    </form>
+    <!-- ========================= -->
+    <!-- ACTIONS -->
+    <!-- ========================= -->
 
-  </div>
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="save()">
+
+        {{
+          isEditMode()
+            ? ('cabinets.edit.submit' | translate)
+            : ('cabinets.create.submit' | translate)
+        }}
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancel()">
+        {{ 'common.cancel' | translate }}
+      </button>
+    </div>
+
+  </form>
 </div>

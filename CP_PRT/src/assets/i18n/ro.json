@@ -23,7 +23,6 @@
     "startsIn": "începe în {{minutes}} min",
     "now": "ACUM",
     "spaceForStats": "Spațiu pentru statistici / venit",
-
     "kpi": {
       "cabinets": "Cabinete",
       "users": "Utilizatori",
@@ -34,36 +33,85 @@
   },
   "cabinets": {
     "title": "Cabinete",
-    "addCabinet": "Adaugă cabinet",
-
+    "add": "Adaugă cabinet",
+    "days": "zile",
     "columns": {
-      "name": "Nume",
-      "email": "Email contact",
-      "phone": "Telefon contact",
-      "address": "Adresă",
+      "cabinet": "Cabinet",
+      "plan": "Plan",
       "status": "Status",
+      "expires": "Expiră",
+      "users": "Utilizatori",
+      "patients": "Pacienți",
+      "price": "Preț",
       "actions": "Acțiuni"
     },
-
-    "status": {
-      "active": "Activ",
-      "inactive": "Dezactivat"
+    "create": {
+      "title": "Adaugă Cabinet Nou",
+      "subtitle": "Provisionare completă cabinet + subscription.",
+      "submit": "Creează Cabinet"
     },
-
-    "actions": {
-      "edit": "Editează",
-      "delete": "Șterge",
-      "loginAs": "Autentificare ca",
-      "asAdmin": "Ca Admin",
-      "asUser": "Ca User"
+    "edit": {
+      "title": "Editare Cabinet",
+      "subtitle": "Modifică informațiile cabinetului.",
+      "submit": "Salvează Cabinet"
     },
-
-    "delete": {
-      "title": "Ștergere cabinet",
-      "confirm": "Ești sigur că vrei să ștergi {{name}}?",
-      "confirmButton": "Șterge",
-      "cancelButton": "Anulează"
+    "form": {
+      "name": "Nume",
+      "email": "Email",
+      "phone": "Telefon",
+      "address": "Adresă",
+      "description": "Descriere",
+      "logoUrl": "Logo URL",
+      "plan": "Plan",
+      "status": "Status",
+      "startDate": "Dată Start",
+      "endDate": "Dată Sfârșit",
+      "trialEndDate": "Sfârșit Trial",
+      "price": "Preț",
+      "currency": "Monedă",
+      "autoRenew": "Reînnoire automată"
+    },
+    "preview": {
+      "maxUsers": "Utilizatori incluși",
+      "maxPatients": "Pacienți incluși",
+      "priceAfterTrial": "Preț după trial",
+      "note": "După perioada de trial, cabinetul va trece automat pe planul Basic."
+    },
+    "sections": {
+      "info": "Informații Cabinet",
+      "subscription": "Configurare Subscription"
     }
+  },
+  "plans": {
+    "BASIC": "Basic",
+    "PRO": "Pro",
+    "PREMIUM": "Premium"
+  },
+  "subscription": {
+    "status": {
+      "ACTIVE": "Activ",
+      "TRIAL": "Trial",
+      "EXPIRED": "Expirat",
+      "SUSPENDED": "Suspendat"
+    }
+  },
+  "currency": {
+    "RON": "RON",
+    "EUR": "EUR"
+  },
+  "common": {
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "view": "Vizualizează",
+    "edit": "Editează",
+    "loginAs": "Autentificare ca",
+    "yes": "Da",
+    "no": "Nu"
+  },
+  "validation": {
+    "required": "Câmp obligatoriu",
+    "invalidPeriod": "Perioadă invalidă (End trebuie să fie după Start)"
   }
-
 }
+
+

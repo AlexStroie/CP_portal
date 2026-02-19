@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal, computed, HostListener} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
@@ -16,16 +16,15 @@ import {TranslatePipe} from '@ngx-translate/core';
   templateUrl: './cabinets-list.component.html',
   styleUrl: './cabinets-list.component.css',
 })
-export class CabinetsListComponent implements OnInit {
+class CabinetsListComponent implements OnInit {
 
   protected readonly Role = Role;
-  // dropdown state
+
   openDropdownId = signal<number | null>(null);
-
-  isSuperAdmin: boolean = false;
-
   cabinets = signal<Cabinet[]>([]);
-  cabinetToDelete = signal<Cabinet | null>(null);
+  selectedCabinet = signal<any | null>(null);
+
+  isSuperAdmin = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -41,29 +40,66 @@ export class CabinetsListComponent implements OnInit {
   }
 
   refresh() {
-    this.cabinetService.getAll().subscribe(data => this.cabinets.set(data));
+    this.cabinetService.getAll()
+      .subscribe(data => this.cabinets.set(data));
   }
 
-  askDelete(cabinet: Cabinet) {
-    this.cabinetToDelete.set(cabinet);
+  isActive(cabinet: Cabinet): boolean {
+    return cabinet.subscriptionStatus === 'ACTIVE'
+      || cabinet.subscriptionStatus === 'TRIAL';
   }
 
-  confirmDelete() {
-    const cabinet = this.cabinetToDelete();
-    if (!cabinet) return;
+  getDaysRemaining(cabinet: Cabinet): number | null {
+    if (!cabinet) return null;
 
-    this.cabinetService.delete(cabinet.id).subscribe(() => {
-      this.cabinetToDelete.set(null);
-      this.refresh();
-    });
+    const end = new Date(this.getExpiryDate(cabinet)).getTime();
+    const now = new Date().getTime();
+    return Math.ceil((end - now) / (1000 * 60 * 60 * 24));
   }
 
-  cancelDelete() {
-    this.cabinetToDelete.set(null);
+  getExpiryDate(cabinet: any): string {
+
+    switch (cabinet.subscriptionStatus) {
+
+      case 'TRIAL':
+        return cabinet.trialEndDate;
+
+      case 'ACTIVE':
+      case 'SUSPENDED':
+        return cabinet.endDate;
+
+      default:
+        return new Date().toDateString();
+    }
   }
 
-  isDeleteDisabled(cabinet: Cabinet): boolean {
-    return false;
+
+  getPlanClass(plan: string): string {
+    switch (plan) {
+      case 'BASIC':
+        return 'plan basic';
+      case 'PRO':
+        return 'plan pro';
+      case 'PREMIUM':
+        return 'plan premium';
+      default:
+        return 'plan';
+    }
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'ACTIVE':
+        return 'status active';
+      case 'TRIAL':
+        return 'status trial';
+      case 'EXPIRED':
+        return 'status expired';
+      case 'SUSPENDED':
+        return 'status suspended';
+      default:
+        return 'status';
+    }
   }
 
   toggleDropdown(cabinetId: number) {
@@ -73,23 +109,30 @@ export class CabinetsListComponent implements OnInit {
   }
 
   switchContext(cabinetId: number, role: Role) {
-
-    this.openDropdownId.set(null); // închide dropdown
-
     const request: SwitchRequest = {
       username: this.tokenStorage.getUser().username,
-      cabinetId: cabinetId,
-      role: role
+      cabinetId,
+      role
     };
 
     this.authService.switchContext(request)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/admin']);
-        },
-        error: err => {
-          console.error('Switch context failed', err);
-        }
-      });
+      .subscribe(() => this.router.navigate(['/admin']));
+  }
+
+  openDetails(cabinet: any) {
+    this.selectedCabinet.set(cabinet);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeDetails() {
+    this.selectedCabinet.set(null);
+    document.body.style.overflow = 'auto';
+  }
+
+  @HostListener('document:keydown.escape')
+  onEsc() {
+    this.closeDetails();
   }
 }
+
+export default CabinetsListComponent
