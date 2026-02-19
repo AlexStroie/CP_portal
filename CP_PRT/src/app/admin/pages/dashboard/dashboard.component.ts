@@ -7,17 +7,18 @@ import {CabinetsService} from '../../../shared/service/cabinets.service';
 import {UsersService} from '../../../shared/service/users.service';
 import {Appointment, AppointmentExtended} from '../../../core/model/appointment.model';
 import {AppointmentService} from '../../../shared/service/appointment.service';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
-  title: string = "Dashboard Admin";
+  title: string;
   isSuperAdmin: boolean = false;
 
   stats = {
@@ -37,8 +38,10 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     private appointmentService: AppointmentService,
     private cabinetService: CabinetsService,
     private tokenStorage: TokenStorageService,
+    private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
+    this.title = this.translate.instant('dashboard.title');
   }
 
   ngOnInit(): void {

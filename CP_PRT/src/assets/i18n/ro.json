@@ -13,7 +13,23 @@
       "authFailed": "Autentificarea a eșuat"
     }
   },
-  "app": {
-    "title": "Aplicația mea"
+  "dashboard": {
+    "title": "Dashboard Admin",
+    "todayAppointments": "Programările de azi",
+    "nextAppointment": "Următoarea programare",
+    "viewCalendar": "Vezi calendarul →",
+    "noAppointmentsToday": "Nu ai programări astăzi 🎉",
+    "noMoreToday": "Nu mai sunt programări azi",
+    "startsIn": "începe în {{minutes}} min",
+    "now": "ACUM",
+    "spaceForStats": "Spațiu pentru statistici / venit",
+
+    "kpi": {
+      "cabinets": "Cabinete",
+      "users": "Utilizatori",
+      "patients": "Pacienți",
+      "appointments": "Programări",
+      "last30Days": "Activitate ultimele 30 zile"
+    }
   }
 }

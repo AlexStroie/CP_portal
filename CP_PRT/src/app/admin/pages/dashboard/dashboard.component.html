@@ -6,28 +6,36 @@
 
     <div class="kpi-grid">
       <div class="kpi-card">
-        <div class="kpi-label">Cabinete</div>
+        <div class="kpi-label">
+          {{ 'dashboard.kpi.cabinets' | translate }}
+        </div>
         <div class="kpi-value">{{ stats?.totalCabinets }}</div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Utilizatori</div>
+        <div class="kpi-label">
+          {{ 'dashboard.kpi.users' | translate }}
+        </div>
         <div class="kpi-value">{{ stats?.totalUsers }}</div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Pacienți</div>
+        <div class="kpi-label">
+          {{ 'dashboard.kpi.patients' | translate }}
+        </div>
         <div class="kpi-value">{{ stats?.totalPatients }}</div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-label">Programări</div>
+        <div class="kpi-label">
+          {{ 'dashboard.kpi.appointments' | translate }}
+        </div>
         <div class="kpi-value">{{ stats?.totalAppointments }}</div>
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Activitate ultimele 30 zile</h3>
+      <h3>{{ 'dashboard.kpi.last30Days' | translate }}</h3>
       <canvas baseChart></canvas>
     </div>
 
@@ -42,11 +50,13 @@
       <!-- Programările de azi -->
       <div class="card">
         <div class="card-header">
-          <h3>Programările de azi</h3>
+          <h3>{{ 'dashboard.todayAppointments' | translate }}</h3>
         </div>
 
         @if (todayAppointments().length === 0) {
-          <div class="empty">Nu ai programări astăzi 🎉</div>
+          <div class="empty">
+            {{ 'dashboard.noAppointmentsToday' | translate }}
+          </div>
         }
 
         @for (appt of todayAppointments(); track appt.id) {
@@ -63,7 +73,9 @@
               {{ appt.patientName }}
 
               @if (isNow(appt)) {
-                <span class="badge-now">ACUM</span>
+                <span class="badge-now">
+                  {{ 'dashboard.now' | translate }}
+                </span>
               }
             </div>
           </div>
@@ -73,7 +85,9 @@
       <!-- Următoarea programare -->
       <div class="card">
         @if (getNextAppointment(); as next) {
-          <div class="card-title">Următoarea programare</div>
+          <div class="card-title">
+            {{ 'dashboard.nextAppointment' | translate }}
+          </div>
 
           <div class="next-time">
             {{ next.startTime | slice:0:5 }} – {{ next.endTime | slice:0:5 }}
@@ -84,25 +98,38 @@
           </div>
 
           <span class="badge">
-            începe în {{ getMinutesUntil(next.startTime) }} min
+            {{
+              'dashboard.startsIn' | translate:{
+                minutes: getMinutesUntil(next.startTime)
+              }
+            }}
           </span>
 
           <div class="card-footer">
-            <a routerLink="/admin/appointments">Vezi calendarul →</a>
+            <a routerLink="/admin/appointments">
+              {{ 'dashboard.viewCalendar' | translate }}
+            </a>
           </div>
         } @else {
-          <div class="card-title">Următoarea programare</div>
-          <div class="empty">Nu mai sunt programări azi</div>
+          <div class="card-title">
+            {{ 'dashboard.nextAppointment' | translate }}
+          </div>
+
+          <div class="empty">
+            {{ 'dashboard.noMoreToday' | translate }}
+          </div>
 
           <div class="card-footer">
-            <a routerLink="/admin/appointments">Vezi calendarul →</a>
+            <a routerLink="/admin/appointments">
+              {{ 'dashboard.viewCalendar' | translate }}
+            </a>
           </div>
         }
       </div>
 
       <!-- Placeholder -->
       <div class="card muted">
-        Spațiu pentru statistici / venit
+        {{ 'dashboard.spaceForStats' | translate }}
       </div>
 
     </div>
