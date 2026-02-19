@@ -84,7 +84,7 @@ export class CabinetsListComponent implements OnInit {
     this.authService.switchContext(request)
       .subscribe({
         next: () => {
-          window.location.reload();
+          this.router.navigate(['/admin']);
         },
         error: err => {
           console.error('Switch context failed', err);

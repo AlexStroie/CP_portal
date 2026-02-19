@@ -2,15 +2,17 @@ import {
   ApplicationConfig,
   InjectionToken,
   provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection
+  provideZoneChangeDetection,
+  importProvidersFrom
 } from '@angular/core';
 
 import {provideRouter, RouteReuseStrategy} from '@angular/router';
 import {routes} from './app.routes';
-import {HttpHeaders, provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
+import {HttpClient, HttpHeaders, provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {DisableRouteReuseStrategy} from './core/disable-route-reuse.strategy';
 import {authInterceptor} from './interceptors/auth.interceptor';
-
+import {provideTranslateService, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {provideTranslateHttpLoader, TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 export let APP_CONFIG = new InjectionToken("app.config");
 
@@ -31,7 +33,15 @@ export const appConfig: IAppConfig = {
     {
       provide: RouteReuseStrategy,
       useClass: DisableRouteReuseStrategy
-    }
+    },
+    provideTranslateService({
+      lang: 'ro',           // limba default
+      fallbackLang: 'ro',   // fallback
+      loader: provideTranslateHttpLoader({
+        prefix: '/assets/i18n/',
+        suffix: '.json'
+      })
+    })
   ]
 };
 
@@ -40,4 +50,5 @@ export const httpOptions = {
     'Content-Type': 'application/json'
   })
 };
+
 

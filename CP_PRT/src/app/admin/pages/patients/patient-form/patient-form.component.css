@@ -124,3 +124,13 @@
     gap: 10px;
   }
 }
+
+.invalid {
+  border: 1px solid #dc3545 !important;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 4px;
+}

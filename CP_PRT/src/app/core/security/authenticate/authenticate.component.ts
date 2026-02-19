@@ -5,15 +5,16 @@ import {Router, RouterModule} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {TokenStorageService} from '../token-storage.service';
 import {Role} from '../../../shared/types/role';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-authenticate',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslatePipe],
   templateUrl: './authenticate.component.html',
   styleUrls: ['./authenticate.component.css']
 })
-export class AuthenticateComponent implements OnInit{
+export class AuthenticateComponent implements OnInit {
 
   form = {
     username: '',
@@ -29,8 +30,10 @@ export class AuthenticateComponent implements OnInit{
     private authService: AuthenticationService,
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {
+  }
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
@@ -43,7 +46,7 @@ export class AuthenticateComponent implements OnInit{
     this.errorMessage = "";
     this.isLoginFailed = false;
 
-    const { username, password } = this.form;
+    const {username, password} = this.form;
 
     this.authService.login(username, password).subscribe({
 
@@ -66,9 +69,9 @@ export class AuthenticateComponent implements OnInit{
         if (err.error && err.error.error) {
           this.errorMessage = err.error.error;
         } else if (err.status === 401) {
-          this.errorMessage = "Invalid username or password";
+          this.errorMessage = this.translate.instant('login.errors.invalidLogin');
         } else {
-          this.errorMessage = "Authentication failed";
+          this.errorMessage = this.translate.instant('login.errors.authFailed');
         }
         this.cdr.detectChanges();
       }
@@ -85,7 +88,8 @@ export class AuthenticateComponent implements OnInit{
         this.navigateToURL('/admin/dashboard');
         break;
 
-      case Role.USER:this.navigateToURL('/portal');
+      case Role.USER:
+        this.navigateToURL('/portal');
         break;
 
       default:

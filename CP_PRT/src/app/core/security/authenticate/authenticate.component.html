@@ -1,34 +1,34 @@
 <div class="login-wrapper">
 
   <div class="login-box">
-    <h2>Autentificare</h2>
+    <h2>{{ 'login.title' | translate }}</h2>
 
-    <form (ngSubmit)="onSubmit()">
+    <form #f="ngForm" (ngSubmit)="onSubmit()" novalidate>
 
       <div class="form-group">
-        <label>Utilizator</label>
+        <label>{{ 'login.user' | translate }}</label>
         <input
           type="text"
           [(ngModel)]="form.username"
           name="username"
-          placeholder="Introdu username"
+          placeholder="{{ 'login.insertUsername' | translate }}"
           required
         />
       </div>
 
       <div class="form-group">
-        <label>Parolă</label>
+        <label>{{ 'login.password' | translate }}</label>
         <input
           type="password"
           [(ngModel)]="form.password"
           name="password"
-          placeholder="Introdu parola"
+          placeholder="{{ 'login.insertPassword' | translate }}"
           required
         />
       </div>
 
-      <button class="btn" [disabled]="loading">
-        {{ loading ? 'Se autentifică...' : 'Autentificare' }}
+      <button class="btn" type="submit" [disabled]="f.invalid || loading">
+        {{ (loading ? 'login.button1' : 'login.button') | translate }}
       </button>
     </form>
 
@@ -36,7 +36,7 @@
       <p class="error">{{ errorMessage }}</p>
     }
 
-    <a class="register-link" (click)="goToRegister()">Nu ai cont? Creează unul</a>
+    <a class="register-link" (click)="goToRegister()">{{ 'login.register' | translate }}</a>
   </div>
 
 </div>

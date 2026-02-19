@@ -1,0 +1,19 @@
+{
+  "login": {
+    "title": "Autentificare",
+    "user": "Utilizator",
+    "password": "Parolă",
+    "button": "Autentificare",
+    "button1": "Se autentifică...",
+    "insertUsername": "Introdu nume utilizator",
+    "insertPassword": "Introdu parola",
+    "register": "Nu ai cont? Creează unul",
+    "errors": {
+      "invalidLogin": "Invalid username or password",
+      "authFailed": "Autentificarea a eșuat"
+    }
+  },
+  "app": {
+    "title": "Aplicația mea"
+  }
+}

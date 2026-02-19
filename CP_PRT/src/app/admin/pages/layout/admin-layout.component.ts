@@ -47,7 +47,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   exitImpersonation() {
     this.authService.exitDelegation()
       .subscribe(() => {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/cabinets']);
       });
   }
 }

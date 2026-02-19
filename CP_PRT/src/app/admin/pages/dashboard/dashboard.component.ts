@@ -21,8 +21,12 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   isSuperAdmin: boolean = false;
 
   stats = {
-    cabinets: 0,
-    users: 0
+    totalCabinets: 0,
+    totalUsers: 0,
+    totalPatients: 0,
+    totalAppointments: 0,
+    monthlyGrowth: 0,
+    activeCabinets: 0
   };
 
   todayAppointments = signal<AppointmentExtended[]>([]);
@@ -66,11 +70,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   loadStats() {
     if (this.isSuperAdmin) {
       this.usersService.getStats().subscribe(count => {
-        this.stats.users = count;
+        this.stats.totalUsers = count;
       });
 
       this.cabinetService.getStats().subscribe(count => {
-        this.stats.cabinets = count;
+        this.stats.totalCabinets = count;
       });
     }
   }
