@@ -1,19 +1,19 @@
 <div class="cabinets-header">
-  <h2>Cabinets</h2>
+  <h2>{{ 'cabinets.title' | translate }}</h2>
   <button class="btn-primary" [routerLink]="['/admin/cabinets/create']">
-    + Add Cabinet
+    + {{ 'cabinets.addCabinet' | translate }}
   </button>
 </div>
 
 <table class="cabinets-table">
   <thead>
   <tr>
-    <th>Nume</th>
-    <th>Email Contact</th>
-    <th>Telefon Contact</th>
-    <th>Adresa</th>
-    <th>Status</th>
-    <th class="actions-col">Actions</th>
+    <th>{{ 'cabinets.columns.name' | translate }}</th>
+    <th>{{ 'cabinets.columns.email' | translate }}</th>
+    <th>{{ 'cabinets.columns.phone' | translate }}</th>
+    <th>{{ 'cabinets.columns.address' | translate }}</th>
+    <th>{{ 'cabinets.columns.status' | translate }}</th>
+    <th class="actions-col">{{ 'cabinets.columns.actions' | translate }}</th>
   </tr>
   </thead>
 
@@ -28,7 +28,11 @@
 
         <td>
           <span class="status" [ngClass]="cabinet.active ? 'active' : 'inactive'">
-            {{ cabinet.active ? 'Activ' : 'Dezactivat' }}
+            {{
+              cabinet.active
+                ? ('cabinets.status.active' | translate)
+                : ('cabinets.status.inactive' | translate)
+            }}
           </span>
         </td>
 
@@ -37,7 +41,8 @@
           <!-- Edit -->
           <button
             class="icon-button edit"
-            [routerLink]="['/admin/cabinets', cabinet.id]">
+            [routerLink]="['/admin/cabinets', cabinet.id]"
+            [attr.title]="'cabinets.actions.edit' | translate">
             ✏️
           </button>
 
@@ -45,7 +50,8 @@
           <button
             class="icon-button delete"
             (click)="askDelete(cabinet)"
-            [disabled]="isDeleteDisabled(cabinet)">
+            [disabled]="isDeleteDisabled(cabinet)"
+            [attr.title]="'cabinets.actions.delete' | translate">
             🗑️
           </button>
 
@@ -55,17 +61,18 @@
 
               <button
                 class="icon-button login"
-                (click)="toggleDropdown(cabinet.id)">
+                (click)="toggleDropdown(cabinet.id)"
+                [attr.title]="'cabinets.actions.loginAs' | translate">
                 🔑
               </button>
 
               @if (openDropdownId() === cabinet.id) {
                 <div class="dropdown-menu">
                   <button (click)="switchContext(cabinet.id, Role.ADMIN)">
-                    As Admin
+                    {{ 'cabinets.actions.asAdmin' | translate }}
                   </button>
                   <button (click)="switchContext(cabinet.id, Role.USER)">
-                    As User
+                    {{ 'cabinets.actions.asUser' | translate }}
                   </button>
                 </div>
               }
@@ -81,12 +88,23 @@
 @if (cabinetToDelete()) {
   <div class="modal-backdrop">
     <div class="modal">
-      <h3>Delete Cabinet</h3>
-      <p>Are you sure you want to delete <b>{{ cabinetToDelete()?.name }}</b>?</p>
+      <h3>{{ 'cabinets.delete.title' | translate }}</h3>
+
+      <p>
+        {{
+          'cabinets.delete.confirm'
+            | translate:{ name: cabinetToDelete()?.name }
+        }}
+      </p>
 
       <div class="modal-actions">
-        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
-        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button class="btn-danger" (click)="confirmDelete()">
+          {{ 'cabinets.delete.confirmButton' | translate }}
+        </button>
+
+        <button class="btn-secondary" (click)="cancelDelete()">
+          {{ 'cabinets.delete.cancelButton' | translate }}
+        </button>
       </div>
     </div>
   </div>

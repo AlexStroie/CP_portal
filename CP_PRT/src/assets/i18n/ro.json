@@ -31,5 +31,39 @@
       "appointments": "Programări",
       "last30Days": "Activitate ultimele 30 zile"
     }
+  },
+  "cabinets": {
+    "title": "Cabinete",
+    "addCabinet": "Adaugă cabinet",
+
+    "columns": {
+      "name": "Nume",
+      "email": "Email contact",
+      "phone": "Telefon contact",
+      "address": "Adresă",
+      "status": "Status",
+      "actions": "Acțiuni"
+    },
+
+    "status": {
+      "active": "Activ",
+      "inactive": "Dezactivat"
+    },
+
+    "actions": {
+      "edit": "Editează",
+      "delete": "Șterge",
+      "loginAs": "Autentificare ca",
+      "asAdmin": "Ca Admin",
+      "asUser": "Ca User"
+    },
+
+    "delete": {
+      "title": "Ștergere cabinet",
+      "confirm": "Ești sigur că vrei să ștergi {{name}}?",
+      "confirmButton": "Șterge",
+      "cancelButton": "Anulează"
+    }
   }
+
 }

@@ -7,11 +7,12 @@ import {CabinetsService} from '../../../../shared/service/cabinets.service';
 import {Role} from '../../../../shared/types/role';
 import {AuthenticationService} from '../../../../core/security/authentication.service';
 import {SwitchRequest} from '../../../../core/model/user.model';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cabinets-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './cabinets-list.component.html',
   styleUrl: './cabinets-list.component.css',
 })
