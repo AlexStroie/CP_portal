@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {APP_CONFIG, httpOptions, IAppConfig} from '../../app.config';
 import {Cabinet} from '../../core/model/cabinet.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class CabinetsService {
 
   constructor(private http: HttpClient,
@@ -35,11 +35,7 @@ export class CabinetsService {
     return this.http.get<number>(this.config.webEndpoint + "api/admin/cabinets/count", httpOptions);
   }
 
-  getCabinetDetails(): Observable<any> {
-    return this.http.get<number>(this.config.webEndpoint + "api/admin/cabinets/details", httpOptions);
-  }
-
-  updateCabinetDetails(data: any): Observable<any> {
-    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/details", httpOptions);
+  updateCabinetDetails(id: number, cabinet: any): Observable<any> {
+    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/details", cabinet, httpOptions);
   }
 }

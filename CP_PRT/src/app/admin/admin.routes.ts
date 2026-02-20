@@ -2,7 +2,6 @@ import {Routes} from '@angular/router';
 import {AdminDashboardComponent} from './pages/dashboard/dashboard.component';
 import {UsersListComponent} from './pages/users/users-list/users-list.component';
 import {EditUserComponent} from './pages/users/edit-user/edit-user.component';
-import {AdminChangePasswordComponent} from './pages/change-password/admin-change-password.component';
 import {AdminProfileComponent} from './pages/profile/admin-profile.component';
 import {AdminLayoutComponent} from './pages/layout/admin-layout.component';
 import {AdminGuard} from '../interceptors/admin.guard';
@@ -27,7 +26,6 @@ export const ADMIN_ROUTES: Routes = [
       {path: 'dashboard', component: AdminDashboardComponent},
       {path: 'profile', component: AdminProfileComponent},
       {path: 'cabinet-settings', component: CabinetSettingsComponent},
-      {path: 'change-password', component: AdminChangePasswordComponent},
 
       {path: 'patients', component: PatientsListComponent},
       {path: 'patients/:id', component: PatientFormComponent},

@@ -1,118 +1,93 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UsersService} from '../../../shared/service/users.service';
 
 @Component({
   selector: 'app-admin-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  template: `
-    <h1>Profil Admin</h1>
-
-    <div class="profile-container">
-      <form [formGroup]="form" (ngSubmit)="saveProfile()">
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" formControlName="email" [disabled]="form.controls['email'].disabled">
-        </div>
-
-        <div class="form-group">
-          <label>Nume</label>
-          <input type="text" formControlName="name">
-        </div>
-
-        <div class="form-group">
-          <label>Rol</label>
-          <input type="text" formControlName="role"  [disabled]="form.controls['role'].disabled">
-        </div>
-
-        <button type="submit" [disabled]="form.invalid">
-          Salvează Profil
-        </button>
-      </form>
-    </div>
-  `,
-  styles: [`
-    h1 {
-      font-size: 26px;
-      margin-bottom: 25px;
-      font-weight: 600;
-      color: #1e293b;
-    }
-
-    .profile-container {
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
-      max-width: 500px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: #334155;
-    }
-
-    .form-group input {
-      padding: 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    button {
-      width: 100%;
-      margin-top: 15px;
-      padding: 12px;
-      border: none;
-      background: #3b82f6;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    button:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-  `]
+  templateUrl: './admin-profile.component.html',
+  imports: [
+    TranslatePipe,
+    ReactiveFormsModule
+  ],
+  styleUrls: ['./admin-profile.component.css']
 })
 export class AdminProfileComponent implements OnInit {
 
-  form!: FormGroup;
+  activeTab: 'profile' | 'security' = 'profile';
 
-  constructor(private fb: FormBuilder) {}
+  profileForm!: FormGroup;
+  securityForm!: FormGroup;
+
+  savingProfile = false;
+  savingPassword = false;
+
+  constructor(private userService: UsersService,
+              private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
-    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
-    this.form = this.fb.group({
-      email: [{ value: user.email, disabled: true }, Validators.required],
-      name: [user.name || '', Validators.required],
-      role: [{ value: user.role, disabled: true }]
+    this.profileForm = this.fb.group({
+      email: [{ value: '', disabled: true }],
+      username: [{ value: '', disabled: true }],
+      name: ['', Validators.required],
+      role: [{ value: '', disabled: true }]
     });
+
+    this.userService.getCurrentUser().subscribe(user => {
+
+      this.profileForm = this.fb.group({
+        email: [{value: user.email, disabled: true}],
+        username: [{value: user.username, disabled: true}],
+        name: [user.fullName || '', Validators.required],
+        role: [{value: user.role, disabled: true}]
+      });
+
+      this.securityForm = this.fb.group({
+        oldPassword: ['', Validators.required],
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required]
+      }, {validators: this.passwordMatchValidator});
+    });
+
+  }
+
+  passwordMatchValidator(group: FormGroup) {
+    const newPass = group.get('newPassword')?.value;
+    const confirmPass = group.get('confirmPassword')?.value;
+    return newPass === confirmPass ? null : {passwordMismatch: true};
   }
 
   saveProfile() {
-    if (this.form.invalid) return;
+    if (this.profileForm.invalid) return;
 
-    const updatedUser = {
-      ...JSON.parse(sessionStorage.getItem('user') || '{}'),
-      ...this.form.value
-    };
+    this.savingProfile = true;
 
-    // TODO În mod real, ai face request către backend:
-    // this.accountService.updateProfile(updatedUser).subscribe(...)
+    setTimeout(() => {
+      this.savingProfile = false;
+    }, 1000);
+  }
 
-    sessionStorage.setItem('user', JSON.stringify(updatedUser));
+  changePassword() {
+    if (this.securityForm.invalid) return;
+
+    this.savingPassword = true;
+
+    setTimeout(() => {
+      this.savingPassword = false;
+      this.securityForm.reset();
+    }, 1000);
+  }
+
+  hasProfileError(control: string, error: string): boolean {
+    const c = this.profileForm.get(control);
+    return !!(c && c.touched && c.hasError(error));
+  }
+
+  hasSecurityError(control: string, error: string): boolean {
+    const c = this.securityForm.get(control);
+    return !!(c && c.touched && c.hasError(error));
   }
 }

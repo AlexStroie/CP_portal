@@ -1,0 +1,139 @@
+<div class="admin-page">
+
+  <div class="admin-header">
+    <h2>{{ 'profile.title' | translate }}</h2>
+    <p class="admin-subtitle">
+      {{ 'profile.subtitle' | translate }}
+    </p>
+  </div>
+
+  <div class="admin-card account-card">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button
+        class="tab"
+        [class.active]="activeTab === 'profile'"
+        (click)="activeTab = 'profile'">
+        {{ 'profile.tabs.profile' | translate }}
+      </button>
+
+      <button
+        class="tab"
+        [class.active]="activeTab === 'security'"
+        (click)="activeTab = 'security'">
+        {{ 'profile.tabs.security' | translate }}
+      </button>
+    </div>
+
+    <!-- PROFILE TAB -->
+    @if (activeTab === 'profile') {
+
+      <form [formGroup]="profileForm" class="form-body">
+
+        <div class="form-group">
+          <label>{{ 'profile.email' | translate }}</label>
+          <input class="form-control" formControlName="email">
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.username' | translate }}</label>
+          <input class="form-control" formControlName="username">
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.name' | translate }}</label>
+          <input class="form-control" formControlName="name">
+          @if (hasProfileError('name','required')) {
+            <div class="error">
+              {{ 'profile.validation.name' | translate }}
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.role' | translate }}</label>
+          <input class="form-control" formControlName="role" >
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-primary"
+            [disabled]="profileForm.invalid || savingProfile"
+            (click)="saveProfile()">
+
+            @if (!savingProfile) {
+              {{ 'common.save' | translate }}
+            } @else {
+              {{ 'common.saving' | translate }}
+            }
+
+          </button>
+        </div>
+
+      </form>
+    }
+
+    <!-- SECURITY TAB -->
+    @if (activeTab === 'security') {
+
+      <form [formGroup]="securityForm" class="form-body">
+
+        <div class="form-group">
+          <label>{{ 'profile.oldPassword' | translate }}</label>
+          <input type="password" class="form-control" formControlName="oldPassword">
+          @if (hasSecurityError('oldPassword','required')) {
+            <div class="error">
+              {{ 'account.changePassword.validation.oldRequired' | translate }}
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.newPassword' | translate }}</label>
+          <input type="password" class="form-control" formControlName="newPassword">
+          @if (hasSecurityError('newPassword','required')) {
+            <div class="error">
+              {{ 'account.changePassword.validation.newRequired' | translate }}
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.confirmPassword' | translate }}</label>
+          <input type="password" class="form-control" formControlName="confirmPassword">
+          @if (securityForm.errors?.['passwordMismatch'] && securityForm.get('confirmPassword')?.touched) {
+            <div class="error">
+              {{ 'account.changePassword.validation.mismatch' | translate }}
+            </div>
+          }
+        </div>
+
+        @if (securityForm.errors?.['passwordMismatch']) {
+          <div class="error">
+            {{ 'profile.passwordMismatch' | translate }}
+          </div>
+        }
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-primary"
+            [disabled]="securityForm.invalid || savingPassword"
+            (click)="changePassword()">
+
+            @if (!savingPassword) {
+              {{ 'profile.changePassword' | translate }}
+            } @else {
+              {{ 'common.saving' | translate }}
+            }
+
+          </button>
+        </div>
+
+      </form>
+    }
+
+  </div>
+</div>

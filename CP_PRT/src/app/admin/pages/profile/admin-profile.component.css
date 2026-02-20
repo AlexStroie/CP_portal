@@ -1,0 +1,68 @@
+.account-card {
+  max-width: 700px;
+  margin-top: 20px;
+}
+.tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.tab {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--muted);
+  padding: 6px 2px;
+  position: relative;
+  transition: 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--primary);
+}
+
+.tab.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -11px;
+  width: 100%;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+.tab.active::after {
+  transition: all 0.2s ease;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.error {
+  color: var(--danger-text);
+  font-weight: 500;
+}

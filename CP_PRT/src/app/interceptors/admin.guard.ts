@@ -11,6 +11,11 @@ export class AdminGuard implements CanActivate {
     if (!userStr) return this.deny();
     const user = JSON.parse(userStr);
 
+    if (!user.role.includes(Role.ADMIN)) {
+      this.router.navigate(['/admin']);
+      return false;
+    }
+
     if (user.role.includes(Role.ADMIN) || user.role.includes(Role.SUPER_ADMIN)) {
       return true;
     }

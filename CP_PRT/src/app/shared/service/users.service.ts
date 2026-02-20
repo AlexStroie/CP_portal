@@ -11,6 +11,10 @@ export class UsersService {
               @Inject(APP_CONFIG) private config: IAppConfig) {
   }
 
+  getCurrentUser(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(this.config.webEndpoint + "api/admin/users/current", httpOptions);
+  }
+
   getAll(): Observable<UserResponse[]> {
     return this.http.get<UserResponse[]>(this.config.webEndpoint + "api/admin/users", httpOptions);
   }

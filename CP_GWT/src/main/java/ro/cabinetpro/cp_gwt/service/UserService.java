@@ -20,6 +20,10 @@ public class UserService extends AbstractService {
         return getListEntity(UserResponse.class, "admin/users");
     }
 
+    public UserResponse getCurrentUser() {
+        return getObjectEntity(UserResponse.class, "admin/users/current");
+    }
+
     public UserResponse getUser(Long id) {
         return getObjectEntity(UserResponse.class, "admin/users/" + id);
     }

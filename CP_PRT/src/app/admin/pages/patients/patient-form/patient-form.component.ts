@@ -6,11 +6,12 @@ import { PatientsService } from '../../../../shared/service/patient.service';
 import { TokenStorageService } from '../../../../core/security/token-storage.service';
 import { Cabinet } from '../../../../core/model/cabinet.model';
 import { CabinetsService } from '../../../../shared/service/cabinets.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   standalone: true,
   selector: 'app-patient-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './patient-form.component.html',
   styleUrls: ['./patient-form.component.css']
 })
@@ -19,6 +20,8 @@ export class PatientFormComponent implements OnInit {
   isSuperAdmin = signal(false);
   id = signal<number | null>(null);
   cabinets = signal<Cabinet[]>([]);
+
+  saving = false;
 
   form = new FormGroup({
     id: new FormControl<number | null>(null),
@@ -71,14 +74,26 @@ export class PatientFormComponent implements OnInit {
     });
   }
 
+  get canSave(): boolean {
+    return this.form.valid && this.form.dirty && !this.saving;
+  }
+
   save() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+    if (!this.canSave) return;
+
+    this.saving = true;
 
     this.patientsService.save(this.form.value as Patient)
-      .subscribe(() => this.router.navigate(['/admin/patients']));
+      .subscribe({
+        next: () => {
+          this.saving = false;
+          this.form.markAsPristine();
+          this.router.navigate(['/admin/patients']);
+        },
+        error: () => {
+          this.saving = false;
+        }
+      });
   }
 
   hasError(control: string, error: string): boolean {

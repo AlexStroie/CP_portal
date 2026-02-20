@@ -28,6 +28,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/current")
+    public UserResponse getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
     @GetMapping("/{id}")
     public UserResponse getOne(@PathVariable Long id) {
         return userService.getUser(id);

@@ -1,7 +1,253 @@
-/* You can add global styles to this file, and also import other style files */
-mat-dialog-container {
-  padding: 0 !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  max-width: 90vw !important;
+/* ===================================================== */
+/* DESIGN TOKENS */
+/* ===================================================== */
+
+:root {
+
+  /* COLORS */
+  --primary: #4a73ff;
+  --primary-hover: #3358db;
+
+  --success-bg: #dcfce7;
+  --success-text: #166534;
+
+  --warning-bg: #fef9c3;
+  --warning-text: #854d0e;
+
+  --danger-bg: #fee2e2;
+  --danger-text: #991b1b;
+
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --background: #f1f5f9;
+  --card-bg: #ffffff;
+
+  /* SHADOWS */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+
+  /* RADIUS */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  /* SPACING */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 20px;
+  --space-lg: 32px;
+}
+
+/* ===================================================== */
+/* BASE RESET */
+/* ===================================================== */
+
+body {
+  margin: 0;
+  background: var(--background);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.admin-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  max-width: 900px;
+  margin-top: var(--space-md);
+}
+
+.admin-page {
+  padding: var(--space-lg);
+  background: var(--background);
+  min-height: 100vh;
+}
+
+.admin-header {
+  margin-bottom: var(--space-lg);
+}
+
+.admin-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.admin-subtitle {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ===================================================== */
+/* GLOBAL FORM SYSTEM */
+/* ===================================================== */
+
+.form-page {
+  padding: 48px 40px;
+}
+
+.form-container {
+  max-width: 900px;
+}
+
+.form-header {
+  margin-bottom: 36px;
+}
+
+.form-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.form-subtitle {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.form-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.form-control {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: #f9fafb;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74,115,255,0.15);
+}
+
+.form-error {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.form-actions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.error {
+  color: var(--danger-text);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.form-control.ng-invalid.ng-touched {
+  border-color: var(--danger-text);
+  box-shadow: 0 0 0 3px rgba(153,27,27,0.15);
+}
+
+/* ===================================================== */
+/* BUTTONS */
+/* ===================================================== */
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===================================================== */
+/* BADGES */
+/* ===================================================== */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge.active {
+  background: var(--success-bg);
+  color: var(--success-text);
+}
+
+.badge.trial {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.badge.suspended {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.badge.expired {
+  background: var(--danger-bg);
+  color: var(--danger-text);
 }

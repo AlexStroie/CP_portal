@@ -21,7 +21,6 @@
     "appointments": "Programări",
     "profile": "Profil",
     "cabinetSettings": "Setări Cabinet",
-    "changePassword": "Schimbă parola",
     "logout": "Logout"
   },
   "impersonation": {
@@ -117,6 +116,7 @@
   },
   "common": {
     "save": "Salvează",
+    "saving": "Se salvează...",
     "cancel": "Anulează",
     "view": "Vizualizează",
     "edit": "Editează",
@@ -132,7 +132,107 @@
     "title": "Cabinet suspendat",
     "message": "Accesul este restricționat până la reactivarea contului.",
     "logout": "Logout"
+  },
+  "settings": {
+    "title": "Setări Cabinet",
+    "subtitle": "Administrează informațiile și datele de contact ale cabinetului.",
+    "sections": {
+      "info": "Informații Cabinet",
+      "contact": "Date de Contact",
+      "branding": "Identitate Vizuală",
+      "subscription": "Abonament"
+    },
+    "fields": {
+      "name": "Nume Cabinet",
+      "email": "Adresă Email",
+      "phone": "Număr Telefon",
+      "address": "Adresă",
+      "description": "Descriere",
+      "logoUrl": "URL Logo"
+    },
+    "placeholders": {
+      "name": "Introduceți numele cabinetului",
+      "email": "Introduceți adresa de email",
+      "phone": "Introduceți numărul de telefon",
+      "address": "Introduceți adresa completă",
+      "description": "Scurtă descriere a cabinetului",
+      "logoUrl": "Introduceți URL-ul logo-ului"
+    },
+    "actions": {
+      "save": "Salvează Modificările",
+      "cancel": "Anulează"
+    },
+    "messages": {
+      "saved": "Informațiile cabinetului au fost actualizate cu succes.",
+      "error": "A apărut o eroare la salvare.",
+      "forbidden": "Nu aveți permisiunea să accesați această pagină."
+    }
+  },
+  "patients": {
+    "create": {
+      "title": "Creează pacient",
+      "subtitle": "Adaugă un pacient nou în sistem."
+    },
+    "edit": {
+      "title": "Editează pacient",
+      "subtitle": "Modifică datele pacientului."
+    },
+    "form": {
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "phone": "Telefon",
+      "email": "Email",
+      "dateOfBirth": "Data nașterii",
+      "cabinet": "Cabinet",
+      "notes": "Notițe"
+    },
+    "validation": {
+      "firstNameRequired": "Prenumele este obligatoriu.",
+      "lastNameRequired": "Numele este obligatoriu.",
+      "phoneRequired": "Telefonul este obligatoriu.",
+      "emailInvalid": "Email invalid.",
+      "dateOfBirthRequired": "Data nașterii este obligatorie.",
+      "cabinetRequired": "Cabinetul este obligatoriu."
+    }
+  },
+  "account": {
+    "changePassword": {
+      "title": "Schimbare Parolă",
+      "subtitle": "Actualizează parola contului tău.",
+      "oldPassword": "Parola veche",
+      "newPassword": "Parola nouă",
+      "confirmPassword": "Confirmare parolă",
+      "submit": "Schimbă parola",
+      "validation": {
+        "oldRequired": "Parola veche este obligatorie.",
+        "newRequired": "Parola nouă este obligatorie.",
+        "minLength": "Parola trebuie să aibă minim {{min}} caractere.",
+        "mismatch": "Parolele nu coincid."
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil Admin",
+    "subtitle": "Administrează informațiile contului tău.",
+    "tabs": {
+      "profile": "Profil",
+      "security": "Securitate"
+    },
+    "email": "Email",
+    "username": "Username",
+    "name": "Nume",
+    "role": "Rol",
+    "oldPassword": "Parola veche",
+    "newPassword": "Parola nouă",
+    "confirmPassword": "Confirmare parolă",
+    "passwordMismatch": "Parolele nu coincid.",
+    "changePassword": "Schimbă parola",
+    "validation": {
+      "name": "Numele este obligatoriu."
+    }
   }
+
+
 }
 
 

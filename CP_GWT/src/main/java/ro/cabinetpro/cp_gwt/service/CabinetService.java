@@ -31,6 +31,10 @@ public class CabinetService extends AbstractService {
         return putEntity("admin/cabinets/" + id, request, CabinetResponse.class);
     }
 
+    public CabinetResponse updateCabinetDetails(Long id, CabinetRequest request) {
+        return putEntity("admin/cabinets/" + id + "/details", request, CabinetResponse.class);
+    }
+
     public void deleteCabinet(Long id) {
         deleteEntity(Microservice.GWY, "admin/cabinets/" + id);
     }

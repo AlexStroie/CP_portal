@@ -42,6 +42,12 @@ public class CabinetController {
         return cabinetService.updateCabinet(id, req);
     }
 
+    @PutMapping("/{id}/details")
+    public CabinetResponse updateCabinetDetails(@PathVariable Long id, @RequestBody CabinetRequest req) {
+        return cabinetService.updateCabinetDetails(id, req);
+    }
+
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         cabinetService.deleteCabinet(id);

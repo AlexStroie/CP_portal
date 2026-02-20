@@ -1,52 +1,86 @@
-<div class="settings-page">
-  <div class="settings-container">
+<div class="form-page">
 
-    <div class="settings-header">
-      <h2>Setări Cabinet</h2>
-      <p class="subtitle">Actualizează informațiile publice ale cabinetului</p>
+  <div class="form-container settings-wrapper">
+
+    <div class="form-header">
+      <h2>{{ 'settings.title' | translate }}</h2>
+      <p class="form-subtitle">
+        {{ 'settings.subtitle' | translate }}
+      </p>
     </div>
 
-    <div class="settings-card">
-
-      <form [formGroup]="cabinetForm" (ngSubmit)="save()">
+    <div class="form-card" [formGroup]="form">
+      <div class="form-grid">
 
         <div class="form-group">
-          <label>Nume Cabinet *</label>
-          <input type="text" formControlName="name">
+          <label>{{ 'settings.fields.name' | translate }}</label>
+          <input class="form-control" type="text"
+                 formControlName="name" />
+
+          @if (hasError('name', 'required')) {
+            <div class="error">
+              {{ 'settings.placeholders.name' | translate }}
+            </div>
+          }
         </div>
 
         <div class="form-group">
-          <label>Adresă</label>
-          <input type="text" formControlName="address">
+          <label>{{ 'settings.fields.email' | translate }}</label>
+          <input class="form-control"
+                 formControlName="email" />
         </div>
 
         <div class="form-group">
-          <label>Telefon</label>
-          <input type="text" formControlName="phone">
+          <label>{{ 'settings.fields.phone' | translate }}</label>
+          <input class="form-control"
+                 formControlName="phone" />
         </div>
 
-        <div class="form-group">
-          <label>Email Cabinet</label>
-          <input type="email" formControlName="email">
+        <div class="form-group full">
+          <label>{{ 'settings.fields.address' | translate }}</label>
+          <input class="form-control"  type="text"
+                 formControlName="address" />
         </div>
 
-        <div class="form-group">
-          <label>Descriere</label>
-          <textarea rows="3" formControlName="description"></textarea>
+        <div class="form-group full">
+          <label>{{ 'settings.fields.description' | translate }}</label>
+          <textarea class="form-control"
+                    rows="3"
+                    formControlName="description">
+          </textarea>
         </div>
 
-        <button type="submit"
-                class="save-btn"
-                [disabled]="loading">
-          {{ loading ? 'Se salvează...' : 'Salvează modificările' }}
+        <div class="form-group full">
+          <label>{{ 'settings.fields.logoUrl' | translate }}</label>
+          <input class="form-control"
+                 formControlName="logoUrl" />
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="button"
+                class="btn-secondary"
+                (click)="cancel()">
+          {{ 'common.cancel' | translate }}
         </button>
 
-        <div *ngIf="successMessage" class="success-msg">
-          {{ successMessage }}
-        </div>
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="save()"
+          [disabled]="!canSave">
 
-      </form>
+          {{ saving
+          ? ('common.saving' | translate)
+          : ('common.save' | translate)
+          }}
+
+        </button>
+      </div>
 
     </div>
+
   </div>
+
 </div>
