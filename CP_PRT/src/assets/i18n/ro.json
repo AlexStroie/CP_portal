@@ -13,6 +13,22 @@
       "authFailed": "Autentificarea a eșuat"
     }
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "cabinets": "Cabinete",
+    "users": "Utilizatori",
+    "patients": "Pacienți",
+    "appointments": "Programări",
+    "profile": "Profil",
+    "cabinetSettings": "Setări Cabinet",
+    "changePassword": "Schimbă parola",
+    "logout": "Logout"
+  },
+  "impersonation": {
+    "viewingAs": "Vizualizezi ca",
+    "cabinet": "Cabinet",
+    "exit": "Ieși din impersonare"
+  },
   "dashboard": {
     "title": "Dashboard Admin",
     "todayAppointments": "Programările de azi",
@@ -111,6 +127,11 @@
   "validation": {
     "required": "Câmp obligatoriu",
     "invalidPeriod": "Perioadă invalidă (End trebuie să fie după Start)"
+  },
+  "suspended": {
+    "title": "Cabinet suspendat",
+    "message": "Accesul este restricționat până la reactivarea contului.",
+    "logout": "Logout"
   }
 }
 

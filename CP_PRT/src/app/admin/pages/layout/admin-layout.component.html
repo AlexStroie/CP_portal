@@ -1,42 +1,95 @@
 <div class="layout">
 
   <aside>
+
     <h2>{{ userFullName }}</h2>
 
     @if (isDelegated) {
       <div class="impersonation-banner">
         <div class="impersonation-text">
-          🔒 You are viewing as
+          🔒 {{ 'impersonation.viewingAs' | translate }}
           <strong>{{ tokenStorage.getRole() }}</strong>
-          (Cabinet {{ tokenStorage.getCabinetId() }})
+          ({{ 'impersonation.cabinet' | translate }} {{ tokenStorage.getCabinetId() }})
         </div>
+
         <button class="exit-button" (click)="exitImpersonation()">
-          Exit impersonation
+          {{ 'impersonation.exit' | translate }}
         </button>
       </div>
     }
 
     <nav>
-      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        {{ 'menu.dashboard' | translate }}
+      </a>
+
       @if (isSuperAdmin) {
-        <a routerLink="/admin/cabinets" routerLinkActive="active">Cabinete</a>
-        <a routerLink="/admin/users" routerLinkActive="active">Utilizatori</a>
+        <a routerLink="/admin/cabinets" routerLinkActive="active">
+          {{ 'menu.cabinets' | translate }}
+        </a>
+
+        <a routerLink="/admin/users" routerLinkActive="active">
+          {{ 'menu.users' | translate }}
+        </a>
       }
 
-      <a routerLink="/admin/patients" routerLinkActive="active">Pacienți</a>
-      <a routerLink="/admin/appointments" routerLinkActive="active">Programări</a>
+      <a routerLink="/admin/patients" routerLinkActive="active">
+        {{ 'menu.patients' | translate }}
+      </a>
 
-      <a routerLink="/admin/profile" routerLinkActive="active">Profil</a>
-      <a routerLink="/admin/cabinet-settings" routerLinkActive="active">Setări Cabinet</a>
-      <a routerLink="/admin/change-password" routerLinkActive="active">Schimbă parola</a>
+      <a routerLink="/admin/appointments" routerLinkActive="active">
+        {{ 'menu.appointments' | translate }}
+      </a>
+
+      <a routerLink="/admin/profile" routerLinkActive="active">
+        {{ 'menu.profile' | translate }}
+      </a>
+
+      <a routerLink="/admin/cabinet-settings" routerLinkActive="active">
+        {{ 'menu.cabinetSettings' | translate }}
+      </a>
+
+      <a routerLink="/admin/change-password" routerLinkActive="active">
+        {{ 'menu.changePassword' | translate }}
+      </a>
     </nav>
 
     <div class="logout-container">
-      <button (click)="logout()">Logout</button>
+      <button class="btn-logout-sidebar" (click)="logout()">
+        {{ 'menu.logout' | translate }}
+      </button>
     </div>
+
   </aside>
 
   <main>
+
+    @if (appState.isCabinetSuspended()) {
+      <div class="suspended-overlay">
+        <div class="suspended-card">
+
+          <div class="icon">🚫</div>
+
+          <h2>
+            {{ 'suspended.title' | translate }}
+          </h2>
+
+          <p>
+            {{ 'suspended.message' | translate }}
+          </p>
+
+          <div class="actions">
+            <button class="btn-logout" (click)="logout()">
+              {{ 'suspended.logout' | translate }}
+            </button>
+          </div>
+
+        </div>
+      </div>
+    }
+
     <router-outlet></router-outlet>
+
   </main>
+
 </div>

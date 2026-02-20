@@ -1,14 +1,16 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {RouterLink, RouterOutlet, Router} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {UserResponse} from '../../../core/model/user.model';
 import {AuthenticationService} from '../../../core/security/authentication.service';
+import {AppStateService} from '../../../shared/service/app-state.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet],
+  imports: [CommonModule, RouterLink, RouterOutlet, TranslatePipe],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',
 })
@@ -17,6 +19,8 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
   isSuperAdmin: boolean = false;
   userFullName: string = 'Admin';
   isDelegated: boolean = false;
+
+  appState = inject(AppStateService);
 
   constructor(
     public tokenStorage: TokenStorageService,

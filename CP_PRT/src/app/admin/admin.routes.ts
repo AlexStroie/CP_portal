@@ -15,11 +15,12 @@ import {AppointmentListComponent} from './pages/appointments/appointment-list/ap
 import {AppointmentFormComponent} from './pages/appointments/appointment-form/appointment-form.component';
 import {Role} from '../shared/types/role';
 import {CabinetSettingsComponent} from './pages/cabinet-settings/cabinet-settings.component';
+import {cabinetActiveGuard} from '../interceptors/account-suspended.guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
-    canActivate: [AdminGuard],
+    canActivate: [AdminGuard, cabinetActiveGuard],
     component: AdminLayoutComponent,
     children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
