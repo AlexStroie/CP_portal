@@ -8,11 +8,12 @@ import {CabinetsService} from '../../../../shared/service/cabinets.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {debounceTime} from 'rxjs/operators';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-patients-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, TranslatePipe],
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
 })

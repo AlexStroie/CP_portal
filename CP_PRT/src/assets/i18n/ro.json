@@ -169,6 +169,26 @@
     }
   },
   "patients": {
+    "title": "Pacienți",
+    "subtitle": "Gestionează pacienții cabinetului.",
+    "add": "Adaugă pacient",
+    "search": "Caută după nume...",
+    "allCabinets": "Toate cabinetele",
+    "noSort": "Fără sortare",
+    "empty": "Nu există pacienți încă.",
+    "columns": {
+      "name": "Nume",
+      "phone": "Telefon",
+      "email": "Email",
+      "cabinet": "Cabinet",
+      "actions": "Acțiuni"
+    },
+    "sort": {
+      "name": "Nume",
+      "cabinet": "Cabinet",
+      "asc": "Ascendent",
+      "desc": "Descendent"
+    },
     "create": {
       "title": "Creează pacient",
       "subtitle": "Adaugă un pacient nou în sistem."
@@ -231,8 +251,6 @@
       "name": "Numele este obligatoriu."
     }
   }
-
-
 }
 
 

@@ -1,96 +1,133 @@
-<div class="patients">
-  <h2>Pacienți</h2>
-  <button class="btn-primary" [routerLink]="['/admin/patients/create']">
-    + Adaugă pacient
-  </button>
-</div>
+<div class="admin-page">
 
-<br/>
+  <div class="admin-header">
+    <h2>{{ 'patients.title' | translate }}</h2>
+    <p class="admin-subtitle">
+      {{ 'patients.subtitle' | translate }}
+    </p>
+  </div>
 
-<div class="filters-container">
-  <input type="text"
-         placeholder="Caută după nume..."
-         [formControl]="name">
+  <div class="admin-card">
 
-  @if (isSuperAdmin) {
-    <select [formControl]="cabinetId">
-      <option value="">Toate cabinetele</option>
-      @for (cab of cabinets(); track cab.id) {
-        <option [value]="cab.id">{{ cab.name }}</option>
-      }
-    </select>
-  }
+    <!-- FILTERS + ACTION -->
+    <div class="filters-bar">
 
-  <select #sf (change)="sortField.set(sf.value)">
-    <option value="">Fără sortare</option>
-    <option value="name">Nume</option>
-    @if (isSuperAdmin) {
-      <option value="cabinet">Cabinet</option>
-    }
-  </select>
+      <div class="filters-left">
 
-  <select #sd (change)="sortDir.set(sd.value)">
-    <option value="asc">Ascendent</option>
-    <option value="desc">Descendent</option>
-  </select>
-
-
-</div>
-
-<hr>
-
-<table class="patients-table">
-  <thead>
-  <tr>
-    <th>Nume</th>
-    <th>Telefon Contact</th>
-    <th>Email Contact</th>
-    @if (isSuperAdmin) {
-      <th>Cabinet</th>
-    }
-    <th class="actions-col">Acțiuni</th>
-  </tr>
-  </thead>
-
-  <tbody>
-    @for (patient of filteredPatients(); track patient.id) {
-      <tr>
-        <td>{{ patient.lastName }} {{ patient.firstName }}</td>
-        <td>{{ patient.phone }}</td>
-        <td>{{ patient.email }}</td>
+        <input class="form-control"
+               type="text"
+               placeholder="{{ 'patients.search' | translate }}"
+               [formControl]="name">
 
         @if (isSuperAdmin) {
-          <td>{{ cabinetMap.get(patient.cabinetId) }}</td>
+          <select class="form-control"
+                  [formControl]="cabinetId">
+            <option value="">
+              {{ 'patients.allCabinets' | translate }}
+            </option>
+
+            @for (cab of cabinets(); track cab.id) {
+              <option [value]="cab.id">{{ cab.name }}</option>
+            }
+          </select>
         }
 
-        <td class="actions-col">
-          <button class="icon-button edit" [routerLink]="['/admin/patients', patient.id]">
-            ✏️
-          </button>
+        <select class="form-control"
+                #sf (change)="sortField.set(sf.value)">
+          <option value="">
+            {{ 'patients.noSort' | translate }}
+          </option>
+          <option value="name">
+            {{ 'patients.sort.name' | translate }}
+          </option>
+        </select>
 
-          <button
-            class="icon-button delete"
-            (click)="askDelete(patient)"
-            [disabled]="isDeleteDisabled(patient)"
-          >
-            🗑️
-          </button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
+        <select class="form-control"
+                #sd (change)="sortDir.set(sd.value)">
+          <option value="asc">
+            {{ 'patients.sort.asc' | translate }}
+          </option>
+          <option value="desc">
+            {{ 'patients.sort.desc' | translate }}
+          </option>
+        </select>
 
-@if (patientToDelete()) {
-  <div class="modal-backdrop">
-    <div class="modal">
-      <h3>Stergi pacientul?</h3>
-      <p>Esti sigur ca vrei sa stergi <b>{{ patientToDelete()?.firstName }}</b>?</p>
-
-      <div class="modal-actions">
-        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
-        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
       </div>
+
+      <div class="filters-right">
+        <button class="btn-primary"
+                [routerLink]="['/admin/patients/create']">
+          {{ 'patients.add' | translate }}
+        </button>
+      </div>
+
     </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+
+      <table class="premium-table">
+
+        <thead>
+        <tr>
+          <th>{{ 'patients.columns.name' | translate }}</th>
+          <th>{{ 'patients.columns.phone' | translate }}</th>
+          <th>{{ 'patients.columns.email' | translate }}</th>
+          @if (isSuperAdmin) {
+            <th>{{ 'patients.columns.cabinet' | translate }}</th>
+          }
+          <th class="actions-col">
+            {{ 'patients.columns.actions' | translate }}
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+          @if (filteredPatients().length === 0) {
+            <tr>
+              <td colspan="5" class="empty-state">
+                {{ 'patients.empty' | translate }}
+              </td>
+            </tr>
+          }
+
+          @for (patient of filteredPatients(); track patient.id) {
+            <tr>
+
+              <td class="bold">
+                {{ patient.firstName }} {{ patient.lastName }}
+              </td>
+
+              <td>{{ patient.phone }}</td>
+              <td>{{ patient.email }}</td>
+
+              @if (isSuperAdmin) {
+                <td>
+                  {{ cabinetMap.get(patient.cabinetId) }}
+                </td>
+              }
+
+              <td class="actions-col">
+
+                <button class="icon-btn edit"
+                        [routerLink]="['/admin/patients', patient.id]">
+                  ✏️
+                </button>
+
+                <button class="icon-btn delete"
+                        (click)="askDelete(patient)">
+                  🗑️
+                </button>
+
+              </td>
+            </tr>
+          }
+
+        </tbody>
+      </table>
+
+    </div>
+
   </div>
-}
+</div>
