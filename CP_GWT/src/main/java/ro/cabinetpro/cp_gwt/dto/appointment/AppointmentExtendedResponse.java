@@ -26,6 +26,7 @@ public class AppointmentExtendedResponse extends AbstractDTO implements Microser
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private String phone;
     private String status;
     private String notes;
 

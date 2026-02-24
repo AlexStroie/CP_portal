@@ -24,6 +24,7 @@ public class AppointmentResponse extends AbstractDTO implements MicroserviceAwar
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private String phone;
     private String status;
     private String notes;
 

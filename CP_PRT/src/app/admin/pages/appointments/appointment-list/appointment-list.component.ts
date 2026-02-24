@@ -80,7 +80,9 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
       cabinetName: a.cabinetName,
       start: `${a.date}T${a.startTime}`,
       end: `${a.date}T${a.endTime}`,
-      color: this.getColor(a)
+      color: this.getColor(a),
+      phone: a.phone,
+      status: a.status
     }));
   }
 

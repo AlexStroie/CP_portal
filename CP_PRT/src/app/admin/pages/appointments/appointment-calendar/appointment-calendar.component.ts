@@ -1,14 +1,15 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component, computed, ElementRef,
+  Component,
+  computed,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   signal,
-  SimpleChanges, ViewChild
+  SimpleChanges
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AppointmentCalendar} from '../../../../core/model/appointment.model';
@@ -142,11 +143,18 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
     return d;
   }
 
-  // getAppointmentsForDay(day: Date): AppointmentCalendar[] {
-  //   return this.appointments.filter(a => {
-  //     return new Date(a.start).toDateString() === day.toDateString();
-  //   });
-  // }
+  protected getColor(data: AppointmentCalendar): string {
+    switch (data.status) {
+      case 'CONFIRMED':
+        return '#16a34a'; // verde
+      case 'CANCELLED':
+        return '#dc2626'; // rosu
+      case 'COMPLETED':
+        return '#64748b'; // gri inchis
+      default:
+        return '#5b9bd5'; // scheduled = albastru
+    }
+  }
 
   getAppointmentsForDay(day: Date): AppointmentCalendar[] {
     const key = day.toISOString().split('T')[0];
@@ -171,8 +179,17 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
 
     return {
       top: `${GRID_TOP_OFFSET + minutesFromStart * PX_PER_MINUTE}px`,
-      height: `${Math.max(duration * PX_PER_MINUTE, 20)}px`
+      height: `${Math.max(duration * PX_PER_MINUTE - 9, 20)}px`
     };
+  }
+
+  displayPhone(appt: AppointmentCalendar) {
+    const start = new Date(appt.start);
+    const end = new Date(appt.end);
+    const duration = (end.getTime() - start.getTime()) / 60000;
+
+    return duration > 15;
+
   }
 
   goToPrevious() {

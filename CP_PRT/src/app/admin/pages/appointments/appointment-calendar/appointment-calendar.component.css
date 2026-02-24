@@ -69,8 +69,7 @@
   color: black !important;
   text-align: center;
   font-weight: 600;
-  padding: 8px 0;
-  border-left: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 /* Body */
@@ -181,11 +180,25 @@
   cursor: not-allowed;
 }
 
+.appt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
 .appt-title {
   font-weight: 600;
+  font-size: 12px;
   white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appt-phone {
+  font-size: 11px;
+  opacity: 0.85;
+  white-space: nowrap;
 }
 
 .appt-subtitle {
@@ -215,4 +228,42 @@
   background: #ef4444;
   z-index: 50;
   pointer-events: none;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 12px;
+  color: #475569;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.legend-color.scheduled {
+  background: #5b9bd5;
+}
+
+.legend-color.confirmed {
+  background: #16a34a;
+}
+
+.legend-color.completed {
+  background: #64748b;
+}
+
+.legend-color.cancelled {
+  background: #dc2626;
 }

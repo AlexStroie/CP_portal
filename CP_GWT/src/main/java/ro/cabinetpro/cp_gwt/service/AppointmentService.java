@@ -117,8 +117,7 @@ public class AppointmentService extends AbstractService {
         ext.setCabinetName(dto.getCabinetName());
         ext.setPatientName(dto.getPatientName());
 
-//        ext.setPatientName(patient.getFirstName() + " " + patient.getLastName());
-//        ext.setCabinetName(cabinet.getName());
+        ext.setPhone(dto.getPhone());
 
         return ext;
     }

@@ -44,6 +44,7 @@ export interface AppointmentExtended {
 
   status: string;
   notes?: string;
+  phone?: string;
 
   color?: string;
 }
@@ -57,4 +58,7 @@ export interface AppointmentCalendar {
   start: string; // ISO string: '2025-12-11T10:30:00'
   end: string;   // ISO string
   color?: string;
+  phone?: string;
+  status: string;
+  // status?: 'SCHEDULED' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
 }
