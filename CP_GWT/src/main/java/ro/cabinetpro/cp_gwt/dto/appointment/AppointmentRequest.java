@@ -16,5 +16,6 @@ public class AppointmentRequest {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private String status;
     private String notes;
 }

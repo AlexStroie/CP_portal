@@ -251,3 +251,27 @@ button:disabled {
   background: var(--danger-bg);
   color: var(--danger-text);
 }
+
+/* ===================================================== */
+/* FIX ANGULAR MATERIAL AUTOCOMPLETE BACKGROUND */
+/* ===================================================== */
+
+.mat-mdc-autocomplete-panel {
+  background: var(--card-bg) !important;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.mat-mdc-option {
+  background: var(--card-bg);
+  font-size: 14px;
+}
+
+.mat-mdc-option:hover {
+  background: #f1f5f9;
+}
+
+.mat-mdc-option.mdc-list-item--selected,
+.mat-mdc-option.mdc-list-item--activated {
+  background: rgba(74, 115, 255, 0.12) !important;
+}

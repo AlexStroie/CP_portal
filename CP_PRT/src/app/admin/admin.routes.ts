@@ -11,7 +11,6 @@ import {SuperAdminGuard} from '../interceptors/super-admin.guard';
 import {PatientsListComponent} from './pages/patients/patients-list/patients-list.component';
 import {PatientFormComponent} from './pages/patients/patient-form/patient-form.component';
 import {AppointmentListComponent} from './pages/appointments/appointment-list/appointment-list.component';
-import {AppointmentFormComponent} from './pages/appointments/appointment-form/appointment-form.component';
 import {Role} from '../shared/types/role';
 import {CabinetSettingsComponent} from './pages/cabinet-settings/cabinet-settings.component';
 import {cabinetActiveGuard} from '../interceptors/account-suspended.guard';
@@ -31,7 +30,6 @@ export const ADMIN_ROUTES: Routes = [
       {path: 'patients/:id', component: PatientFormComponent},
 
       {path: 'appointments', component: AppointmentListComponent},
-      {path: 'appointments/:id', component: AppointmentFormComponent},
 
       {
         path: 'cabinets',

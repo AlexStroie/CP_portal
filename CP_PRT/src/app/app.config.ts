@@ -1,6 +1,6 @@
 import {
   ApplicationConfig,
-  InjectionToken,
+  InjectionToken, LOCALE_ID,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection
 } from '@angular/core';
@@ -40,7 +40,8 @@ export const appConfig: IAppConfig = {
         prefix: '/assets/i18n/',
         suffix: '.json'
       })
-    })
+    }),
+    { provide: LOCALE_ID, useValue: 'ro-RO' }
   ]
 };
 

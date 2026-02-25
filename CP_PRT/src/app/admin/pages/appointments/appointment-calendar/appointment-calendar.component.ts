@@ -17,6 +17,7 @@ import {PatientsService} from '../../../../shared/service/patient.service';
 import {Patient} from '../../../../core/model/patient.model';
 import {CreateAppointmentEvent, EditAppointmentEvent} from '../events/appointment-event';
 import {DateUtils} from '../utils/date-utils';
+import {TranslatePipe} from '@ngx-translate/core';
 
 
 type CalendarView = 'day' | 'week';
@@ -24,7 +25,7 @@ type CalendarView = 'day' | 'week';
 @Component({
   selector: 'cp-appointments-calendar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './appointment-calendar.component.html',
   styleUrls: ['./appointment-calendar.component.css']
 })
@@ -130,10 +131,6 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
     });
   });
 
-  get dayColumns() {
-    return [{key: 'default', label: 'Programări'}];
-  }
-
   private getStartOfWeek(date: Date): Date {
     const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const day = d.getDay(); // Sunday = 0
@@ -161,9 +158,6 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
     return this.appointmentsByDay.get(key) || [];
   }
 
-  getAppointmentsForDayColumn(column: string): AppointmentCalendar[] {
-    return this.appointments;
-  }
 
   getAppointmentStyle(appt: AppointmentCalendar) {
     const start = new Date(appt.start);

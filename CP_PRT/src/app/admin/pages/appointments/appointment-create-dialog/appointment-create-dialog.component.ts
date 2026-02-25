@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CommonModule, DatePipe} from '@angular/common';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatOption} from '@angular/material/select';
 import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material/autocomplete';
@@ -11,6 +10,7 @@ import {AppointmentRequest} from '../../../../core/model/appointment.model';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'cp-appointments-calendar',
@@ -18,14 +18,12 @@ import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component
   imports: [
     CommonModule,
     DatePipe,
-    MatFormField,
-    MatLabel,
     FormsModule,
     MatOption,
     MatAutocomplete,
     ReactiveFormsModule,
     MatAutocompleteTrigger,
-    MatInput
+    TranslatePipe
   ],
   templateUrl: './appointment-create-dialog.component.html',
   styleUrls: ['./appointment-create-dialog.component.css']
@@ -45,12 +43,20 @@ export class AppointmentCreateDialogComponent {
   private appointmentId: number = 0;
   patientName: string = "";
 
+  startHour!: number;
+  startMinute!: number;
+  private endTime = '';
+  readonly slotMinutes = 15;
+  readonly endHourLimit = 20;
+  readonly defaultDuration = 50;
+
   constructor(
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private appointmentService: AppointmentService,
     private tokenStorage: TokenStorageService,
     public router: Router,
+    private translate: TranslateService,
     private dialogRef: MatDialogRef<AppointmentCreateDialogComponent>
   ) {
 
@@ -66,8 +72,11 @@ export class AppointmentCreateDialogComponent {
     }
 
     if (!data.status) {
-      data.status = 'pending';
+      data.status = 'SCHEDULED';
     }
+
+    this.startHour = data.startHour;
+    this.startMinute = data.startMinute;
 
     // 👇 pacienți veniți din părinte
     if (data.patients) {
@@ -88,6 +97,8 @@ export class AppointmentCreateDialogComponent {
     if (this.isEdit) {
       this.appointmentId = this.data.appointment.id;
       const start = new Date(this.data.appointment.start);
+      const end = new Date(this.data.appointment.end);
+      data.status = this.data.appointment.status;
 
       var patientEdit = this.patients.find(
         p => p.id === this.data.appointment.patientId
@@ -98,6 +109,10 @@ export class AppointmentCreateDialogComponent {
 
       this.editDate = start.toISOString().split('T')[0]; // yyyy-MM-dd
       this.editStartTime = `${start.getHours().toString().padStart(2, '0')}:${start
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+      this.data.endTime = `${end.getHours().toString().padStart(2, '0')}:${end
         .getMinutes()
         .toString()
         .padStart(2, '0')}`;
@@ -157,6 +172,24 @@ export class AppointmentCreateDialogComponent {
       this.appointmentId = 0;
     }
 
+    let startTime: string;
+
+    if (this.isEdit) {
+      startTime = this.editStartTime;
+    } else {
+      startTime = this.formatTime(this.data.startHour, this.data.startMinute);
+    }
+
+    if (!this.isEndAfterStart(startTime, this.data.endTime)) {
+      this.errorMessage = this.translate.instant('appointments.invalidTimeRange');
+
+      setTimeout(() => {
+        this.errorMessage = '';
+      }, 5000);
+
+      return;
+    }
+
     const request: AppointmentRequest = {
       appointmentId: this.appointmentId,
       patientId: selectedPatient.id,
@@ -166,6 +199,7 @@ export class AppointmentCreateDialogComponent {
       date: this.formatDate(this.data.date),
       startTime: this.formatTime(this.data.startHour, this.data.startMinute),
       endTime: this.data.endTime,
+      status: this.data.status,
 
       notes: this.data.notes
     };
@@ -209,6 +243,16 @@ export class AppointmentCreateDialogComponent {
     return `${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}`;
   }
 
+  private isEndAfterStart(start: string, end: string): boolean {
+    const [sh, sm] = start.split(':').map(Number);
+    const [eh, em] = end.split(':').map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    return endMinutes > startMinutes;
+  }
+
   protected cancelAppointment() {
     this.dialog
       .open(ConfirmDialogComponent, {
@@ -230,5 +274,20 @@ export class AppointmentCreateDialogComponent {
         this.dialogRef.close(true); // trimitem semnal că s-a creat
       }
     );
+  }
+
+  getAvailableEndTimes(): string[] {
+    const times: string[] = [];
+
+    const startTotal = this.startHour * 60 + this.startMinute;
+    const endLimit = this.endHourLimit * 60;
+
+    for (let t = startTotal + 15; t <= endLimit; t += this.slotMinutes) {
+      const hh = Math.floor(t / 60);
+      const mm = t % 60;
+      times.push(this.formatTime(hh, mm));
+    }
+
+    return times;
   }
 }

@@ -1,63 +1,93 @@
 <div class="dialog-wrapper">
 
+  <!-- HEADER -->
   <div class="dialog-header">
-    <h2>{{ data.id ? 'Editează programarea' : 'Programare nouă' }}</h2>
+    <h2>
+      {{
+        isEdit
+          ? ('appointments.editTitle' | translate)
+          : ('appointments.newTitle' | translate)
+      }}
+    </h2>
+
     <button class="close-btn" (click)="close()">✕</button>
   </div>
 
   <div class="dialog-body">
 
-    <!-- GRID: Data + Ora -->
-    <div class="info-grid">
-      <div>
-        <label>Data</label>
-        @if (isEdit) {
-          <input
-            type="date"
-            matInput
-            [(ngModel)]="editDate">
-        }
-        @if (!isEdit) {
-          <span>{{ data.date | date:'dd MMM yyyy' }}</span>
-        }
-      </div>
+    <!-- DATA -->
+    <div class="form-group">
+      <label>{{ 'appointments.date' | translate }}</label>
 
-      <div>
-        <label>Ora început</label>
-        @if (isEdit) {
-          <input
-            type="time"
-            matInput
-            [(ngModel)]="editStartTime">
-        }
-        @if (!isEdit) {
-          <span>{{ data.startHour }}:{{ data.startMinute | number:'2.0' }}</span>
-        }
-      </div>
-    </div>
-
-    <!-- Ora sfârșit -->
-    <div>
-      <label>Ora sfârșit </label>
-      <span>
-      <input matInput type="time" [(ngModel)]="data.endTime">
-      </span>
-    </div>
-
-    <mat-form-field appearance="fill" class="full">
-      <mat-label>Pacient</mat-label>
       @if (isEdit) {
-        <input
-          type="text"
-          matInput
-          [(ngModel)]="patientName"
-          [disabled]="true">
+        <input type="date" [(ngModel)]="editDate" [disabled]="data.status === 'COMPLETED'"/>
       } @else {
         <input
           type="text"
-          matInput
+          [value]="(data.date | date:'dd MMM yyyy')"
+          disabled/>
+      }
+    </div>
+
+    <!-- ORA INCEPUT -->
+    <div class="form-group">
+      <label>{{ 'appointments.startTime' | translate }}</label>
+
+      @if (isEdit) {
+        <input type="time" [(ngModel)]="editStartTime" [disabled]="data.status === 'COMPLETED'"/>
+      } @else {
+        <input
+          type="text"
+          [value]="(data.startHour | number:'2.0') + ':' + (data.startMinute | number:'2.0')"
+          disabled/>
+      }
+    </div>
+
+    @if (isEdit) {
+      <!-- STATUS BADGE -->
+      <div class="form-group">
+        <label>{{ 'appointments.status.label' | translate }}</label>
+
+
+        <select [(ngModel)]="data.status" class="status-select" [disabled]="data.status === 'COMPLETED'">
+          <option value="SCHEDULED">
+            {{ 'appointments.status.SCHEDULED' | translate }}
+          </option>
+          <option value="PENDING">
+            {{ 'appointments.status.PENDING' | translate }}
+          </option>
+          <option value="CONFIRMED">
+            {{ 'appointments.status.CONFIRMED' | translate }}
+          </option>
+          <option value="COMPLETED">
+            {{ 'appointments.status.COMPLETED' | translate }}
+          </option>
+          <option value="CANCELLED">
+            {{ 'appointments.status.CANCELLED' | translate }}
+          </option>
+        </select>
+      </div>
+    }
+
+    <!-- ORA SFARSIT -->
+    <div class="form-group">
+      <label>{{ 'appointments.endTime' | translate }}</label>
+      <input type="time" [(ngModel)]="data.endTime" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):([0-5]\d)$" [disabled]="data.status === 'COMPLETED'"/>
+    </div>
+
+    <!-- PACIENT -->
+    <div class="form-group">
+      <label>{{ 'appointments.patient' | translate }}</label>
+
+      @if (isEdit) {
+        <input type="text" [(ngModel)]="patientName" disabled/>
+      } @else {
+
+        <input
+          type="text"
           [formControl]="patientControl"
-          [matAutocomplete]="auto">
+          [matAutocomplete]="auto"
+          [placeholder]="'appointments.selectPatient' | translate"/>
 
         <mat-autocomplete
           #auto="matAutocomplete"
@@ -71,30 +101,37 @@
           }
         </mat-autocomplete>
       }
-    </mat-form-field>
+    </div>
 
-
+    <!-- ERROR -->
     @if (errorMessage) {
       <div class="error-banner">
         {{ errorMessage }}
       </div>
     }
+
   </div>
 
+  <!-- FOOTER -->
   <div class="dialog-footer">
 
     <div class="footer-left">
       @if (isEdit) {
-        <button class="btn-danger" (click)="cancelAppointment()">
-          Anulează programarea
+        <button class="btn-danger" (click)="cancelAppointment()" [disabled]="data.status === 'COMPLETED'">
+          {{ 'appointments.cancelAppointment' | translate }}
         </button>
       }
     </div>
 
     <div class="footer-right">
-      <button class="btn-secondary" (click)="close()">Închide</button>
-      <button class="btn-primary" (click)="save()">Salvează</button>
-    </div>
-  </div>
+      <button class="btn-secondary" (click)="close()">
+        {{ 'common.cancel' | translate }}
+      </button>
 
+      <button class="btn-primary" (click)="save()" [disabled]="data.status === 'COMPLETED'">
+        {{ 'common.save' | translate }}
+      </button>
+    </div>
+
+  </div>
 </div>

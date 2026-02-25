@@ -16,20 +16,6 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
 
-    // ================
-    // CRUD
-    // ================
-
-    @GetMapping
-    public List<AppointmentResponse> getAll() {
-        return appointmentService.getAllAppointments();
-    }
-
-    @GetMapping("/{id}")
-    public AppointmentResponse getOne(@PathVariable Long id) {
-        return appointmentService.getAppointment(id);
-    }
-
     @PostMapping
     public AppointmentResponse save(@RequestBody AppointmentRequest req) {
         return appointmentService.save(req);
@@ -37,12 +23,8 @@ public class AppointmentController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        appointmentService.delete(id);
+        appointmentService.cancel(id);
     }
-
-    // ================
-    // Filtrare
-    // ================
 
     @GetMapping("/by-cabinet/{cabinetId}")
     public List<AppointmentResponse> byCabinet(@PathVariable Long cabinetId) {
@@ -64,16 +46,11 @@ public class AppointmentController {
         return appointmentService.getByDate(date);
     }
 
-    // ================
-    // Extended DTO
-    // ================
-
     @GetMapping("/extended/cabinet/{cabinetId}")
     public List<AppointmentExtendedResponse> extendedForCabinet(
             @PathVariable Long cabinetId) {
         return appointmentService.getExtendedForCabinet(cabinetId);
     }
-
 
     @GetMapping("/extended/today/cabinet/{cabinetId}")
     public List<AppointmentExtendedResponse> todayExtendedForCabinet(

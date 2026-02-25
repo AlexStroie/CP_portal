@@ -9,7 +9,7 @@ export interface Appointment {
   startTime: string;  // „HH:mm”
   endTime: string;    // „HH:mm”
 
-  status: 'SCHEDULED' | 'CANCELLED' | 'COMPLETED';
+  status: 'SCHEDULED' | 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   notes?: string;
 }
 
@@ -22,6 +22,7 @@ export interface AppointmentRequest {
   date: string;
   startTime: string;
   endTime: string;
+  status: string;
 
   notes?: string;
 }
@@ -60,5 +61,4 @@ export interface AppointmentCalendar {
   color?: string;
   phone?: string;
   status: string;
-  // status?: 'SCHEDULED' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
 }

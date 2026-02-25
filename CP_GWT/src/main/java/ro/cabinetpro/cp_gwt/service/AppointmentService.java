@@ -15,41 +15,19 @@ import java.util.stream.Collectors;
 @Service
 public class AppointmentService extends AbstractService {
 
-    private final PatientService patientService;
-    private final CabinetService cabinetService;
-    private final UserService userService;
 
-    public AppointmentService(RestTemplate restTemplate, ServiceRegistry registry,
-                              PatientService patientService, CabinetService cabinetService, UserService userService) {
+    public AppointmentService(RestTemplate restTemplate, ServiceRegistry registry) {
         super(restTemplate, registry);
-        this.patientService = patientService;
-        this.cabinetService = cabinetService;
-        this.userService = userService;
-    }
-
-    // ================
-    // CRUD standard
-    // ================
-
-    public List<AppointmentResponse> getAllAppointments() {
-        return getListEntity(AppointmentResponse.class, "admin/appointments");
-    }
-
-    public AppointmentResponse getAppointment(Long id) {
-        return getObjectEntity(AppointmentResponse.class, "admin/appointments/" + id);
     }
 
     public AppointmentResponse save(AppointmentRequest request) {
         return postEntity("admin/appointments", request, AppointmentResponse.class);
     }
 
-    public void delete(Long id) {
+    public void cancel(Long id) {
         deleteEntity(Microservice.GWY, "admin/appointments/" + id);
     }
 
-    // ================
-    // Filtrări
-    // ================
 
     public List<AppointmentResponse> getByCabinet(Long cabinetId) {
         return getListEntity(AppointmentResponse.class,
@@ -70,10 +48,6 @@ public class AppointmentService extends AbstractService {
         return getListEntity(AppointmentResponse.class,
                 "admin/appointments/date/" + date);
     }
-
-    // ================
-    // Extended DTO
-    // ================
 
     public List<AppointmentExtendedResponse> getExtendedForCabinet(Long cabinetId) {
         List<AppointmentResponse> list = getByCabinet(cabinetId);

@@ -46,12 +46,14 @@ export class PatientsListComponent implements OnInit {
   ngOnInit(): void {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
 
-    this.cabinetService.getAll().subscribe(cabs => {
-      this.cabinets.set(cabs);
+    if (this.isSuperAdmin) {
+      this.cabinetService.getAll().subscribe(cabs => {
+        this.cabinets.set(cabs);
 
-      // construim map-ul
-      cabs.forEach(c => this.cabinetMap.set(c.id, c.name));
-    });
+        // construim map-ul
+        cabs.forEach(c => this.cabinetMap.set(c.id, c.name));
+      });
+    }
 
     // 🔥 legăm filtrarea live pe valueChanges
     this.name.valueChanges.pipe(debounceTime(250)).subscribe(() => this._updateFilters());

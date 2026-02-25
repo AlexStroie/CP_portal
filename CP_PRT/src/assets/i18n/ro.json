@@ -116,6 +116,7 @@
   },
   "common": {
     "save": "Salvează",
+    "close": "Închide",
     "saving": "Se salvează...",
     "cancel": "Anulează",
     "view": "Vizualizează",
@@ -249,6 +250,26 @@
     "changePassword": "Schimbă parola",
     "validation": {
       "name": "Numele este obligatoriu."
+    }
+  },
+  "appointments": {
+    "newTitle": "Programare nouă",
+    "editTitle": "Editează programarea",
+    "date": "Data",
+    "startTime": "Ora început",
+    "endTime": "Ora sfârșit",
+    "statusScheduled": "Programată",
+    "patient": "Pacient",
+    "selectPatient": "Selectează pacient",
+    "cancelAppointment": "Anulează programarea",
+    "invalidTimeRange": "Ora de sfârșit trebuie să fie după ora de început",
+    "status": {
+      "label": "Status",
+      "SCHEDULED": "Programată",
+      "PENDING": "În așteptare",
+      "CONFIRMED": "Confirmată",
+      "COMPLETED": "Finalizată",
+      "CANCELLED": "Anulată"
     }
   }
 }

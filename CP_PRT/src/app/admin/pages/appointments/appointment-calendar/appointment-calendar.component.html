@@ -25,16 +25,13 @@
 
   <div class="calendar-legend">
     <div class="legend-item">
-      <span class="legend-color scheduled"></span> Programată
+      <span class="legend-color scheduled"></span> {{ 'appointments.status.SCHEDULED' | translate }}
     </div>
     <div class="legend-item">
-      <span class="legend-color confirmed"></span> Confirmată
+      <span class="legend-color confirmed"></span> {{ 'appointments.status.CONFIRMED' | translate }}
     </div>
     <div class="legend-item">
-      <span class="legend-color completed"></span> Finalizată
-    </div>
-    <div class="legend-item">
-      <span class="legend-color cancelled"></span> Anulată
+      <span class="legend-color completed"></span> {{ 'appointments.status.COMPLETED' | translate }}
     </div>
   </div>
 
@@ -117,7 +114,7 @@
               } @else {
                 <div
                   class="appointment-card"
-                  [style.background]="appt.color || '#5b9bd5'"
+                  [style.background]="getColor(appt) || '#71788a'"
                   [ngStyle]="getAppointmentStyle(appt)"
                   (click)="onAppointmentClick(appt, $event)"
                 >
