@@ -75,10 +75,11 @@
           <th>{{ 'patients.columns.email' | translate }}</th>
           @if (isSuperAdmin) {
             <th>{{ 'patients.columns.cabinet' | translate }}</th>
+          } @else {
+            <th class="actions-col">
+              {{ 'patients.columns.actions' | translate }}
+            </th>
           }
-          <th class="actions-col">
-            {{ 'patients.columns.actions' | translate }}
-          </th>
         </tr>
         </thead>
 
@@ -106,21 +107,22 @@
                 <td>
                   {{ cabinetMap.get(patient.cabinetId) }}
                 </td>
+              } @else {
+
+                <td class="actions-col">
+
+                  <button class="icon-btn edit"
+                          [routerLink]="['/admin/patients', patient.id]">
+                    ✏️
+                  </button>
+
+                  <button class="icon-btn delete"
+                          (click)="askDelete(patient)">
+                    🗑️
+                  </button>
+
+                </td>
               }
-
-              <td class="actions-col">
-
-                <button class="icon-btn edit"
-                        [routerLink]="['/admin/patients', patient.id]">
-                  ✏️
-                </button>
-
-                <button class="icon-btn delete"
-                        (click)="askDelete(patient)">
-                  🗑️
-                </button>
-
-              </td>
             </tr>
           }
 
@@ -131,3 +133,25 @@
 
   </div>
 </div>
+
+@if (patientToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>{{ 'patients.delete.title' | translate }}</h3>
+      <p>
+        {{ 'patients.delete.message' | translate:{
+        name: patientToDelete()?.firstName + ' ' + patientToDelete()?.lastName
+      } }}
+      </p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">
+          {{ 'patients.delete.confirm' | translate }}
+        </button>
+        <button class="btn-secondary" (click)="cancelDelete()">
+          {{ 'patients.delete.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -7,11 +7,12 @@ import {RouterLink} from '@angular/router';
 import {Role} from '../../../../shared/types/role';
 import {CabinetsService} from '../../../../shared/service/cabinets.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   standalone: true,
   selector: 'app-users-list',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink, TranslatePipe],
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })

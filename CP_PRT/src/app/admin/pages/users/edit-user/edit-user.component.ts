@@ -6,13 +6,15 @@ import {UserRequest, UserResponse} from '../../../../core/model/user.model';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
 import {CabinetsService} from '../../../../shared/service/cabinets.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   standalone: true,
   selector: 'app-users-edit',
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ],
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']

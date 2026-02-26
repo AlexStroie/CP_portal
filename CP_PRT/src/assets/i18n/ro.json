@@ -46,6 +46,48 @@
       "last30Days": "Activitate ultimele 30 zile"
     }
   },
+  "users": {
+    "title": "Utilizatori",
+    "add": "+ Adaugă utilizator",
+    "columns": {
+      "name": "Nume",
+      "email": "Email",
+      "cabinet": "Cabinet",
+      "role": "Rol",
+      "status": "Status",
+      "actions": "Acțiuni"
+    },
+    "roles": {
+      "SUPER_ADMIN": "Super Admin",
+      "ADMIN": "Administrator",
+      "DOCTOR": "Medic",
+      "ASSISTANT": "Asistent"
+    },
+    "status": {
+      "enabled": "Activ",
+      "disabled": "Dezactivat"
+    },
+    "delete": {
+      "title": "Ștergere utilizator",
+      "message": "Sigur doriți să ștergeți utilizatorul {{name}}?",
+      "confirm": "Șterge",
+      "cancel": "Anulează"
+    },
+    "form": {
+      "editTitle": "Editare utilizator",
+      "createTitle": "Creare utilizator",
+      "fullName": "Nume complet",
+      "username": "Username",
+      "email": "Email",
+      "role": "Rol",
+      "cabinet": "Cabinet",
+      "selectCabinet": "Selectează cabinet",
+      "activationLink": "Link activare",
+      "activeAccount": "Cont activ",
+      "save": "Salvează",
+      "cancel": "Anulează"
+    }
+  },
   "cabinets": {
     "title": "Cabinete",
     "add": "Adaugă cabinet",
@@ -177,6 +219,12 @@
     "allCabinets": "Toate cabinetele",
     "noSort": "Fără sortare",
     "empty": "Nu există pacienți încă.",
+    "delete": {
+      "title": "Ștergere pacient",
+      "message": "Sigur doriți să ștergeți pacientul {{name}}?",
+      "confirm": "Șterge",
+      "cancel": "Anulează"
+    },
     "columns": {
       "name": "Nume",
       "phone": "Telefon",

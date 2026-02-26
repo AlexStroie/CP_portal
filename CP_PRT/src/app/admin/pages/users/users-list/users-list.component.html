@@ -1,19 +1,19 @@
 <div class="users-header">
-  <h2>Users</h2>
+  <h2>{{ 'users.title' | translate }}</h2>
   <button class="btn-primary" [routerLink]="['/admin/users/create']">
-    + Add User
+    {{ 'users.add' | translate }}
   </button>
 </div>
 
 <table class="users-table">
   <thead>
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Cabinet</th>
-    <th>Role</th>
-    <th>Status</th>
-    <th class="actions-col">Actions</th>
+    <th>{{ 'users.columns.name' | translate }}</th>
+    <th>{{ 'users.columns.email' | translate }}</th>
+    <th>{{ 'users.columns.cabinet' | translate }}</th>
+    <th>{{ 'users.columns.role' | translate }}</th>
+    <th>{{ 'users.columns.status' | translate }}</th>
+    <th class="actions-col">{{ 'users.columns.actions' | translate }}</th>
   </tr>
   </thead>
 
@@ -28,13 +28,13 @@
 
         <td>
           <span class="badge" [ngClass]="roleClass(user.role)">
-            {{ user.role }}
+            {{ ('users.roles.' + user.role) | translate }}
           </span>
         </td>
 
         <td>
           <span class="status" [ngClass]="user.enabled ? 'active' : 'inactive'">
-            {{ user.enabled ? 'Enabled' : 'Disabled' }}
+            {{ user.enabled ? ('users.status.enabled' | translate) : ('users.status.disabled' | translate) }}
           </span>
         </td>
 
@@ -59,12 +59,18 @@
 @if (userToDelete()) {
   <div class="modal-backdrop">
     <div class="modal">
-      <h3>Delete User</h3>
-      <p>Are you sure you want to delete <b>{{ userToDelete()?.fullName }}</b>?</p>
+      <h3>{{ 'users.delete.title' | translate }}</h3>
+      <p>
+        {{ 'users.delete.message' | translate:{ name: userToDelete()?.fullName } }}
+      </p>
 
       <div class="modal-actions">
-        <button class="btn-danger" (click)="confirmDelete()">Delete</button>
-        <button class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+        <button class="btn-danger" (click)="confirmDelete()">
+          {{ 'users.delete.confirm' | translate }}
+        </button>
+        <button class="btn-secondary" (click)="cancelDelete()">
+          {{ 'users.delete.cancel' | translate }}
+        </button>
       </div>
     </div>
   </div>

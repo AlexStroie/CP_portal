@@ -2,9 +2,9 @@
 
   <h2>
     @if (id()) {
-      Edit User
+      {{ 'users.form.editTitle' | translate }}
     } @else {
-      Create User
+      {{ 'users.form.createTitle' | translate }}
     }
   </h2>
 
@@ -13,34 +13,42 @@
     <form [formGroup]="form">
 
       <div class="form-group">
-        <label>Full Name</label>
+        <label>{{ 'users.form.fullName' | translate }}</label>
         <input formControlName="fullName" type="text">
       </div>
 
       <div class="form-group">
-        <label>Username</label>
+        <label>{{ 'users.form.username' | translate }}</label>
         <input formControlName="username" type="text">
       </div>
 
       <div class="form-group">
-        <label>Email</label>
+        <label>{{ 'users.form.email' | translate }}</label>
         <input formControlName="email" type="email">
       </div>
 
       @if (isSuperAdmin) {
         <div class="form-group">
-          <label>Role</label>
+          <label>{{ 'users.form.role' | translate }}</label>
           <select formControlName="role">
-            <option value="USER">User</option>
-            <option value="ADMIN">Admin</option>
-            <option value="SUPER_ADMIN">Super Admin</option>
+            <option value="USER">
+              {{ 'users.roles.USER' | translate }}
+            </option>
+            <option value="ADMIN">
+              {{ 'users.roles.ADMIN' | translate }}
+            </option>
+            <option value="SUPER_ADMIN">
+              {{ 'users.roles.SUPER_ADMIN' | translate }}
+            </option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Cabinet</label>
+          <label>{{ 'users.form.cabinet' | translate }}</label>
           <select (change)="setCabinetId($event)" [value]="cabinetId">
-            <option [value]="0"></option>
+            <option [value]="0">
+              {{ 'users.form.selectCabinet' | translate }}
+            </option>
             @for (cab of cabinets(); track cab.id) {
               <option [value]="cab.id">{{ cab.name }}</option>
             }
@@ -48,13 +56,13 @@
         </div>
 
         <div class="form-group">
-          <label>Activation link</label>
+          <label>{{ 'users.form.activationLink' | translate }}</label>
           <span>{{ activationLink }}</span>
         </div>
 
       } @else {
         <div class="form-group">
-          <label>Cabinet</label>
+          <label>{{ 'users.form.cabinet' | translate }}</label>
           <input type="text" [value]="currentCabinet()" disabled>
         </div>
       }
@@ -62,13 +70,18 @@
       <div class="form-group checkbox">
         <label>
           <input type="checkbox" [checked]="form.get('enabled')?.value" disabled>
-          Active account
+          {{ 'users.form.activeAccount' | translate }}
         </label>
       </div>
 
       <div class="actions">
-        <button type="button" class="btn-primary" (click)="save()">Save</button>
-        <button type="button" class="btn-secondary" (click)="router.navigate(['/admin/users'])">Cancel</button>
+        <button type="button" class="btn-primary" (click)="save()">
+          {{ 'users.form.save' | translate }}
+        </button>
+        <button type="button" class="btn-secondary"
+                (click)="router.navigate(['/admin/users'])">
+          {{ 'users.form.cancel' | translate }}
+        </button>
       </div>
 
     </form>
