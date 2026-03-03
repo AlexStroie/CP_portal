@@ -9,7 +9,7 @@ import {provideRouter, RouteReuseStrategy} from '@angular/router';
 import {routes} from './app.routes';
 import {HttpHeaders, provideHttpClient, withFetch, withInterceptors} from "@angular/common/http";
 import {DisableRouteReuseStrategy} from './core/disable-route-reuse.strategy';
-import {authInterceptor, suspendedInterceptor} from './interceptors/auth.interceptor';
+import {authInterceptor, suspendedInterceptor, tokenExpiredInterceptor} from './interceptors/auth.interceptor';
 import {provideTranslateService} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 
@@ -24,7 +24,7 @@ export const appConfig: IAppConfig = {
   providers: [
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor, suspendedInterceptor])
+      withInterceptors([authInterceptor, suspendedInterceptor, tokenExpiredInterceptor])
     ),
     provideRouter(routes),
     provideBrowserGlobalErrorListeners(),

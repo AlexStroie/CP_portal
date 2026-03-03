@@ -15,15 +15,21 @@ export class AppointmentService {
     return this.http.post<Appointment[]>(this.config.webEndpoint + "api/admin/appointments", ap, httpOptions);
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete<Appointment[]>(this.config.webEndpoint + "api/admin/appointments/" + id, httpOptions);
+  delete(id: number, series: boolean): Observable<void> {
+    return this.http.delete<void>(
+      `${this.config.webEndpoint}api/admin/appointments/${id}`,
+      {
+        ...httpOptions,
+        params: {series: series}
+      }
+    );
   }
 
   getExtendedForCabinet(cabinetId: number) {
-    return this.http.get<AppointmentExtended[]>(this.config.webEndpoint + "api/admin/appointments/extended/cabinet/" + cabinetId, httpOptions);
+    return this.http.get<AppointmentExtended[]>(`${this.config.webEndpoint}api/admin/appointments/extended/cabinet/${cabinetId}`, httpOptions);
   }
 
   getTodayExtendedForCabinet(cabinetId: number) {
-    return this.http.get<AppointmentExtended[]>(this.config.webEndpoint + "api/admin/appointments/extended/today/cabinet/" + cabinetId, httpOptions);
+    return this.http.get<AppointmentExtended[]>(`${this.config.webEndpoint}api/admin/appointments/extended/today/cabinet/${cabinetId}`, httpOptions);
   }
 }

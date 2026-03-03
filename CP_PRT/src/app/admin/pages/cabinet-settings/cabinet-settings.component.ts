@@ -2,14 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
-  Validators
+  Validators,
+  FormGroup
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 import { CabinetsService } from '../../../shared/service/cabinets.service';
 import { TokenStorageService } from '../../../core/security/token-storage.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cabinet-settings',
@@ -29,11 +30,15 @@ export class CabinetSettingsComponent implements OnInit {
   private tokenService = inject(TokenStorageService);
   private router = inject(Router);
 
+  activeTab: 'general' | 'program' = 'general';
+
   private cabinetId!: number;
 
   loading = false;
-  saving = false;
+  savingGeneral = false;
+  savingProgram = false;
 
+  // 🔹 General form
   form = this.fb.group({
     name: ['', Validators.required],
     address: [''],
@@ -43,17 +48,31 @@ export class CabinetSettingsComponent implements OnInit {
     logoUrl: ['']
   });
 
+  // 🔹 Program form
+  programForm = this.fb.group({
+    startHour: ['08:00', Validators.required],
+    endHour: ['18:00', Validators.required],
+    slotDuration: [30, Validators.required],
+    workingDays: this.fb.group({
+      mon: [true],
+      tue: [true],
+      wed: [true],
+      thu: [true],
+      fri: [true],
+      sat: [false],
+      sun: [false]
+    })
+  });
+
   ngOnInit(): void {
 
     const rawId = this.tokenService.getCabinetId();
-
     if (!rawId) {
       this.router.navigate(['/admin']);
       return;
     }
 
     const parsedId = Number(rawId);
-
     if (isNaN(parsedId)) {
       this.router.navigate(['/admin']);
       return;
@@ -76,6 +95,9 @@ export class CabinetSettingsComponent implements OnInit {
           description: cabinet.description,
           logoUrl: cabinet.logoUrl
         });
+
+        // optional: patch program settings when backend supports it
+
         this.loading = false;
       },
       error: () => {
@@ -85,18 +107,21 @@ export class CabinetSettingsComponent implements OnInit {
     });
   }
 
-  get canSave(): boolean {
-    return this.form.valid && this.form.dirty && !this.saving;
+  // =============================
+  // SAVE GENERAL
+  // =============================
+
+  get canSaveGeneral(): boolean {
+    return this.form.valid && this.form.dirty && !this.savingGeneral;
   }
 
-  save(): void {
-
+  saveGeneral(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.saving = true;
+    this.savingGeneral = true;
 
     const payload = {
       ...this.form.value,
@@ -105,18 +130,48 @@ export class CabinetSettingsComponent implements OnInit {
 
     this.service.updateCabinetDetails(this.cabinetId, payload).subscribe({
       next: () => {
-        this.saving = false;
+        this.savingGeneral = false;
         this.form.markAsPristine();
       },
       error: () => {
-        this.saving = false;
+        this.savingGeneral = false;
       }
     });
   }
 
-  cancel(): void {
+  cancelGeneral(): void {
     this.form.reset();
     this.loadCabinet();
+  }
+
+  // =============================
+  // SAVE PROGRAM
+  // =============================
+
+  get canSaveProgram(): boolean {
+    return this.programForm.valid && this.programForm.dirty && !this.savingProgram;
+  }
+
+  saveProgram(): void {
+    if (this.programForm.invalid) {
+      this.programForm.markAllAsTouched();
+      return;
+    }
+
+    this.savingProgram = true;
+
+    const payload = {
+      cabinetId: this.cabinetId,
+      ...this.programForm.value
+    };
+
+    // TODO: implement endpoint in service
+    console.log('Program payload', payload);
+
+    setTimeout(() => {
+      this.savingProgram = false;
+      this.programForm.markAsPristine();
+    }, 800);
   }
 
   hasError(control: string, error: string): boolean {

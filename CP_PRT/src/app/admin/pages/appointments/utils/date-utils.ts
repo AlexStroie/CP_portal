@@ -20,6 +20,29 @@ export class DateUtils {
     return inputDate < today;
   }
 
+  static isSlotBeforeNow(
+    day: Date | string,
+    hour: number,
+    minute: number
+  ): boolean {
+    const slotDate = this.parseLocalDate(day);
+    slotDate.setHours(hour, minute, 0, 0);
+    const nowRounded = DateUtils.roundDownToQuarter();
+
+    return slotDate.getTime() < nowRounded.getTime();
+  }
+
+  static roundDownToQuarter(date: Date = new Date()): Date {
+    const d = new Date(date.getTime());
+
+    const minutes = d.getMinutes();
+    const roundedMinutes = Math.floor(minutes / 15) * 15;
+
+    d.setMinutes(roundedMinutes, 0, 0); // reset seconds & ms
+
+    return d;
+  }
+
   static parseLocalDate(date: Date | string): Date {
     if (date instanceof Date) {
       return new Date(

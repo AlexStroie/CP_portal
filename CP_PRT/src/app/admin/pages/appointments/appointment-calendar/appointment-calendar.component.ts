@@ -18,6 +18,7 @@ import {Patient} from '../../../../core/model/patient.model';
 import {CreateAppointmentEvent, EditAppointmentEvent} from '../events/appointment-event';
 import {DateUtils} from '../utils/date-utils';
 import {TranslatePipe} from '@ngx-translate/core';
+import {FormsModule} from '@angular/forms';
 
 
 type CalendarView = 'day' | 'week';
@@ -25,7 +26,7 @@ type CalendarView = 'day' | 'week';
 @Component({
   selector: 'cp-appointments-calendar',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, FormsModule],
   templateUrl: './appointment-calendar.component.html',
   styleUrls: ['./appointment-calendar.component.css']
 })
@@ -42,8 +43,8 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
   patients = signal<Patient[]>([]);
 
   nowLineTop = 0;
-  startHour = 8;
-  endHour = 20;
+  startHour = 6;
+  endHour = 22;
   slotMinutes = 15;
   appointmentsByDay = new Map<string, AppointmentCalendar[]>();
 
@@ -243,4 +244,17 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
   }
 
   protected readonly DateUtils = DateUtils;
+
+  protected onNativeDateChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.value) return;
+
+    const date = new Date(input.value);
+
+    const startOfWeek = this.getStartOfWeek(date);
+    this.currentDateHeader.set(startOfWeek);
+
+  }
+
+
 }

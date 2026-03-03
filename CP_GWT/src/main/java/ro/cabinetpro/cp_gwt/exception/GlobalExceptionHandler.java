@@ -25,6 +25,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<?> handleBusiness(ResponseStatusException ex) {
 
+        if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Session expired"));
+        }
+
         ObjectMapper mapper = new ObjectMapper();
 
         String responseBodyAsString = ex.getReason();

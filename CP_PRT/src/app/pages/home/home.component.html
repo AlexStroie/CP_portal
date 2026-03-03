@@ -1,22 +1,100 @@
 <div class="home-container">
+
+  <!-- NAVBAR -->
   <header class="header">
-    <h1>CabinetPro</h1>
-    <nav class="navbar navbar-expand-lg">
-      <ul class="nav col-md-12">
-        <li class="nav-item active"><a (click)="navigateToURL('admin')"><span
-          class="nav-link-text">Admin</span></a>
-        </li>
-      </ul>
+    <div class="logo">CabinetPro</div>
+
+    <nav class="nav-links">
+      <a (click)="navigateToURL('login')">
+        {{ 'HOME.NAV.LOGIN' | translate }}
+      </a>
+
+      <a class="btn-nav" (click)="navigateToURL('register')">
+        {{ 'HOME.NAV.REGISTER' | translate }}
+      </a>
     </nav>
   </header>
 
-  <main class="content">
-    <h2>Welcome to CabinetPro!</h2>
-    <p></p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
 
-  </main>
+      <!-- LEFT -->
+      <div class="hero-text">
+        <h1>{{ 'HOME.HERO.TITLE' | translate }}</h1>
 
+        <p class="subtitle">
+          {{ 'HOME.HERO.SUBTITLE' | translate }}
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary"
+                  (click)="navigateToURL('register')">
+            {{ 'HOME.HERO.CTA_PRIMARY' | translate }}
+          </button>
+
+          <button class="btn-outline"
+                  (click)="navigateToURL('login')">
+            {{ 'HOME.HERO.CTA_SECONDARY' | translate }}
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="hero-image">
+        <img src="dashboard.png"
+             alt="CabinetPro Dashboard"
+             class="dashboard-image">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits container">
+
+    <div class="benefit-card">
+      <img src="calendar.png"
+           alt="Calendar icon"
+           class="benefit-icon" />
+      <h3>{{ 'HOME.BENEFITS.SCHEDULE.TITLE' | translate }}</h3>
+      <p>{{ 'HOME.BENEFITS.SCHEDULE.DESC' | translate }}</p>
+    </div>
+
+    <div class="benefit-card">
+      <img src="person.png"
+           alt="Calendar icon"
+           class="benefit-icon" />
+      <h3>{{ 'HOME.BENEFITS.PATIENTS.TITLE' | translate }}</h3>
+      <p>{{ 'HOME.BENEFITS.PATIENTS.DESC' | translate }}</p>
+    </div>
+
+    <div class="benefit-card">
+      <img src="lock.png"
+           alt="Calendar icon"
+           class="benefit-icon" />
+      <h3>{{ 'HOME.BENEFITS.SECURITY.TITLE' | translate }}</h3>
+      <p>{{ 'HOME.BENEFITS.SECURITY.DESC' | translate }}</p>
+    </div>
+
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="final-cta text-center">
+    <h2>{{ 'HOME.CTA.TITLE' | translate }}</h2>
+
+    <button class="btn-primary large"
+            (click)="navigateToURL('register')">
+      {{ 'HOME.CTA.BUTTON' | translate }}
+    </button>
+  </section>
+
+  <!-- FOOTER -->
   <footer class="footer">
-    <p>© 2025 CabinetPro. All rights reserved.</p>
+    <p>
+      © 2025 CabinetPro.
+      {{ 'HOME.FOOTER.RIGHTS' | translate }}
+    </p>
   </footer>
+
 </div>

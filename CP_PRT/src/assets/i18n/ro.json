@@ -1,4 +1,58 @@
 {
+  "common": {
+    "confirm": "Confirmare",
+    "save": "Salvează",
+    "close": "Închide",
+    "saving": "Se salvează...",
+    "cancel": "Anulează",
+    "view": "Vizualizează",
+    "edit": "Editează",
+    "loginAs": "Autentificare ca",
+    "yes": "Da",
+    "no": "Nu",
+    "days": {
+      "mon": "Luni",
+      "tue": "Marți",
+      "wed": "Miercuri",
+      "thu": "Joi",
+      "fri": "Vineri",
+      "sat": "Sâmbătă",
+      "sun": "Duminică"
+    }
+  },
+  "HOME": {
+    "NAV": {
+      "LOGIN": "Autentificare",
+      "REGISTER": "Creează cont"
+    },
+    "HERO": {
+      "TITLE": "Organizează-ți cabinetul simplu și sigur.",
+      "SUBTITLE": "Programări, pacienți și evidență într-un singur loc. Creat special pentru cabinete de psihologie.",
+      "CTA_PRIMARY": "Creează cont gratuit",
+      "CTA_SECONDARY": "Vezi cum funcționează"
+    },
+    "BENEFITS": {
+      "SCHEDULE": {
+        "TITLE": "Gestionare rapidă programări",
+        "DESC": "Creează, modifică și urmărește programările fără suprapuneri."
+      },
+      "PATIENTS": {
+        "TITLE": "Evidență clară pacienți",
+        "DESC": "Acces rapid la informații și istoric într-un mod organizat."
+      },
+      "SECURITY": {
+        "TITLE": "Control total asupra datelor",
+        "DESC": "Datele rămân în siguranță și accesibile doar cabinetului tău."
+      }
+    },
+    "CTA": {
+      "TITLE": "Începe să îți organizezi cabinetul chiar astăzi.",
+      "BUTTON": "Creează-ți cabinetul"
+    },
+    "FOOTER": {
+      "RIGHTS": "Toate drepturile rezervate."
+    }
+  },
   "login": {
     "title": "Autentificare",
     "user": "Utilizator",
@@ -156,17 +210,6 @@
     "RON": "RON",
     "EUR": "EUR"
   },
-  "common": {
-    "save": "Salvează",
-    "close": "Închide",
-    "saving": "Se salvează...",
-    "cancel": "Anulează",
-    "view": "Vizualizează",
-    "edit": "Editează",
-    "loginAs": "Autentificare ca",
-    "yes": "Da",
-    "no": "Nu"
-  },
   "validation": {
     "required": "Câmp obligatoriu",
     "invalidPeriod": "Perioadă invalidă (End trebuie să fie după Start)"
@@ -209,6 +252,19 @@
       "saved": "Informațiile cabinetului au fost actualizate cu succes.",
       "error": "A apărut o eroare la salvare.",
       "forbidden": "Nu aveți permisiunea să accesați această pagină."
+    },
+    "tabs": {
+      "general": "Informații generale",
+      "program": "Program de lucru"
+    },
+    "program": {
+      "startHour": "Ora început",
+      "endHour": "Ora sfârșit",
+      "slotDuration": "Durată ședință (minute)",
+      "workingDays": "Zile lucrătoare"
+    },
+    "validation": {
+      "name": "Numele este obligatoriu"
     }
   },
   "patients": {
@@ -303,6 +359,9 @@
   "appointments": {
     "newTitle": "Programare nouă",
     "editTitle": "Editează programarea",
+    "today": "Astăzi",
+    "weeks": "Săptămâna",
+    "week": "Săptămână",
     "date": "Data",
     "startTime": "Ora început",
     "endTime": "Ora sfârșit",
@@ -311,6 +370,11 @@
     "selectPatient": "Selectează pacient",
     "cancelAppointment": "Anulează programarea",
     "invalidTimeRange": "Ora de sfârșit trebuie să fie după ora de început",
+    "cancelConfirm": "Ești sigur că vrei să anulezi această programare?",
+    "cancelSeriesConfirm": "Această programare face parte dintr-o serie. Ce dorești să anulezi?",
+    "cancelSingle": "Doar această ședință",
+    "cancelSeries": "Toată seria",
+    "cancelButton": "Da, anulează",
     "status": {
       "label": "Status",
       "SCHEDULED": "Programată",
@@ -318,6 +382,19 @@
       "CONFIRMED": "Confirmată",
       "COMPLETED": "Finalizată",
       "CANCELLED": "Anulată"
+    },
+    "recurrent": "Recurent",
+    "recurrenceType": "Tip recurență",
+    "recurrenceUntil": "Până la data",
+    "recurrenceCount": "Număr ședințe",
+    "recurrence": {
+      "WEEKLY": "Săptămânal",
+      "BI_WEEKLY": "La 2 săptămâni",
+      "MONTHLY": "Lunar"
+    },
+    "errors": {
+      "recurrenceLimitRequired": "Selectează o limită pentru recurență.",
+      "recurrenceLimitConflict": "Poți seta fie dată limită, fie număr ședințe, nu ambele."
     }
   }
 }

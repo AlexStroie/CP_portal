@@ -9,78 +9,166 @@
       </p>
     </div>
 
-    <div class="form-card" [formGroup]="form">
-      <div class="form-grid">
+    <div class="form-card">
 
-        <div class="form-group">
-          <label>{{ 'settings.fields.name' | translate }}</label>
-          <input class="form-control" type="text"
-                 formControlName="name" />
-
-          @if (hasError('name', 'required')) {
-            <div class="error">
-              {{ 'settings.placeholders.name' | translate }}
-            </div>
-          }
-        </div>
-
-        <div class="form-group">
-          <label>{{ 'settings.fields.email' | translate }}</label>
-          <input class="form-control"
-                 formControlName="email" />
-        </div>
-
-        <div class="form-group">
-          <label>{{ 'settings.fields.phone' | translate }}</label>
-          <input class="form-control"
-                 formControlName="phone" />
-        </div>
-
-        <div class="form-group full">
-          <label>{{ 'settings.fields.address' | translate }}</label>
-          <input class="form-control"  type="text"
-                 formControlName="address" />
-        </div>
-
-        <div class="form-group full">
-          <label>{{ 'settings.fields.description' | translate }}</label>
-          <textarea class="form-control"
-                    rows="3"
-                    formControlName="description">
-          </textarea>
-        </div>
-
-        <div class="form-group full">
-          <label>{{ 'settings.fields.logoUrl' | translate }}</label>
-          <input class="form-control"
-                 formControlName="logoUrl" />
-        </div>
-
-      </div>
-
-      <div class="form-actions">
-        <button type="button"
-                class="btn-secondary"
-                (click)="cancel()">
-          {{ 'common.cancel' | translate }}
+      <!-- Tabs -->
+      <div class="tabs">
+        <button
+          class="tab"
+          [class.active]="activeTab === 'general'"
+          (click)="activeTab = 'general'">
+          {{ 'settings.tabs.general' | translate }}
         </button>
 
         <button
-          type="button"
-          class="btn-primary"
-          (click)="save()"
-          [disabled]="!canSave">
-
-          {{ saving
-          ? ('common.saving' | translate)
-          : ('common.save' | translate)
-          }}
-
+          class="tab"
+          [class.active]="activeTab === 'program'"
+          (click)="activeTab = 'program'">
+          {{ 'settings.tabs.program' | translate }}
         </button>
       </div>
+
+      <!-- GENERAL TAB -->
+      @if (activeTab === 'general') {
+
+        <form [formGroup]="form" class="form-body">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>{{ 'settings.fields.name' | translate }}</label>
+              <input class="form-control" formControlName="name" />
+              @if (hasError('name', 'required')) {
+                <div class="error">
+                  {{ 'settings.validation.name' | translate }}
+                </div>
+              }
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'settings.fields.email' | translate }}</label>
+              <input class="form-control" formControlName="email" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'settings.fields.phone' | translate }}</label>
+              <input class="form-control" formControlName="phone" />
+            </div>
+
+            <div class="form-group full">
+              <label>{{ 'settings.fields.address' | translate }}</label>
+              <input class="form-control" formControlName="address" />
+            </div>
+
+            <div class="form-group full">
+              <label>{{ 'settings.fields.description' | translate }}</label>
+              <textarea class="form-control" rows="3"
+                        formControlName="description"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>{{ 'settings.fields.logoUrl' | translate }}</label>
+              <input class="form-control" formControlName="logoUrl" />
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="button"
+                    class="btn-secondary"
+                    (click)="cancelGeneral()">
+              {{ 'common.cancel' | translate }}
+            </button>
+
+            <button type="button"
+                    class="btn-primary"
+                    (click)="saveGeneral()"
+                    [disabled]="!canSaveGeneral">
+
+              {{ savingGeneral
+              ? ('common.saving' | translate)
+              : ('common.save' | translate)
+              }}
+
+            </button>
+          </div>
+
+        </form>
+      }
+
+      <!-- PROGRAM TAB -->
+      @if (activeTab === 'program') {
+
+        <form [formGroup]="programForm" class="form-body">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>{{ 'settings.program.startHour' | translate }}</label>
+              <input type="time"
+                     class="form-control"
+                     formControlName="startHour" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'settings.program.endHour' | translate }}</label>
+              <input type="time"
+                     class="form-control"
+                     formControlName="endHour" />
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'settings.program.slotDuration' | translate }}</label>
+              <select class="form-control"
+                      formControlName="slotDuration">
+                <option [value]="15">15</option>
+                <option [value]="20">20</option>
+                <option [value]="25">20</option>
+                <option [value]="30">30</option>
+                <option [value]="35">35</option>
+                <option [value]="40">40</option>
+                <option [value]="45">45</option>
+                <option [value]="50">50</option>
+                <option [value]="55">55</option>
+                <option [value]="60">60</option>
+              </select>
+            </div>
+
+            <div class="form-group full"
+                 formGroupName="workingDays">
+              <label>{{ 'settings.program.workingDays' | translate }}</label>
+
+              <div class="days-row">
+                <label><input type="checkbox" formControlName="mon"> {{ 'common.days.mon' | translate }}</label>
+                <label><input type="checkbox" formControlName="tue"> {{ 'common.days.tue' | translate }}</label>
+                <label><input type="checkbox" formControlName="wed"> {{ 'common.days.wed' | translate }}</label>
+                <label><input type="checkbox" formControlName="thu"> {{ 'common.days.thu' | translate }}</label>
+                <label><input type="checkbox" formControlName="fri"> {{ 'common.days.fri' | translate }}</label>
+                <label><input type="checkbox" formControlName="sat"> {{ 'common.days.sat' | translate }}</label>
+                <label><input type="checkbox" formControlName="sun"> {{ 'common.days.sun' | translate }}</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="button"
+                    class="btn-primary"
+                    (click)="saveProgram()"
+                    [disabled]="!canSaveProgram">
+
+              {{ savingProgram
+              ? ('common.saving' | translate)
+              : ('common.save' | translate)
+              }}
+
+            </button>
+          </div>
+
+        </form>
+      }
 
     </div>
 
   </div>
-
 </div>

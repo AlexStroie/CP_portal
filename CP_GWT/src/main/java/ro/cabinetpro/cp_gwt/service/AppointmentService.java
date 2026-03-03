@@ -24,8 +24,12 @@ public class AppointmentService extends AbstractService {
         return postEntity("admin/appointments", request, AppointmentResponse.class);
     }
 
-    public void cancel(Long id) {
-        deleteEntity(Microservice.GWY, "admin/appointments/" + id);
+    public void cancel(Long id, boolean series) {
+        if (series) {
+            deleteEntity(Microservice.GWY, "admin/appointments/series/" + id);
+        } else {
+            deleteEntity(Microservice.GWY, "admin/appointments/" + id);
+        }
     }
 
 
@@ -93,6 +97,9 @@ public class AppointmentService extends AbstractService {
 
         ext.setPhone(dto.getPhone());
 
+        ext.setRecurrenceId(dto.getRecurrenceId());
+        ext.setRecurrenceType(dto.getRecurrenceType());
+        ext.setRecurrenceCreateResponse(dto.getRecurrenceCreateResponse());
         return ext;
     }
 }

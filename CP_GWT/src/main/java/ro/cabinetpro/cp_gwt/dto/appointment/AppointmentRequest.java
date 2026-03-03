@@ -1,6 +1,7 @@
 package ro.cabinetpro.cp_gwt.dto.appointment;
 
 import lombok.Data;
+import ro.cabinetpro.cp_gwt.dto.types.RecurrenceType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +16,10 @@ public class AppointmentRequest {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
+
+    private Boolean recurrent;
+    private RecurrenceType recurrenceType; // WEEKLY, BI_WEEKLY, MONTHLY
+    private LocalDate recurrenceUntil;
 
     private String status;
     private String notes;

@@ -20,7 +20,7 @@
       <label>{{ 'appointments.date' | translate }}</label>
 
       @if (isEdit) {
-        <input type="date" [(ngModel)]="editDate" [disabled]="data.status === 'COMPLETED'"/>
+        <input type="date" [(ngModel)]="editDate" [disabled]="isCompleted"/>
       } @else {
         <input
           type="text"
@@ -34,7 +34,7 @@
       <label>{{ 'appointments.startTime' | translate }}</label>
 
       @if (isEdit) {
-        <input type="time" [(ngModel)]="editStartTime" [disabled]="data.status === 'COMPLETED'"/>
+        <input type="time" [(ngModel)]="editStartTime" [disabled]="isCompleted"/>
       } @else {
         <input
           type="text"
@@ -49,7 +49,7 @@
         <label>{{ 'appointments.status.label' | translate }}</label>
 
 
-        <select [(ngModel)]="data.status" class="status-select" [disabled]="data.status === 'COMPLETED'">
+        <select [(ngModel)]="data.status" class="status-select" [disabled]="isCompleted">
           <option value="SCHEDULED">
             {{ 'appointments.status.SCHEDULED' | translate }}
           </option>
@@ -72,7 +72,8 @@
     <!-- ORA SFARSIT -->
     <div class="form-group">
       <label>{{ 'appointments.endTime' | translate }}</label>
-      <input type="time" [(ngModel)]="data.endTime" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):([0-5]\d)$" [disabled]="data.status === 'COMPLETED'"/>
+      <input type="time" [(ngModel)]="data.endTime" placeholder="HH:mm" pattern="^([01]\d|2[0-3]):([0-5]\d)$"
+             [disabled]="isCompleted"/>
     </div>
 
     <!-- PACIENT -->
@@ -103,6 +104,54 @@
       }
     </div>
 
+    @if (!isEdit || recurrent) {
+      <div class="recurrence-section">
+
+        <div class="recurrence-checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)]="recurrent"
+            [disabled]="isCompleted || isEdit"/>
+          <label>{{ 'appointments.recurrent' | translate }}</label>
+        </div>
+
+        @if (recurrent) {
+
+          <div class="form-group">
+            <label>{{ 'appointments.recurrenceType' | translate }}</label>
+            <select
+              [(ngModel)]="recurrenceType"
+              class="status-select"
+              [disabled]="isCompleted || isEdit">
+
+              <option value="WEEKLY">
+                {{ 'appointments.recurrence.WEEKLY' | translate }}
+              </option>
+              <option value="BI_WEEKLY">
+                {{ 'appointments.recurrence.BI_WEEKLY' | translate }}
+              </option>
+              <option value="MONTHLY">
+                {{ 'appointments.recurrence.MONTHLY' | translate }}
+              </option>
+
+            </select>
+          </div>
+
+          @if (!isEdit) {
+            <div class="form-group">
+              <label>{{ 'appointments.recurrenceUntil' | translate }}</label>
+              <input
+                type="date"
+                [(ngModel)]="recurrenceUntil"
+                [disabled]="isCompleted"/>
+
+            </div>
+          }
+        }
+
+      </div>
+    }
+
     <!-- ERROR -->
     @if (errorMessage) {
       <div class="error-banner">
@@ -117,7 +166,7 @@
 
     <div class="footer-left">
       @if (isEdit) {
-        <button class="btn-danger" (click)="cancelAppointment()" [disabled]="data.status === 'COMPLETED'">
+        <button class="btn-danger" (click)="cancelAppointment()" [disabled]="isCompleted">
           {{ 'appointments.cancelAppointment' | translate }}
         </button>
       }
@@ -128,7 +177,7 @@
         {{ 'common.cancel' | translate }}
       </button>
 
-      <button class="btn-primary" (click)="save()" [disabled]="data.status === 'COMPLETED'">
+      <button class="btn-primary" (click)="save()" [disabled]="isCompleted">
         {{ 'common.save' | translate }}
       </button>
     </div>

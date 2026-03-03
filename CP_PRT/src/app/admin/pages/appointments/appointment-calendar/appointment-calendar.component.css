@@ -90,7 +90,7 @@
 }
 
 .time-slot-label {
-  height: 60px; /* 60px/oră, se potrivește cu pxPerMinute = 1 */
+  height: 61px; /* 60px/oră, se potrivește cu pxPerMinute = 1 */
   padding-right: 4px;
   padding-top: 2px;
   text-align: right;
@@ -266,4 +266,35 @@
 
 .legend-color.cancelled {
   background: #dc2626;
+}
+
+.week-calendar-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6c757d; /* bootstrap secondary text */
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.week-label {
+  cursor: pointer;
+}
+
+input[type="date"] {
+  background: transparent;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.week-calendar-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
+}
+
+.calendar-container {
+  background: transparent;
+  position: relative;
 }

@@ -161,3 +161,49 @@
   background: #fee2e2;
   color: #991b1b;
 }
+
+.recurrence-section {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recurrence-section mat-form-field {
+  width: 100%;
+}
+
+.recurrence-section mat-checkbox {
+  margin-bottom: 4px;
+}
+
+/* ===== Material fields integration ===== */
+
+.recurrence-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recurrence-section .mat-mdc-form-field {
+  width: 100%;
+}
+
+.recurrence-section .mat-mdc-text-field-wrapper {
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.recurrence-section .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.recurrence-section .mat-mdc-select {
+  font-size: 14px;
+}
+
+.recurrence-section input.mat-mdc-input-element {
+  font-size: 14px;
+}

@@ -82,7 +82,9 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
       end: `${a.date}T${a.endTime}`,
       color: this.getColor(a),
       phone: a.phone,
-      status: a.status
+      status: a.status,
+      recurrenceId: a.recurrenceId,
+      recurrenceType: a.recurrenceType
     }));
   }
 

@@ -52,7 +52,7 @@ public abstract class AbstractService {
             T[] arr = restTemplate.getForObject(url, arrayType);
             return arr != null ? Arrays.asList(arr) : List.of();
         } catch (HttpClientErrorException e) {
-            log.error("[GWY] Error calling {}", url, e);
+            log.error("[GWY] Error calling {} {}", url, e.getMessage());
             throw translateClientException(e);
         } catch (RestClientException e) {
             log.error("[GWY] Error calling {}", url, e);

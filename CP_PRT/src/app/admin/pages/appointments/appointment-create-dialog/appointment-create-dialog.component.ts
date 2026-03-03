@@ -2,8 +2,12 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatOption} from '@angular/material/select';
-import {MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatOption
+} from '@angular/material/autocomplete';
 import {Patient} from '../../../../core/model/patient.model';
 import {AppointmentService} from '../../../../shared/service/appointment.service';
 import {AppointmentRequest} from '../../../../core/model/appointment.model';
@@ -11,6 +15,9 @@ import {Router} from '@angular/router';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'cp-appointments-calendar',
@@ -19,11 +26,14 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
     CommonModule,
     DatePipe,
     FormsModule,
+    ReactiveFormsModule,
     MatOption,
     MatAutocomplete,
-    ReactiveFormsModule,
     MatAutocompleteTrigger,
-    TranslatePipe
+    TranslatePipe,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   templateUrl: './appointment-create-dialog.component.html',
   styleUrls: ['./appointment-create-dialog.component.css']
@@ -38,17 +48,22 @@ export class AppointmentCreateDialogComponent {
   displayPatient = (p: Patient | null): string =>
     p ? `${p.firstName} ${p.lastName}` : '';
 
-  editDate!: string;      // yyyy-MM-dd
-  editStartTime!: string; // HH:mm
+  editDate!: string;
+  editStartTime!: string;
   private appointmentId: number = 0;
   patientName: string = "";
+  isCompleted = false;
 
   startHour!: number;
   startMinute!: number;
-  private endTime = '';
   readonly slotMinutes = 15;
   readonly endHourLimit = 20;
   readonly defaultDuration = 50;
+
+  // 🔁 RECURRENCE
+  recurrent: boolean = false;
+  recurrenceType: 'WEEKLY' | 'BI_WEEKLY' | 'MONTHLY' = 'WEEKLY';
+  recurrenceUntil: Date | null = null;
 
   constructor(
     private dialog: MatDialog,
@@ -62,23 +77,22 @@ export class AppointmentCreateDialogComponent {
 
     this.isEdit = !!this.data.appointment;
 
-    // endTime default
     if (!data.endTime) {
       const start = `${data.startHour.toString().padStart(2, '0')}:${data.startMinute
         .toString()
         .padStart(2, '0')}`;
 
-      data.endTime = this.addMinutes(start, 45); // 14:45 ✔️
+      data.endTime = this.addMinutes(start, this.defaultDuration);
     }
 
     if (!data.status) {
       data.status = 'SCHEDULED';
     }
 
+
     this.startHour = data.startHour;
     this.startMinute = data.startMinute;
 
-    // 👇 pacienți veniți din părinte
     if (data.patients) {
       this.patients = data.patients;
       this.filteredPatients = this.patients;
@@ -100,11 +114,18 @@ export class AppointmentCreateDialogComponent {
       const end = new Date(this.data.appointment.end);
       data.status = this.data.appointment.status;
 
+      this.isCompleted = data.status === 'COMPLETED';
+
       var patientEdit = this.patients.find(
         p => p.id === this.data.appointment.patientId
       );
       if (patientEdit) {
         this.patientName = patientEdit.firstName + ' ' + patientEdit.lastName;
+      }
+
+      if (this.data.appointment.recurrenceId) {
+        this.recurrent = true;
+        this.recurrenceType = this.data.appointment.recurrenceType;
       }
 
       this.editDate = start.toISOString().split('T')[0]; // yyyy-MM-dd
@@ -117,8 +138,6 @@ export class AppointmentCreateDialogComponent {
         .toString()
         .padStart(2, '0')}`;
     } else {
-
-      // 👇 filtrare la tastare
       this.patientControl.valueChanges.subscribe(value => {
         this.filterPatients(value);
       });
@@ -190,6 +209,8 @@ export class AppointmentCreateDialogComponent {
       return;
     }
 
+    let recurrenceUntilDate = this.recurrenceUntil ? new Date(this.recurrenceUntil) : null;
+
     const request: AppointmentRequest = {
       appointmentId: this.appointmentId,
       patientId: selectedPatient.id,
@@ -200,6 +221,12 @@ export class AppointmentCreateDialogComponent {
       startTime: this.formatTime(this.data.startHour, this.data.startMinute),
       endTime: this.data.endTime,
       status: this.data.status,
+
+      recurrent: this.recurrent,
+      recurrenceType: this.recurrent ? this.recurrenceType : null,
+      recurrenceUntil: this.recurrent && recurrenceUntilDate
+        ? this.formatDate(recurrenceUntilDate)
+        : null,
 
       notes: this.data.notes
     };
@@ -217,6 +244,11 @@ export class AppointmentCreateDialogComponent {
         }, 10000)
       }
     });
+  }
+
+  private showError(message: string) {
+    this.errorMessage = message;
+    setTimeout(() => this.errorMessage = '', 6000);
   }
 
   formatDate(date: Date): string {
@@ -258,36 +290,29 @@ export class AppointmentCreateDialogComponent {
       .open(ConfirmDialogComponent, {
         width: '360px',
         data: {
-          message: 'Ești sigur că vrei să anulezi această programare?'
+          titleKey: 'common.confirm',
+          messageKey: this.recurrent
+            ? 'appointments.cancelSeriesConfirm'
+            : 'appointments.cancelConfirm',
+          isSeries: this.recurrent
         }
-      })
-      .afterClosed()
-      .subscribe(result => {
-        if (result === true) {
-          this.deleteAppointment();
-        }
-      });
+      }).afterClosed().subscribe(result => {
+
+      if (result === 'single') {
+        this.deleteAppointment(false);
+      }
+
+      if (result === 'series') {
+        this.deleteAppointment(true);
+      }
+
+    });
   }
 
-  private deleteAppointment() {
-    this.appointmentService.delete(this.data.appointment.id).subscribe(() => {
+  private deleteAppointment(series: boolean) {
+    this.appointmentService.delete(this.data.appointment.id, series).subscribe(() => {
         this.dialogRef.close(true); // trimitem semnal că s-a creat
       }
     );
-  }
-
-  getAvailableEndTimes(): string[] {
-    const times: string[] = [];
-
-    const startTotal = this.startHour * 60 + this.startMinute;
-    const endLimit = this.endHourLimit * 60;
-
-    for (let t = startTotal + 15; t <= endLimit; t += this.slotMinutes) {
-      const hh = Math.floor(t / 60);
-      const mm = t % 60;
-      times.push(this.formatTime(hh, mm));
-    }
-
-    return times;
   }
 }

@@ -22,8 +22,8 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        appointmentService.cancel(id);
+    public void delete(@PathVariable Long id, @RequestParam(defaultValue = "false") boolean series) {
+        appointmentService.cancel(id, series);
     }
 
     @GetMapping("/by-cabinet/{cabinetId}")

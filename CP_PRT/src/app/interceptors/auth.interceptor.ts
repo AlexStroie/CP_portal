@@ -42,3 +42,20 @@ export const suspendedInterceptor: HttpInterceptorFn = (req, next) => {
     })
   );
 };
+
+export const tokenExpiredInterceptor: HttpInterceptorFn = (req, next) => {
+  const tokenStorageService = inject(TokenStorageService);
+  const router = inject(Router);
+
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+
+      if (error.status === 401) {
+        tokenStorageService.signOut();
+        router.navigate(['/login']);
+      }
+
+      return throwError(() => error);
+    })
+  );
+};

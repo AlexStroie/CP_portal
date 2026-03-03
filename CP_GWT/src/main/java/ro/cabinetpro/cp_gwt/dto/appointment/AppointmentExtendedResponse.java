@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import ro.cabinetpro.cp_gwt.dto.types.AbstractDTO;
 import ro.cabinetpro.cp_gwt.dto.types.MicroserviceAware;
+import ro.cabinetpro.cp_gwt.dto.types.RecurrenceType;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Data
 public class AppointmentExtendedResponse extends AbstractDTO implements MicroserviceAware {
@@ -29,6 +31,10 @@ public class AppointmentExtendedResponse extends AbstractDTO implements Microser
     private String phone;
     private String status;
     private String notes;
+
+    private UUID recurrenceId;
+    private RecurrenceType recurrenceType;
+    RecurrenceCreateResponse recurrenceCreateResponse;
 
     @Override
     @JsonIgnore

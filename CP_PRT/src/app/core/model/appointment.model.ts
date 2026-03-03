@@ -9,6 +9,9 @@ export interface Appointment {
   startTime: string;  // „HH:mm”
   endTime: string;    // „HH:mm”
 
+  recurrenceType: 'WEEKLY' | 'BI_WEEKLY' | 'MONTHLY' | null;
+  recurrenceId: string;
+
   status: 'SCHEDULED' | 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   notes?: string;
 }
@@ -23,6 +26,10 @@ export interface AppointmentRequest {
   startTime: string;
   endTime: string;
   status: string;
+
+  recurrent: boolean;
+  recurrenceType: 'WEEKLY' | 'BI_WEEKLY' | 'MONTHLY' | null;
+  recurrenceUntil: string | null;
 
   notes?: string;
 }
@@ -48,6 +55,10 @@ export interface AppointmentExtended {
   phone?: string;
 
   color?: string;
+
+  recurrenceType: 'WEEKLY' | 'BI_WEEKLY' | 'MONTHLY' | null;
+  recurrenceId: string;
+
 }
 
 // core/model/appointment.model.ts
@@ -61,4 +72,7 @@ export interface AppointmentCalendar {
   color?: string;
   phone?: string;
   status: string;
+
+  recurrenceType: 'WEEKLY' | 'BI_WEEKLY' | 'MONTHLY' | null;
+  recurrenceId: string;
 }

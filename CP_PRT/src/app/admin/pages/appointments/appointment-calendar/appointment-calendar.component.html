@@ -4,21 +4,34 @@
   <div class="calendar-toolbar">
     <div class="toolbar-left">
       <button (click)="goToPrevious()">&lt;</button>
-      <button (click)="goToToday()">Astăzi</button>
+      <button (click)="goToToday()">{{ 'appointments.today' | translate }}</button>
       <button (click)="goToNext()">&gt;</button>
 
       @if (view === 'week') {
-        <span class="current-range">
-          Săptămâna {{ weekDays()[0] | date:'dd.MM' }} - {{ weekDays()[6] | date:'dd.MM.yyyy' }}
+        <span class="current-range week-label" (click)="dateInput.showPicker()">
+          {{ 'appointments.weeks' | translate }} {{ weekDays()[0] | date:'dd.MM' }}
+          - {{ weekDays()[6] | date:'dd.MM.yyyy' }}
         </span>
       }
+      <div class="calendar-container d-inline">
+        <input
+          #dateInput
+          type="date"
+          (change)="onNativeDateChange($event)"
+          style="position:absolute; opacity:0; pointer-events:none; background: transparent;">
+
+        <button class="btn btn-outline-secondary btn-sm week-calendar-btn"
+                (click)="dateInput.showPicker()">
+          📅
+        </button>
+      </div>
     </div>
 
     <div class="toolbar-right">
       <button
         [class.active]="view === 'week'"
         (click)="switchView('week')">
-        Săptămână
+        {{ 'appointments.week' | translate }}
       </button>
     </div>
   </div>
