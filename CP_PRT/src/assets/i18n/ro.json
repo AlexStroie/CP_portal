@@ -45,12 +45,69 @@
         "DESC": "Datele rămân în siguranță și accesibile doar cabinetului tău."
       }
     },
+    "HOW": {
+      "TITLE": "Cum funcționează",
+      "STEP1": {
+        "TITLE": "Creezi cont",
+        "DESC": "Îți creezi contul în mai puțin de un minut."
+      },
+      "STEP2": {
+        "TITLE": "Adaugi pacienți",
+        "DESC": "Înregistrezi pacienții și informațiile relevante."
+      },
+      "STEP3": {
+        "TITLE": "Gestionezi programările",
+        "DESC": "Programezi ședințe și urmărești activitatea cabinetului."
+      }
+    },
+    "TARGET": {
+      "TITLE": "Pentru cine este CabinetPro",
+      "PSYCHOLOGISTS": "Psihologi",
+      "PSYCHOLOGISTS_DESC": "Pentru cabinete individuale care vor o evidență clară.",
+      "THERAPISTS": "Psihoterapeuți",
+      "THERAPISTS_DESC": "Gestionează programările și istoricul pacienților.",
+      "CLINICS": "Cabinete cu mai mulți specialiști",
+      "CLINICS_DESC": "Coordonează activitatea întregului cabinet."
+    },
+    "FAQ": {
+      "TITLE": "Întrebări frecvente",
+      "Q1": "Este gratuit?",
+      "A1": "Da, există un plan gratuit pentru început.",
+      "Q2": "Datele pacienților sunt sigure?",
+      "A2": "Datele sunt protejate și accesibile doar cabinetului tău.",
+      "Q3": "Pot folosi aplicația pe telefon?",
+      "A3": "Da, aplicația funcționează pe orice dispozitiv."
+    },
+    "CONTACT": {
+      "TITLE": "Contact",
+      "TEXT": "Ne poți contacta oricând la adresa:",
+      "RESPONSE": "Răspundem în maxim 24h",
+      "B1": "Suport pentru cabinete individuale",
+      "B2": "Configurare rapidă",
+      "B3": "Fără instalare"
+    },
     "CTA": {
       "TITLE": "Începe să îți organizezi cabinetul chiar astăzi.",
-      "BUTTON": "Creează-ți cabinetul"
+      "BUTTON": "Creează cont gratuit"
     },
     "FOOTER": {
-      "RIGHTS": "Toate drepturile rezervate."
+      "DESCRIPTION": "Platformă simplă pentru gestionarea programărilor și evidenței pacienților în cabinetele de psihologie.",
+      "PRODUCT": "Produs",
+      "COMPANY": "Companie",
+      "LEGAL": "Legal",
+      "CREATE_ACCOUNT": "Creează cont",
+      "LOGIN": "Autentificare",
+      "ABOUT": "Despre",
+      "CONTACT": "Contact",
+      "TERMS": "Termeni și condiții",
+      "PRIVACY": "Politica de confidențialitate",
+      "RIGHTS": "Toate drepturile rezervate"
+    },
+    "TRUST": {
+      "SECURE": "Datele pacienților sunt protejate",
+      "EU": "Datele sunt stocate în UE",
+      "ACCESS": "Acces securizat la platformă",
+      "BACKUP": "Backup automat al datelor"
     }
   },
   "login": {

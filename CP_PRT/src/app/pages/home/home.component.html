@@ -1,11 +1,10 @@
 <div class="home-container">
 
-  <!-- NAVBAR -->
   <header class="header">
     <div class="logo">CabinetPro</div>
 
     <nav class="nav-links">
-      <a (click)="navigateToURL('login')">
+      <a class="btn-nav" (click)="navigateToURL('login')">
         {{ 'HOME.NAV.LOGIN' | translate }}
       </a>
 
@@ -15,11 +14,10 @@
     </nav>
   </header>
 
-  <!-- HERO -->
+
   <section class="hero">
     <div class="hero-content">
 
-      <!-- LEFT -->
       <div class="hero-text">
         <h1>{{ 'HOME.HERO.TITLE' | translate }}</h1>
 
@@ -28,6 +26,7 @@
         </p>
 
         <div class="hero-actions">
+
           <button class="btn-primary"
                   (click)="navigateToURL('register')">
             {{ 'HOME.HERO.CTA_PRIMARY' | translate }}
@@ -37,10 +36,10 @@
                   (click)="navigateToURL('login')">
             {{ 'HOME.HERO.CTA_SECONDARY' | translate }}
           </button>
+
         </div>
       </div>
 
-      <!-- RIGHT -->
       <div class="hero-image">
         <img src="dashboard.png"
              alt="CabinetPro Dashboard"
@@ -50,51 +49,197 @@
     </div>
   </section>
 
-  <!-- BENEFITS -->
-  <section class="benefits container">
+
+  <section class="benefits">
 
     <div class="benefit-card">
-      <img src="calendar.png"
-           alt="Calendar icon"
-           class="benefit-icon" />
+      <img src="calendar.png" class="benefit-icon">
       <h3>{{ 'HOME.BENEFITS.SCHEDULE.TITLE' | translate }}</h3>
       <p>{{ 'HOME.BENEFITS.SCHEDULE.DESC' | translate }}</p>
     </div>
 
     <div class="benefit-card">
-      <img src="person.png"
-           alt="Calendar icon"
-           class="benefit-icon" />
+      <img src="person.png" class="benefit-icon">
       <h3>{{ 'HOME.BENEFITS.PATIENTS.TITLE' | translate }}</h3>
       <p>{{ 'HOME.BENEFITS.PATIENTS.DESC' | translate }}</p>
     </div>
 
     <div class="benefit-card">
-      <img src="lock.png"
-           alt="Calendar icon"
-           class="benefit-icon" />
+      <img src="lock.png" class="benefit-icon">
       <h3>{{ 'HOME.BENEFITS.SECURITY.TITLE' | translate }}</h3>
       <p>{{ 'HOME.BENEFITS.SECURITY.DESC' | translate }}</p>
     </div>
 
   </section>
 
-  <!-- CTA FINAL -->
-  <section class="final-cta text-center">
-    <h2>{{ 'HOME.CTA.TITLE' | translate }}</h2>
 
-    <button class="btn-primary large"
-            (click)="navigateToURL('register')">
-      {{ 'HOME.CTA.BUTTON' | translate }}
-    </button>
+  <section class="how">
+
+    <h2>{{ 'HOME.HOW.TITLE' | translate }}</h2>
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>{{ 'HOME.HOW.STEP1.TITLE' | translate }}</h3>
+        <p>{{ 'HOME.HOW.STEP1.DESC' | translate }}</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>{{ 'HOME.HOW.STEP2.TITLE' | translate }}</h3>
+        <p>{{ 'HOME.HOW.STEP2.DESC' | translate }}</p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>{{ 'HOME.HOW.STEP3.TITLE' | translate }}</h3>
+        <p>{{ 'HOME.HOW.STEP3.DESC' | translate }}</p>
+      </div>
+
+    </div>
+
   </section>
 
-  <!-- FOOTER -->
+
+  <section class="faq">
+
+    <h2>{{ 'HOME.FAQ.TITLE' | translate }}</h2>
+
+    <div class="faq-list">
+
+      <div class="faq-item"
+           *ngFor="let item of faq; let i = index"
+           [class.open]="openFaq === i">
+
+        <div class="faq-question"
+             (click)="toggleFaq(i)">
+
+          <span>{{ item.q | translate }}</span>
+
+          <span class="faq-icon">
+          +
+        </span>
+
+        </div>
+
+        <div class="faq-answer">
+          {{ item.a | translate }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="cta">
+
+    <div class="cta-container">
+
+      <!-- LEFT -->
+      <div class="cta-left">
+
+        <h2>{{ 'HOME.CTA.TITLE' | translate }}</h2>
+
+        <p class="cta-text">
+          {{ 'HOME.CONTACT.TEXT' | translate }}
+        </p>
+
+        <button class="btn-primary large"
+                (click)="navigateToURL('register')">
+          {{ 'HOME.CTA.BUTTON' | translate }}
+        </button>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="cta-right">
+
+        <div class="contact-card">
+
+          <h3>{{ 'HOME.CONTACT.TITLE' | translate }}</h3>
+
+          <p class="contact-line">
+            📧 contact&#64;cabinetpro.ro
+          </p>
+
+          <p class="contact-note">
+            {{ 'HOME.CONTACT.RESPONSE' | translate }}
+          </p>
+
+          <ul class="contact-benefits">
+            <li>{{ 'HOME.CONTACT.B1' | translate }}</li>
+            <li>{{ 'HOME.CONTACT.B2' | translate }}</li>
+            <li>{{ 'HOME.CONTACT.B3' | translate }}</li>
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
   <footer class="footer">
-    <p>
-      © 2025 CabinetPro.
-      {{ 'HOME.FOOTER.RIGHTS' | translate }}
-    </p>
+
+    <div class="footer-content">
+
+      <div class="footer-brand">
+        <h3>CabinetPro</h3>
+        <p>{{ 'HOME.FOOTER.DESCRIPTION' | translate }}</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>{{ 'HOME.FOOTER.PRODUCT' | translate }}</h4>
+        <a (click)="navigateToURL('register')">
+          {{ 'HOME.FOOTER.CREATE_ACCOUNT' | translate }}
+        </a>
+        <a (click)="navigateToURL('login')">
+          {{ 'HOME.FOOTER.LOGIN' | translate }}
+        </a>
+      </div>
+
+      <div class="footer-column">
+        <h4>{{ 'HOME.FOOTER.COMPANY' | translate }}</h4>
+        <a href="#">{{ 'HOME.FOOTER.ABOUT' | translate }}</a>
+        <a href="#">{{ 'HOME.FOOTER.CONTACT' | translate }}</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>{{ 'HOME.FOOTER.LEGAL' | translate }}</h4>
+        <a href="#">{{ 'HOME.FOOTER.TERMS' | translate }}</a>
+        <a href="#">{{ 'HOME.FOOTER.PRIVACY' | translate }}</a>
+      </div>
+    </div>
+
+    <div class="footer-trust">
+
+      <div class="trust-item">
+        🔒 {{ 'HOME.TRUST.SECURE' | translate }}
+      </div>
+
+      <div class="trust-item">
+        🇪🇺 {{ 'HOME.TRUST.EU' | translate }}
+      </div>
+
+      <div class="trust-item">
+        ⚡ {{ 'HOME.TRUST.ACCESS' | translate }}
+      </div>
+
+      <div class="trust-item">
+        ✔ {{ 'HOME.TRUST.BACKUP' | translate }}
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 CabinetPro · {{ 'HOME.FOOTER.RIGHTS' | translate }}
+    </div>
+
   </footer>
 
 </div>
