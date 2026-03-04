@@ -1,0 +1,66 @@
+<div class="login-wrapper">
+
+  <div class="login-box">
+
+    <h2>{{ 'auth.activate.title' | translate }}</h2>
+
+    <p class="subtitle">
+      {{ 'auth.activate.subtitle' | translate }}
+    </p>
+
+    <form (ngSubmit)="onSubmit()" #formRef="ngForm">
+
+      <div class="form-group">
+        <label>{{ 'auth.activate.username' | translate }}</label>
+
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="form.username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'auth.activate.fullName' | translate }}</label>
+
+        <input
+          type="text"
+          name="fullName"
+          [(ngModel)]="form.fullName"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>{{ 'auth.activate.cabinetName' | translate }}</label>
+
+        <input
+          type="text"
+          name="cabinetName"
+          [(ngModel)]="form.cabinetName"
+          required
+        />
+      </div>
+
+      <button class="btn" [disabled]="loading || !formRef.valid">
+        {{ loading ? ('auth.activate.loading' | translate) : ('auth.activate.submit' | translate) }}
+      </button>
+
+    </form>
+
+    @if(success){
+      <p class="success">
+        {{ 'auth.activate.success' | translate }}
+      </p>
+    }
+
+    @if(error){
+      <p class="error">
+        {{ errorMessage }}
+      </p>
+    }
+
+  </div>
+
+</div>

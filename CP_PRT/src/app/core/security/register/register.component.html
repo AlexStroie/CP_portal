@@ -1,58 +1,92 @@
 <div class="login-wrapper">
 
   <div class="login-box">
-    <h2>Înregistrare</h2>
+    <h2>{{ 'auth.register.title' | translate }}</h2>
 
-    <form (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
 
       <div class="form-group">
-        <label>Utilizator</label>
+        <label>{{ 'auth.register.email.label' | translate }}</label>
+
         <input
-          type="text"
-          [(ngModel)]="form.username"
-          name="username"
-          placeholder="Introdu un username"
+          type="email"
+          [(ngModel)]="form.email"
+          name="email"
+          #emailModel="ngModel"
           required
+          email
+          [placeholder]="'auth.register.email.placeholder' | translate"
         />
+
+        @if(emailModel.touched && emailModel.invalid){
+          <small class="error-field">
+            {{ 'auth.register.errors.emailInvalid' | translate }}
+          </small>
+        }
       </div>
 
       <div class="form-group">
-        <label>Parolă</label>
+        <label>{{ 'auth.register.password.label' | translate }}</label>
+
         <input
           type="password"
           [(ngModel)]="form.password"
           name="password"
-          placeholder="Introdu parola"
+          #passwordModel="ngModel"
           required
+          minlength="6"
+          (ngModelChange)="checkStrength()"
+          [placeholder]="'auth.register.password.placeholder' | translate"
         />
+
+        <div class="password-strength">
+          {{ 'auth.register.passwordStrength.label' | translate }}:
+          <span [class]="passwordStrength">
+            {{ ('auth.register.passwordStrength.' + passwordStrength) | translate }}
+          </span>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>Confirmare Parolă</label>
+        <label>{{ 'auth.register.confirmPassword.label' | translate }}</label>
+
         <input
           type="password"
           [(ngModel)]="form.confirmPassword"
           name="confirmPassword"
-          placeholder="Confirmă parola"
           required
+          [placeholder]="'auth.register.confirmPassword.placeholder' | translate"
         />
+
+        @if(form.confirmPassword && !passwordsMatch()){
+          <small class="error-field">
+            {{ 'auth.register.errors.passwordMismatch' | translate }}
+          </small>
+        }
       </div>
 
-      <button class="btn" [disabled]="loading">
-        {{ loading ? 'Se înregistrează...' : 'Creează cont' }}
+      <button class="btn" [disabled]="loading || !registerForm.valid || !passwordsMatch()">
+        {{ loading ? ('auth.register.loading' | translate) : ('auth.register.submit' | translate) }}
       </button>
 
     </form>
+
+    <p class="microcopy">
+      {{ 'auth.register.microcopy' | translate }}
+    </p>
 
     @if (registrationFailed) {
       <p class="error">{{ errorMessage }}</p>
     }
 
     @if (registrationSuccess) {
-      <p class="success">Cont creat cu succes! Se redirecționează...</p>
+      <p class="success">{{ 'auth.register.success' | translate }}</p>
     }
 
-    <a class="register-link" (click)="goToLogin()">Ai deja cont? Autentifică-te</a>
+    <a class="register-link" (click)="goToLogin()">
+      {{ 'auth.register.haveAccount' | translate }}
+    </a>
+
   </div>
 
 </div>

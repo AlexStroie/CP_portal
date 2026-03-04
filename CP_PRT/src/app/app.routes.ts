@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from './pages/home/home.component';
 import {AuthenticateComponent} from './core/security/authenticate/authenticate.component';
 import {RegisterComponent} from './core/security/register/register.component';
-import {ActivateComponent} from './core/security/activate/activate.component';
+import {ActivateAccountComponent} from './core/security/activate/activate-account.component';
 import {SuspendedComponent} from './core/forbiden/suspended/suspended.component';
 
 export const routes: Routes = [
@@ -23,7 +23,7 @@ export const routes: Routes = [
 
   {
     path: 'activate',
-    component: ActivateComponent
+    component: ActivateAccountComponent
   },
 
   {

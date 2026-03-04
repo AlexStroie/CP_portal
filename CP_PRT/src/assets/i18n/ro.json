@@ -124,6 +124,57 @@
       "authFailed": "Autentificarea a eșuat"
     }
   },
+  "auth": {
+    "register": {
+      "title": "Înregistrare",
+      "username": {
+        "label": "Utilizator",
+        "placeholder": "Introdu un username"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Introdu adresa email"
+      },
+      "password": {
+        "label": "Parolă",
+        "placeholder": "Introdu parola"
+      },
+      "confirmPassword": {
+        "label": "Confirmare parolă",
+        "placeholder": "Confirmă parola"
+      },
+      "submit": "Creează cont gratuit",
+      "loading": "Se înregistrează...",
+      "success": "Cont creat cu succes! Verifică emailul pentru activare.",
+      "haveAccount": "Ai deja cont? Autentifică-te",
+      "microcopy": "Crearea contului durează mai puțin de 30 secunde.",
+      "passwordStrength": {
+        "label": "Siguranța parolei",
+        "weak": "Slabă",
+        "medium": "Mediu",
+        "strong": "Puternică"
+      },
+      "errors": {
+        "usernameInvalid": "Username-ul trebuie să aibă minim 3 caractere",
+        "usernameExists": "Acest username există deja",
+        "emailExists": "Acest email e deja folosit",
+        "emailInvalid": "Email invalid",
+        "passwordMismatch": "Parolele nu coincid",
+        "failed": "Înregistrare eșuată"
+      }
+    },
+    "activate": {
+      "title": "Activează contul",
+      "subtitle": "Completează profilul pentru a începe să folosești CabinetPRO",
+      "username": "Utilizator",
+      "fullName": "Nume complet",
+      "cabinetName": "Nume cabinet",
+      "submit": "Activează contul",
+      "loading": "Se activează...",
+      "success": "Cont activat cu succes! Se redirecționează...",
+      "error": "Activarea contului a eșuat"
+    }
+  },
   "menu": {
     "dashboard": "Dashboard",
     "cabinets": "Cabinete",
@@ -171,6 +222,7 @@
     "roles": {
       "SUPER_ADMIN": "Super Admin",
       "ADMIN": "Administrator",
+      "USER": "Utilizator",
       "DOCTOR": "Medic",
       "ASSISTANT": "Asistent"
     },

@@ -98,6 +98,23 @@ public abstract class AbstractService {
         }
     }
 
+    protected <T extends Object> T postForObject(Microservice ms, String command, Object body, Class<T> type) {
+        if (body == null) {
+            return null;
+        }
+        String url = registry.getServiceUrl(ms) + "/" + command;
+        log.info("[GWY] POST {}", url);
+
+        try {
+            return restTemplate.postForObject(url, body, type);
+        } catch (HttpClientErrorException e) {
+            throw translateClientException(e);
+        } catch (RestClientException e) {
+            log.error("[GWY] Error calling {}", url, e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error contacting downstream service");
+        }
+    }
+
     /* ============ PUT with response ============ */
 
     protected <T extends MicroserviceAware> T putEntity(String command, Object body, Class<T> type) {

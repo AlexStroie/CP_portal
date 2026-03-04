@@ -38,3 +38,20 @@ export interface LoginResponse {
   cabinetId?: number;
   delegated?: boolean;
 }
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  success: boolean;
+}
+
+export interface ActivateAccountRequest {
+  token: string,
+  username: string,
+  fullName: string,
+  cabinetName: string
+}

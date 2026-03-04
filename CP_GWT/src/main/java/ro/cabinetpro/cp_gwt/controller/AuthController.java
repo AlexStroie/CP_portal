@@ -43,8 +43,11 @@ public class AuthController {
 
     @PostMapping("/activate")
     public ResponseEntity<?> activateAccount(@RequestBody ActivateAccountRequest request) {
-        authService.activateAccount(request);
-        return ResponseEntity.ok("Account activated successfully");
+        if (authService.activateAccount(request)) {
+            return ResponseEntity.ok("Account activated successfully");
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/switchContext")

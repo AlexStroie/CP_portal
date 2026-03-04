@@ -7,5 +7,7 @@ import lombok.Setter;
 @Setter
 public class ActivateAccountRequest {
     private String token;
-    private String newPassword;
+    private String username;
+    private String fullName;
+    private String cabinetName;
 }

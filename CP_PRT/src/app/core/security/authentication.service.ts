@@ -3,7 +3,13 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, tap} from 'rxjs';
 import {APP_CONFIG, httpOptions, IAppConfig} from '../../app.config';
 import {Role} from '../../shared/types/role';
-import {LoginResponse, SwitchRequest} from '../model/user.model';
+import {
+  ActivateAccountRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+  SwitchRequest
+} from '../model/user.model';
 import {TokenStorageService} from './token-storage.service';
 
 @Injectable({
@@ -22,15 +28,16 @@ export class AuthenticationService {
     }, httpOptions);
   }
 
-  register(username: string, password: string) {
-    return this.http.post(this.config.webEndpoint + 'api/auth/register', {
-      username,
-      password
-    }, httpOptions);
+  register(request: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(
+      this.config.webEndpoint + 'api/auth/register',
+      request,
+      httpOptions
+    );
   }
 
-  activateAccount(req: { token: string, newPassword: string }) {
-    return this.http.post(this.config.webEndpoint + 'api/auth/activate', req, {responseType: 'text'});
+  activateAccount(request: ActivateAccountRequest) {
+    return this.http.post(this.config.webEndpoint + 'api/auth/activate', request, {responseType: 'text'});
   }
 
   switchContext(request: SwitchRequest): Observable<LoginResponse> {

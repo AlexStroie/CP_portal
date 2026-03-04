@@ -46,8 +46,8 @@ public class AuthService extends AbstractService {
         return postEntity("auth/register", request, RegisterResponse.class);
     }
 
-    public void activateAccount(ActivateAccountRequest request) {
-        postVoid(Microservice.GWY, "auth/activate", request);
+    public boolean activateAccount(ActivateAccountRequest request) {
+        return postForObject(Microservice.GWY, "auth/activate", request, Boolean.class);
     }
 
     public LoginResponse switchContext(SwitchRequest request) {
