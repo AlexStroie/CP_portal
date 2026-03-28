@@ -52,7 +52,6 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       this.cabinetService.getById(Number(user.cabinetId)).subscribe(data => {
         this.title = data.name;
       });
-    }
 
     const cabinetId = Number(this.tokenStorage.getCabinetId());
     this.appointmentService
@@ -60,6 +59,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       .subscribe(data => {
         this.todayAppointments.set(data)
       });
+    }
 
     // refresh "now" la fiecare minut
     setInterval(() => this.now.set(new Date()), 60000);

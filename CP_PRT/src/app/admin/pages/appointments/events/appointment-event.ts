@@ -5,6 +5,7 @@ export interface CreateAppointmentEvent {
   date: Date;
   startHour: number;
   startMinute: number;
+  duration: number;
   patients: Patient[];
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetRequest;
 import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetResponse;
+import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetSettings;
 import ro.cabinetpro.cp_gwt.service.CabinetService;
 
 import java.util.List;
@@ -47,6 +48,15 @@ public class CabinetController {
         return cabinetService.updateCabinetDetails(id, req);
     }
 
+    @GetMapping("/{id}/settings")
+    public CabinetSettings getCabinetSettings(@PathVariable Long id) {
+        return cabinetService.getCabinetSettings(id);
+    }
+
+    @PostMapping("/{id}/settings")
+    public CabinetSettings updateCabinetSettings(@PathVariable Long id, @RequestBody CabinetSettings req) {
+        return cabinetService.updateCabinetSettings(id, req);
+    }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {

@@ -88,7 +88,7 @@
               <div class="time-slot-grid">
                 @for (h of hours; let hi = $index; track hi) {
                   @for (slot of slotsPerHourArray; let mi = $index; track mi) {
-                    @if (DateUtils.isBeforeToday(day)) {
+                    @if (DateUtils.isBeforeToday(day) || !isCabinetOpen(day)) {
                       <div class="time-slot time-slot--disabled"></div>
                     } @else {
                       <div class="time-slot"
@@ -101,7 +101,7 @@
             </div>
             <!-- APPOINTMENTS -->
             @for (appt of getAppointmentsForDay(day); track appt.id) {
-              @if (DateUtils.isBeforeToday(day)) {
+              @if (DateUtils.isBeforeToday(day) || !isCabinetOpen(day)) {
                 <div
                   class="appointment-card appointment-card--disabled"
                   [style.background]="getColor(appt) || '#71788a'"

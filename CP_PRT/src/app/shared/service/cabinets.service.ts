@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {APP_CONFIG, httpOptions, IAppConfig} from '../../app.config';
-import {Cabinet} from '../../core/model/cabinet.model';
+import {Cabinet, CabinetSettings} from '../../core/model/cabinet.model';
 
 @Injectable({providedIn: 'root'})
 export class CabinetsService {
@@ -38,4 +38,13 @@ export class CabinetsService {
   updateCabinetDetails(id: number, cabinet: any): Observable<any> {
     return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/details", cabinet, httpOptions);
   }
+
+  getCabinetSettingsById(id: number): Observable<CabinetSettings> {
+    return this.http.get<CabinetSettings>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/settings", httpOptions);
+  }
+
+  updateCabinetSettings(id: number, cabinet: CabinetSettings): Observable<any> {
+    return this.http.post<CabinetSettings[]>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/settings", cabinet, httpOptions);
+  }
+
 }

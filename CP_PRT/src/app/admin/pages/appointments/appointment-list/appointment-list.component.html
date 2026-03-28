@@ -6,6 +6,8 @@
   [view]="'week'"
   [currentDate]="selectedDate"
   [appointments]="appointmentsCalendar()"
+  [patients]="patients()"
+  [cabinetSettings]="cabinetSettings()"
   (createAppointment)="openCreateDialog($event)"
   (editAppointment)="openEditDialog($event)"
   >

@@ -1,0 +1,93 @@
+<div class="users-header">
+  <h2>{{ 'subscriptionPlans.title' | translate }}</h2>
+</div>
+
+<table class="users-table">
+  <thead>
+  <tr>
+    <th>{{ 'subscriptionPlans.columns.code' | translate }}</th>
+    <th>{{ 'subscriptionPlans.columns.name' | translate }}</th>
+    <th>{{ 'subscriptionPlans.columns.maxUsers' | translate }}</th>
+    <th>{{ 'subscriptionPlans.columns.maxPatients' | translate }}</th>
+    <th>{{ 'subscriptionPlans.columns.price' | translate }}</th>
+    <th>{{ 'subscriptionPlans.columns.createdAt' | translate }}</th>
+<!--    <th class="actions-col">{{ 'subscriptionPlans.columns.actions' | translate }}</th>-->
+  </tr>
+  </thead>
+
+  <tbody>
+    @for (plan of plans(); track plan.id) {
+      <tr>
+
+        <!-- CODE -->
+        <td>
+            <span
+              class="badge"
+              [ngClass]="getPlanClass(plan.code)"
+            >
+            {{ plan.code }}
+          </span>
+        </td>
+
+        <!-- NAME -->
+        <td>{{ plan.name }}</td>
+
+        <!-- MAX USERS -->
+        <td>{{ plan.maxUsers }}</td>
+
+        <!-- MAX PATIENTS -->
+        <td>{{ plan.maxPatients }}</td>
+
+        <!-- PRICE -->
+        <td>
+          {{ plan.price }} {{ plan.currency }}
+        </td>
+
+        <!-- CREATED -->
+        <td>
+          {{ plan.createdAt | date:'yyyy-MM-dd HH:mm' }}
+        </td>
+
+        <!-- ACTIONS -->
+<!--        <td class="actions-col">-->
+<!--          <button-->
+<!--            class="icon-button edit"-->
+<!--            [routerLink]="['/admin/subscription-plans', plan.id]"-->
+<!--          >-->
+<!--            ✏️-->
+<!--          </button>-->
+
+<!--          <button-->
+<!--            class="icon-button delete"-->
+<!--            (click)="askDelete(plan)"-->
+<!--          >-->
+<!--            🗑️-->
+<!--          </button>-->
+<!--        </td>-->
+
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (planToDelete()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>{{ 'subscriptionPlans.delete.title' | translate }}</h3>
+
+      <p>
+        {{ 'subscriptionPlans.delete.message' | translate:{ name: planToDelete()?.name } }}
+      </p>
+
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDelete()">
+          {{ 'subscriptionPlans.delete.confirm' | translate }}
+        </button>
+
+        <button class="btn-secondary" (click)="cancelDelete()">
+          {{ 'subscriptionPlans.delete.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

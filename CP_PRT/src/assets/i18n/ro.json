@@ -178,6 +178,7 @@
   "menu": {
     "dashboard": "Dashboard",
     "cabinets": "Cabinete",
+    "subscriptions": "Subscripții",
     "users": "Utilizatori",
     "patients": "Pacienți",
     "appointments": "Programări",
@@ -504,6 +505,25 @@
     "errors": {
       "recurrenceLimitRequired": "Selectează o limită pentru recurență.",
       "recurrenceLimitConflict": "Poți seta fie dată limită, fie număr ședințe, nu ambele."
+    }
+  },
+  "subscriptionPlans": {
+    "title": "Planuri de abonament",
+    "add": "Adaugă plan",
+    "columns": {
+      "code": "Cod",
+      "name": "Denumire",
+      "maxUsers": "Utilizatori max.",
+      "maxPatients": "Pacienți max.",
+      "price": "Preț",
+      "createdAt": "Creat la",
+      "actions": "Acțiuni"
+    },
+    "delete": {
+      "title": "Ștergere plan",
+      "message": "Ești sigur că vrei să ștergi planul „{{name}}”?",
+      "confirm": "Șterge",
+      "cancel": "Anulează"
     }
   }
 }

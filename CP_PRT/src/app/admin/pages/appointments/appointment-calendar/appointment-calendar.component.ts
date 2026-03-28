@@ -19,6 +19,7 @@ import {CreateAppointmentEvent, EditAppointmentEvent} from '../events/appointmen
 import {DateUtils} from '../utils/date-utils';
 import {TranslatePipe} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
+import {Cabinet, CabinetSettings} from '../../../../core/model/cabinet.model';
 
 
 type CalendarView = 'day' | 'week';
@@ -34,22 +35,22 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
 
   @Input() view: CalendarView = 'week';
   @Input() currentDate: Date = new Date();
+  @Input() cabinetSettings?: CabinetSettings | null;
+  @Input() patients: Patient[] = [];
   @Input() appointments: AppointmentCalendar[] = [];
 
   @Output() createAppointment = new EventEmitter<CreateAppointmentEvent>();
   @Output() editAppointment = new EventEmitter<EditAppointmentEvent>();
-  HOUR_HEIGHT = 60; // px per oră (verifică CSS-ul tău)
-
-  patients = signal<Patient[]>([]);
+  HOUR_HEIGHT = 60;
 
   nowLineTop = 0;
   startHour = 6;
   endHour = 22;
   slotMinutes = 15;
   appointmentsByDay = new Map<string, AppointmentCalendar[]>();
+  defaultDuration = 50;
 
-  constructor(private patientsService: PatientsService,
-              private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   updateNowLinePosition() {
@@ -89,10 +90,21 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnInit(): void {
-    this.patientsService.getAll().subscribe(data => this.patients.set(data));
   }
 
   private buildCalendar() {
+    if (this.cabinetSettings) {
+      if (this.cabinetSettings.startHour) {
+        this.startHour = Number(this.cabinetSettings.startHour.split(':')[0]);
+      }
+      if (this.cabinetSettings.endHour) {
+        this.endHour = Number(this.cabinetSettings.endHour.split(':')[0]) - 1;
+      }
+      if (this.cabinetSettings.slotDurationMin) {
+        this.defaultDuration = this.cabinetSettings.slotDurationMin;
+      }
+    }
+
     this.appointmentsByDay.clear();
 
     for (const appt of this.appointments) {
@@ -114,6 +126,20 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
       arr.push((h < 10 ? '0' + h : h) + ':00');
     }
     return arr;
+  }
+
+  isCabinetOpen(date: Date): boolean {
+
+    const day = date.getDay() === 0 ? 7 : date.getDay();
+
+    const workingDays = this.cabinetSettings?.workingDays;
+
+    if (workingDays) {
+      return workingDays.includes(day.toString());
+    }
+
+    // default: Luni-Vineri
+    return day >= 1 && day <= 5;
   }
 
   get slotsPerHourArray(): null[] {
@@ -225,7 +251,8 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
       date: day,
       startHour: hour,
       startMinute: minute,
-      patients: this.patients()
+      duration: this.defaultDuration,
+      patients: this.patients
     });
   }
 
@@ -238,7 +265,8 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
       date: start,
       startHour: start.getHours(),
       startMinute: start.getMinutes(),
-      patients: this.patients(),
+      patients: this.patients,
+      duration: this.defaultDuration,
       appointment: appt
     });
   }

@@ -28,6 +28,10 @@
           {{ 'menu.cabinets' | translate }}
         </a>
 
+        <a routerLink="/admin/subscriptions" routerLinkActive="active">
+          {{ 'menu.subscriptions' | translate }}
+        </a>
+
         <a routerLink="/admin/users" routerLinkActive="active">
           {{ 'menu.users' | translate }}
         </a>
@@ -37,17 +41,22 @@
         {{ 'menu.patients' | translate }}
       </a>
 
-      <a routerLink="/admin/appointments" routerLinkActive="active">
-        {{ 'menu.appointments' | translate }}
-      </a>
+      @if (!isSuperAdmin) {
+        <a routerLink="/admin/appointments" routerLinkActive="active">
+          {{ 'menu.appointments' | translate }}
+        </a>
+      }
 
       <a routerLink="/admin/profile" routerLinkActive="active">
         {{ 'menu.profile' | translate }}
       </a>
 
-      <a routerLink="/admin/cabinet-settings" routerLinkActive="active">
-        {{ 'menu.cabinetSettings' | translate }}
-      </a>
+      @if (!isSuperAdmin) {
+        <a routerLink="/admin/cabinet-settings" routerLinkActive="active">
+          {{ 'menu.cabinetSettings' | translate }}
+        </a>
+
+      }
     </nav>
 
     <div class="logout-container">

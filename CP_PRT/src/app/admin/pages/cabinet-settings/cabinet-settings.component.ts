@@ -1,16 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormGroup
+  FormGroup, NonNullableFormBuilder
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+import {Router} from '@angular/router';
+import {TranslatePipe} from '@ngx-translate/core';
+import {CommonModule} from '@angular/common';
 
-import { CabinetsService } from '../../../shared/service/cabinets.service';
-import { TokenStorageService } from '../../../core/security/token-storage.service';
+import {CabinetsService} from '../../../shared/service/cabinets.service';
+import {TokenStorageService} from '../../../core/security/token-storage.service';
+import {CabinetSettings} from '../../../core/model/cabinet.model';
 
 @Component({
   selector: 'app-cabinet-settings',
@@ -23,9 +24,10 @@ import { TokenStorageService } from '../../../core/security/token-storage.servic
   templateUrl: './cabinet-settings.component.html',
   styleUrls: ['./cabinet-settings.component.css']
 })
-export class CabinetSettingsComponent implements OnInit {
+class CabinetSettingsComponent implements OnInit {
 
   private fb = inject(FormBuilder);
+  private programFormBuilder = inject(NonNullableFormBuilder);
   private service = inject(CabinetsService);
   private tokenService = inject(TokenStorageService);
   private router = inject(Router);
@@ -49,18 +51,18 @@ export class CabinetSettingsComponent implements OnInit {
   });
 
   // 🔹 Program form
-  programForm = this.fb.group({
+  programForm = this.programFormBuilder.group({
     startHour: ['08:00', Validators.required],
     endHour: ['18:00', Validators.required],
     slotDuration: [30, Validators.required],
-    workingDays: this.fb.group({
-      mon: [true],
-      tue: [true],
-      wed: [true],
-      thu: [true],
-      fri: [true],
-      sat: [false],
-      sun: [false]
+    workingDays: this.programFormBuilder.group({
+      mon: true,
+      tue: true,
+      wed: true,
+      thu: true,
+      fri: true,
+      sat: false,
+      sun: false
     })
   });
 
@@ -97,6 +99,34 @@ export class CabinetSettingsComponent implements OnInit {
         });
 
         // optional: patch program settings when backend supports it
+
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.router.navigate(['/admin']);
+      }
+    });
+
+    this.service.getCabinetSettingsById(this.cabinetId).subscribe({
+      next: (cabinetSettings) => {
+
+        const days = cabinetSettings.workingDays ?? [];
+
+        this.programForm.patchValue({
+          startHour: cabinetSettings.startHour,
+          endHour: cabinetSettings.endHour,
+          slotDuration: cabinetSettings.slotDurationMin,
+          workingDays: {
+            mon: days.includes('1'),
+            tue: days.includes('2'),
+            wed: days.includes('3'),
+            thu: days.includes('4'),
+            fri: days.includes('5'),
+            sat: days.includes('6'),
+            sun: days.includes('7')
+          }
+        });
 
         this.loading = false;
       },
@@ -160,13 +190,9 @@ export class CabinetSettingsComponent implements OnInit {
 
     this.savingProgram = true;
 
-    const payload = {
-      cabinetId: this.cabinetId,
-      ...this.programForm.value
-    };
+    const cabinetSettings = this.buildCabinetSettings();
 
-    // TODO: implement endpoint in service
-    console.log('Program payload', payload);
+    this.service.updateCabinetSettings(this.cabinetId, cabinetSettings).subscribe();
 
     setTimeout(() => {
       this.savingProgram = false;
@@ -178,4 +204,33 @@ export class CabinetSettingsComponent implements OnInit {
     const c = this.form.get(control);
     return !!(c && c.touched && c.hasError(error));
   }
+
+  private buildCabinetSettings(): CabinetSettings {
+
+    const form = this.programForm.getRawValue();
+
+    const dayMap: Record<string, number> = {
+      mon: 1,
+      tue: 2,
+      wed: 3,
+      thu: 4,
+      fri: 5,
+      sat: 6,
+      sun: 7
+    };
+
+    const workingDays = Object.entries(form.workingDays)
+      .filter(([_, enabled]) => enabled)
+      .map(([day]) => dayMap[day]);
+
+    return {
+      cabinetId: this.cabinetId,
+      startHour: form.startHour,
+      endHour: form.endHour,
+      slotDurationMin: form.slotDuration,
+      workingDays: workingDays.join(',')
+    };
+  }
 }
+
+export default CabinetSettingsComponent

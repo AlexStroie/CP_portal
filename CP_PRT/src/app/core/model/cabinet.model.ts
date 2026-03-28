@@ -49,3 +49,11 @@ export interface CabinetRequest {
   price: number | null;
   currency: string;
 }
+
+export interface CabinetSettings {
+  cabinetId: number;
+  startHour: string;
+  endHour: string;
+  slotDurationMin: number;
+  workingDays: string;
+}

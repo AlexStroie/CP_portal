@@ -9,6 +9,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {AppointmentCreateDialogComponent} from '../appointment-create-dialog/appointment-create-dialog.component';
 import {Patient} from '../../../../core/model/patient.model';
 import {DateUtils} from '../utils/date-utils';
+import {Cabinet, CabinetSettings} from '../../../../core/model/cabinet.model';
+import {CabinetsService} from '../../../../shared/service/cabinets.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -22,6 +24,14 @@ import {DateUtils} from '../utils/date-utils';
 })
 export class AppointmentListComponent implements OnInit, OnChanges, AfterViewInit {
 
+  DEFAULT_CABINET_SETTINGS: CabinetSettings = {
+    cabinetId: 0,
+    startHour: '08:00',
+    endHour: '18:00',
+    slotDurationMin: 50,
+    workingDays: "1,2,3,4,5"
+  };
+
   // =========================
   // Signals
   // =========================
@@ -29,6 +39,7 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
   appointments = signal<AppointmentExtended[]>([]);
   patients = signal<Patient[]>([]);
   appointmentsCalendar = signal<AppointmentCalendar[]>([]);
+  cabinetSettings = signal<CabinetSettings>(this.DEFAULT_CABINET_SETTINGS);
 
   selectedDate = new Date();
   date = new FormControl('');
@@ -38,6 +49,7 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
   constructor(
     private appointmentService: AppointmentService,
     private patientsService: PatientsService,
+    private cabinetsService: CabinetsService,
     private tokenStorageService: TokenStorageService,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef
@@ -53,8 +65,18 @@ export class AppointmentListComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnInit(): void {
+    this.loadCabinetDetails();
     this.loadPatients();
     this.loadAppointments();
+  }
+
+  private loadCabinetDetails() {
+    const cabinetId = Number(this.tokenStorageService.getCabinetId());
+
+    this.cabinetsService.getCabinetSettingsById(cabinetId).subscribe({
+      next: data => this.cabinetSettings.set(data),
+      error: err => console.error('Failed to load cabinet settings', err)
+    });
   }
 
   private loadPatients() {

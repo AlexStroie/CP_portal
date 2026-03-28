@@ -12,8 +12,9 @@ import {PatientsListComponent} from './pages/patients/patients-list/patients-lis
 import {PatientFormComponent} from './pages/patients/patient-form/patient-form.component';
 import {AppointmentListComponent} from './pages/appointments/appointment-list/appointment-list.component';
 import {Role} from '../shared/types/role';
-import {CabinetSettingsComponent} from './pages/cabinet-settings/cabinet-settings.component';
+import CabinetSettingsComponent from './pages/cabinet-settings/cabinet-settings.component';
 import {cabinetActiveGuard} from '../interceptors/account-suspended.guard';
+import {SubscriptionsComponent} from './pages/subscriptions/subscriptions.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -34,6 +35,12 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'cabinets',
         component: CabinetsListComponent,
+        canActivate: [SuperAdminGuard],
+        data: {roles: [Role.SUPER_ADMIN]}
+      },
+      {
+        path: 'subscriptions',
+        component: SubscriptionsComponent,
         canActivate: [SuperAdminGuard],
         data: {roles: [Role.SUPER_ADMIN]}
       },

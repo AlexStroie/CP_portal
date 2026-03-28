@@ -29,6 +29,8 @@ export class EditUserComponent implements OnInit {
   activationLink: string = "";
   cabinetId: string = "";
 
+  displayActivationLink = false;
+
   form = new FormGroup({
     fullName: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
@@ -76,10 +78,13 @@ export class EditUserComponent implements OnInit {
         password: ''
       });
 
-      this.cabinetId =  user.cabinetId;
+      this.cabinetId = user.cabinetId;
 
       const baseUrl = window.location.origin;
-      this.activationLink = baseUrl + '/activate?token=' + user.activationLink;
+      if (user.activationLink) {
+        this.displayActivationLink = true;
+        this.activationLink = baseUrl + '/activate?token=' + user.activationLink;
+      }
     });
   }
 
@@ -112,7 +117,7 @@ export class EditUserComponent implements OnInit {
   setCabinetId(event: Event) {
     const newValue = (event.target as HTMLInputElement).value;
     if (newValue) {
-     this.cabinetId = newValue;
+      this.cabinetId = newValue;
     }
   }
 }

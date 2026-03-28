@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetRequest;
 import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetResponse;
+import ro.cabinetpro.cp_gwt.dto.cabinet.CabinetSettings;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
 import java.util.List;
@@ -33,6 +34,14 @@ public class CabinetService extends AbstractService {
 
     public CabinetResponse updateCabinetDetails(Long id, CabinetRequest request) {
         return putEntity("admin/cabinets/" + id + "/details", request, CabinetResponse.class);
+    }
+
+    public CabinetSettings getCabinetSettings(Long id) {
+        return getObjectEntity(CabinetSettings.class, "admin/cabinets/" + id + "/settings");
+    }
+
+    public CabinetSettings updateCabinetSettings(Long id, CabinetSettings request) {
+        return postEntity("admin/cabinets/" + id + "/settings", request, CabinetSettings.class);
     }
 
     public void deleteCabinet(Long id) {
