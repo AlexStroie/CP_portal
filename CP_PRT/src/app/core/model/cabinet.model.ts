@@ -24,6 +24,7 @@ export interface Cabinet {
   currency: string;
 
   autoRenew: boolean;
+  setupCompleted: boolean;
 }
 
 export interface CabinetRequest {

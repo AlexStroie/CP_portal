@@ -243,7 +243,9 @@
       "patients": "Pacienți",
       "appointments": "Programări",
       "last30Days": "Activitate ultimele 30 zile"
-    }
+    },
+    "setupBanner": "Completează setările cabinetului pentru a începe programările",
+    "setupNow": "Configurează acum"
   },
   "users": {
     "title": "Utilizatori",

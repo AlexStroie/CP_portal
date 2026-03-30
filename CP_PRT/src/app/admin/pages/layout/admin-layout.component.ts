@@ -27,14 +27,17 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     public authService: AuthenticationService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
     this.isDelegated = this.tokenStorage.isDelegated();
 
     const user: UserResponse = this.tokenStorage.getUser();
-    if (user && user.username) {
+    if (user && user.fullName) {
+      this.userFullName = user.fullName;
+    } else if (user && user.username) {
       this.userFullName = user.username;
     }
   }

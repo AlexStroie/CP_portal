@@ -37,6 +37,7 @@ public class CabinetResponse extends AbstractDTO implements MicroserviceAware {
 
     private String logoUrl;
     private boolean autoRenew;
+    private boolean setupCompleted;
 
     @Override
     @JsonIgnore

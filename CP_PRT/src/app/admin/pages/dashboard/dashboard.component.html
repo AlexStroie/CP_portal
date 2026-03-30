@@ -45,6 +45,25 @@
 
   <div class="admin-dashboard">
 
+    @if (!setupCompleted) {
+      <div class="setup-banner" [class.visible]="!setupCompleted">
+
+        <div class="content" (click)="goToSettings()">
+
+          <span class="icon">⚙️</span>
+
+          <span class="text">
+      {{ 'dashboard.setupBanner' | translate }}
+    </span>
+
+          <button class="cta">
+            {{ 'dashboard.setupNow' | translate }}
+          </button>
+
+        </div>
+      </div>
+    }
+
     <div class="dashboard-grid">
 
       <!-- Programările de azi -->

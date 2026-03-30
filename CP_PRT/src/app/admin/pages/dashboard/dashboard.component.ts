@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {UserResponse} from '../../../core/model/user.model';
 import {CabinetsService} from '../../../shared/service/cabinets.service';
@@ -19,6 +19,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   title: string;
+  setupCompleted: boolean = true;
   isSuperAdmin: boolean = false;
 
   stats = {
@@ -39,6 +40,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     private cabinetService: CabinetsService,
     private tokenStorage: TokenStorageService,
     private translate: TranslateService,
+    public router: Router,
     private cdr: ChangeDetectorRef
   ) {
     this.title = this.translate.instant('dashboard.title');
@@ -51,6 +53,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       const user: UserResponse = this.tokenStorage.getUser();
       this.cabinetService.getById(Number(user.cabinetId)).subscribe(data => {
         this.title = data.name;
+        this.setupCompleted = data.setupCompleted;
       });
 
     const cabinetId = Number(this.tokenStorage.getCabinetId());
@@ -127,5 +130,14 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
     const apptMin = h * 60 + m;
 
     return apptMin - nowMin;
+  }
+
+  protected goToSettings() {
+    this.router.navigate(['/admin/cabinet-settings']);
+  }
+
+  dismiss(event: Event) {
+    event.stopPropagation();
+    this.setupCompleted = false;
   }
 }

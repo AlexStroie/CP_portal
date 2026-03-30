@@ -84,7 +84,7 @@ export class AppointmentCalendarComponent implements OnInit, OnChanges, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['appointments'] && this.appointments.length > 0) {
+    if (changes['appointments']) {
       this.buildCalendar();
     }
   }
