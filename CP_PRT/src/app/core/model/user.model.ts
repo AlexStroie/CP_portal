@@ -55,3 +55,8 @@ export interface ActivateAccountRequest {
   fullName: string,
   cabinetName: string
 }
+
+export interface ResetPasswordRequest {
+  token: string,
+  password: string
+}

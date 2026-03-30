@@ -4,6 +4,8 @@ import {AuthenticateComponent} from './core/security/authenticate/authenticate.c
 import {RegisterComponent} from './core/security/register/register.component';
 import {ActivateAccountComponent} from './core/security/activate/activate-account.component';
 import {SuspendedComponent} from './core/forbiden/suspended/suspended.component';
+import {ForgotPasswordComponent} from './core/security/forgot-password/forgot-password.component';
+import {ResetPasswordComponent} from './core/security/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +21,16 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   },
 
   {

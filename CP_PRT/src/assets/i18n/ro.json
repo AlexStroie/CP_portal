@@ -120,9 +120,18 @@
     "insertPassword": "Introdu parola",
     "register": "Nu ai cont? Creează unul",
     "errors": {
-      "invalidLogin": "Invalid username or password",
+      "invalidLogin": "Nume utilizator sau parola gresite.",
       "authFailed": "Autentificarea a eșuat"
     }
+  },
+  "forgot": {
+    "title": "Recuperare parolă",
+    "email": "EMAIL",
+    "placeholder": "Introdu adresa de email",
+    "submit": "Trimite link de resetare",
+    "sending": "Se trimite...",
+    "success": "Dacă emailul există, vei primi un link pentru resetarea parolei.",
+    "backToLogin": "Înapoi la autentificare"
   },
   "auth": {
     "register": {
@@ -173,6 +182,33 @@
       "loading": "Se activează...",
       "success": "Cont activat cu succes! Se redirecționează...",
       "error": "Activarea contului a eșuat"
+    },
+    "reset": {
+      "title": "Setare parolă nouă",
+      "password": {
+        "label": "Parolă nouă",
+        "placeholder": "Introdu parola"
+      },
+      "confirmPassword": {
+        "label": "Confirmă parola",
+        "placeholder": "Reintrodu parola"
+      },
+      "submit": "Salvează parola",
+      "loading": "Se salvează...",
+      "success": "Parola a fost actualizată cu succes.",
+      "redirecting": "Vei fi redirecționat către autentificare...",
+      "backToLogin": "Înapoi la autentificare",
+      "passwordStrength": {
+        "label": "Siguranță parolă",
+        "weak": "Slabă",
+        "medium": "Medie",
+        "strong": "Puternică"
+      },
+      "errors": {
+        "passwordMismatch": "Parolele nu coincid",
+        "invalidToken": "Link invalid sau expirat",
+        "failed": "Resetarea parolei a eșuat"
+      }
     }
   },
   "menu": {

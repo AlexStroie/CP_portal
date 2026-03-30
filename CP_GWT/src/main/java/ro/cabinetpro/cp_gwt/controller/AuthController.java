@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ro.cabinetpro.cp_gwt.dto.auth.LoginRequest;
-import ro.cabinetpro.cp_gwt.dto.auth.LoginResponse;
-import ro.cabinetpro.cp_gwt.dto.auth.RegisterRequest;
-import ro.cabinetpro.cp_gwt.dto.auth.SwitchRequest;
+import ro.cabinetpro.cp_gwt.dto.auth.*;
 import ro.cabinetpro.cp_gwt.dto.types.Role;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.exception.InvalidCredentialsException;
@@ -39,6 +36,16 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/forgotPassword")
+    public void forgotPassword(@RequestBody String emailAddress) {
+        authService.forgotPassword(emailAddress);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return ResponseEntity.ok(authService.resetPassword(request));
     }
 
     @PostMapping("/activate")

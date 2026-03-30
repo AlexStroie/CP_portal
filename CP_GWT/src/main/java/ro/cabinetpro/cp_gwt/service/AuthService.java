@@ -42,8 +42,16 @@ public class AuthService extends AbstractService {
         return loginResponse;
     }
 
-    public RegisterResponse register(RegisterRequest request) {
-        return postEntity("auth/register", request, RegisterResponse.class);
+    public RegisterAndResetResponse register(RegisterRequest request) {
+        return postEntity("auth/register", request, RegisterAndResetResponse.class);
+    }
+
+    public RegisterAndResetResponse resetPassword(ResetPasswordRequest request) {
+        return postEntity("auth/resetPassword", request, RegisterAndResetResponse.class);
+    }
+
+    public void forgotPassword(String emailAddress) {
+        postVoid(Microservice.GWY, "auth/forgotPassword", emailAddress);
     }
 
     public boolean activateAccount(ActivateAccountRequest request) {

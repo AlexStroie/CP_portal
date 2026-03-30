@@ -103,6 +103,11 @@ export class AuthenticateComponent implements OnInit {
     this.navigateToURL('/register');
   }
 
+  goToForgotPassword() {
+    this.navigateToURL('/forgot-password');
+  }
+
+
   protected navigateToURL(url: string): void {
     this.router.navigate([url.replace(/^\//, '')])
       .then(success => {

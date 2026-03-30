@@ -7,7 +7,7 @@ import {
   ActivateAccountRequest,
   LoginResponse,
   RegisterRequest,
-  RegisterResponse,
+  RegisterResponse, ResetPasswordRequest,
   SwitchRequest
 } from '../model/user.model';
 import {TokenStorageService} from './token-storage.service';
@@ -38,6 +38,18 @@ export class AuthenticationService {
 
   activateAccount(request: ActivateAccountRequest) {
     return this.http.post(this.config.webEndpoint + 'api/auth/activate', request, {responseType: 'text'});
+  }
+
+  forgotPassword(emailAddress: string) {
+    return this.http.post(this.config.webEndpoint + 'api/auth/forgotPassword', emailAddress, httpOptions);
+  }
+
+  resetPassword(resetRequest: ResetPasswordRequest) {
+    return this.http.post(
+      this.config.webEndpoint + 'api/auth/resetPassword',
+      resetRequest,
+      {responseType: 'text'}
+    );
   }
 
   switchContext(request: SwitchRequest): Observable<LoginResponse> {

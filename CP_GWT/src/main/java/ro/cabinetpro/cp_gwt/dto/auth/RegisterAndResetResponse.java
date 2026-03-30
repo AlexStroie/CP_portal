@@ -8,7 +8,7 @@ import ro.cabinetpro.cp_gwt.ms.Microservice;
 
 @Getter
 @Setter
-public class RegisterResponse extends AbstractDTO implements MicroserviceAware {
+public class RegisterAndResetResponse extends AbstractDTO implements MicroserviceAware {
 
     private boolean success;
     private String message;
