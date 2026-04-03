@@ -149,3 +149,8 @@
 .btn-secondary:hover {
   background: #ccc;
 }
+
+.highlight {
+  background-color: #e6f4ff;
+  transition: background-color 2s ease;
+}

@@ -5,6 +5,7 @@ export interface UserResponse {
   fullName: string;
   username: string;
   email: string;
+  phone: string;
   role: string;
   enabled: boolean;
   createdAt: string;
@@ -16,6 +17,7 @@ export interface UserRequest {
   fullName: string;
   username: string;
   email: string;
+  phone: string;
   role: string;
   enabled: boolean;
   cabinetId: string;
@@ -60,3 +62,11 @@ export interface ResetPasswordRequest {
   token: string,
   password: string
 }
+
+export interface ChangePasswordRequest {
+  username: string;
+  oldPassword: string,
+  newPassword: string
+  confirmPassword: string
+}
+

@@ -85,10 +85,12 @@ export class PatientFormComponent implements OnInit {
 
     this.patientsService.save(this.form.value as Patient)
       .subscribe({
-        next: () => {
+        next: (createdPatient) => {
           this.saving = false;
           this.form.markAsPristine();
-          this.router.navigate(['/admin/patients']);
+          this.router.navigate(['/admin/patients'], {
+            state: { highlightId: createdPatient.id }
+          });
         },
         error: () => {
           this.saving = false;

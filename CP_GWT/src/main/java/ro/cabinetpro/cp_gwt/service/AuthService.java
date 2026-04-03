@@ -50,6 +50,10 @@ public class AuthService extends AbstractService {
         return postEntity("auth/resetPassword", request, RegisterAndResetResponse.class);
     }
 
+    public RegisterAndResetResponse changePassword(ChangePasswordRequest request) {
+        return postEntity("auth/changePassword", request, RegisterAndResetResponse.class);
+    }
+
     public void forgotPassword(String emailAddress) {
         postVoid(Microservice.GWY, "auth/forgotPassword", emailAddress);
     }

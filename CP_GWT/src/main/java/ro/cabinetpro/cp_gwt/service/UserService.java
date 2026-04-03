@@ -1,8 +1,10 @@
 package ro.cabinetpro.cp_gwt.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ro.cabinetpro.cp_gwt.dto.user.UpdateNamePhoneRequest;
 import ro.cabinetpro.cp_gwt.dto.user.UserRequest;
 import ro.cabinetpro.cp_gwt.dto.user.UserResponse;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
@@ -34,6 +36,22 @@ public class UserService extends AbstractService {
 
     public UserResponse updateUser(Long id, UserRequest request) {
         return putEntity("admin/users/" + id, request, UserResponse.class);
+    }
+
+    public UserResponse updateNameAndPhone(String userName, UpdateNamePhoneRequest request) {
+        UserResponse currentUser = getCurrentUser();
+        if (currentUser != null && currentUser.getUsername().equals(userName)) {
+            UserRequest userRequest = new UserRequest();
+            userRequest.setFullName(StringUtils.isNotBlank(request.getName()) ? request.getName() : currentUser.getFullName());
+            userRequest.setUsername(userName);
+            userRequest.setEmail(currentUser.getEmail());
+            userRequest.setPhone(StringUtils.isNotBlank(request.getPhone()) ? request.getPhone() : currentUser.getPhone());
+            userRequest.setRole(currentUser.getRole());
+            userRequest.setCabinetId(currentUser.getCabinetId());
+
+            return updateUser(currentUser.getId(), userRequest);
+        }
+        return null;
     }
 
     public void deleteUser(Long id) {

@@ -31,6 +31,13 @@ export class UsersService {
     return this.http.put<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, user, httpOptions);
   }
 
+  updateNamePhone(username: string, name: string, phone: string): Observable<any> {
+    return this.http.put<UserResponse[]>(this.config.webEndpoint + "api/admin/users/namePhone/" + username, {
+      name,
+      phone
+    }, httpOptions);
+  }
+
   delete(id: number): Observable<any> {
     return this.http.delete<UserResponse[]>(this.config.webEndpoint + "api/admin/users/" + id, httpOptions);
   }

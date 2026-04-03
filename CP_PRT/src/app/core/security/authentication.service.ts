@@ -4,7 +4,7 @@ import {Observable, tap} from 'rxjs';
 import {APP_CONFIG, httpOptions, IAppConfig} from '../../app.config';
 import {Role} from '../../shared/types/role';
 import {
-  ActivateAccountRequest,
+  ActivateAccountRequest, ChangePasswordRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse, ResetPasswordRequest,
@@ -48,6 +48,14 @@ export class AuthenticationService {
     return this.http.post(
       this.config.webEndpoint + 'api/auth/resetPassword',
       resetRequest,
+      {responseType: 'text'}
+    );
+  }
+
+ changePassword(changePasswordRequest: ChangePasswordRequest) {
+    return this.http.post(
+      this.config.webEndpoint + 'api/auth/changePassword',
+      changePasswordRequest,
       {responseType: 'text'}
     );
   }

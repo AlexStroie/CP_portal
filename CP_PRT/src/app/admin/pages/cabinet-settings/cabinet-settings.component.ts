@@ -6,12 +6,13 @@ import {
   FormGroup, NonNullableFormBuilder
 } from '@angular/forms';
 import {Router} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CommonModule} from '@angular/common';
 
 import {CabinetsService} from '../../../shared/service/cabinets.service';
 import {TokenStorageService} from '../../../core/security/token-storage.service';
 import {CabinetSettings} from '../../../core/model/cabinet.model';
+import {NotificationService} from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-cabinet-settings',
@@ -29,7 +30,9 @@ class CabinetSettingsComponent implements OnInit {
   private fb = inject(FormBuilder);
   private programFormBuilder = inject(NonNullableFormBuilder);
   private service = inject(CabinetsService);
+  private notification = inject(NotificationService);
   private tokenService = inject(TokenStorageService);
+  private translate = inject(TranslateService);
   private router = inject(Router);
 
   activeTab: 'general' | 'program' = 'general';
@@ -67,7 +70,6 @@ class CabinetSettingsComponent implements OnInit {
   });
 
   ngOnInit(): void {
-
     const rawId = this.tokenService.getCabinetId();
     if (!rawId) {
       this.router.navigate(['/admin']);
@@ -162,9 +164,12 @@ class CabinetSettingsComponent implements OnInit {
       next: () => {
         this.savingGeneral = false;
         this.form.markAsPristine();
+
+        this.notification.success(this.translate.instant('settings.messages.saved'));
       },
       error: () => {
         this.savingGeneral = false;
+        this.notification.error(this.translate.instant('settings.messages.error'));
       }
     });
   }
@@ -192,12 +197,20 @@ class CabinetSettingsComponent implements OnInit {
 
     const cabinetSettings = this.buildCabinetSettings();
 
-    this.service.updateCabinetSettings(this.cabinetId, cabinetSettings).subscribe();
+    this.service.updateCabinetSettings(this.cabinetId, cabinetSettings)
+      .subscribe({
+        next: () => {
+          this.savingProgram = false;
+          this.programForm.markAsPristine();
 
-    setTimeout(() => {
-      this.savingProgram = false;
-      this.programForm.markAsPristine();
-    }, 800);
+          this.notification.success(this.translate.instant('settings.program.save.success'));
+        },
+        error: () => {
+          this.savingProgram = false;
+
+          this.notification.error(this.translate.instant('settings.program.save.error'));
+        }
+      });
   }
 
   hasError(control: string, error: string): boolean {

@@ -409,7 +409,11 @@
       "startHour": "Ora început",
       "endHour": "Ora sfârșit",
       "slotDuration": "Durată ședință (minute)",
-      "workingDays": "Zile lucrătoare"
+      "workingDays": "Zile lucrătoare",
+      "save": {
+        "success": "Program salvat cu succes",
+        "error": "Eroare la salvarea programului"
+      }
     },
     "validation": {
       "name": "Numele este obligatoriu"
@@ -495,6 +499,7 @@
     "username": "Username",
     "name": "Nume",
     "role": "Rol",
+    "phone": "Telefon",
     "oldPassword": "Parola veche",
     "newPassword": "Parola nouă",
     "confirmPassword": "Confirmare parolă",
@@ -502,6 +507,9 @@
     "changePassword": "Schimbă parola",
     "validation": {
       "name": "Numele este obligatoriu."
+    },
+    "message": {
+      "success": "Informații salvate cu success."
     }
   },
   "appointments": {
@@ -562,6 +570,14 @@
       "message": "Ești sigur că vrei să ștergi planul „{{name}}”?",
       "confirm": "Șterge",
       "cancel": "Anulează"
+    }
+  },
+  "error": {
+    "password": {
+      "invalid": "Parola veche este incorectă",
+      "minLength": "Parola trebuie să aibă cel puțin 6 caractere",
+      "same": "Noua parolă trebuie să fie diferită de cea veche",
+      "mismatch": "Parolele nu coincid"
     }
   }
 }

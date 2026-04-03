@@ -66,3 +66,20 @@
   color: var(--danger-text);
   font-weight: 500;
 }
+.readonly-field {
+  padding: 0.6rem 0.75rem;
+  background-color: #f8f9fb;
+  border: 1px solid #e2e6ea;
+  border-radius: 8px;
+  color: #495057;
+  font-size: 0.95rem;
+}
+
+.readonly-field:hover {
+  background-color: #f1f3f5;
+}
+
+.readonly-field {
+  cursor: default;
+  user-select: text;
+}

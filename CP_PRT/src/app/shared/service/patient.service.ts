@@ -23,8 +23,8 @@ export class PatientsService {
     return this.http.get<Patient>(this.config.webEndpoint + "api/admin/patients/" + id, httpOptions);
   }
 
-  save(patient: any): Observable<any> {
-    return this.http.post<Patient[]>(this.config.webEndpoint + "api/admin/patients", patient, httpOptions);
+  save(patient: any): Observable<Patient> {
+    return this.http.post<Patient>(this.config.webEndpoint + "api/admin/patients", patient, httpOptions);
   }
 
   delete(id: number): Observable<any> {

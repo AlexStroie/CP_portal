@@ -10,6 +10,7 @@ public class UserRequest {
     private String fullName;
     private String username;
     private String email;
+    private String phone;
     private Role role;
     private Long cabinetId;
 }

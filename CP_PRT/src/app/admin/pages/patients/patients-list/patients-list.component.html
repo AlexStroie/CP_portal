@@ -94,7 +94,7 @@
           }
 
           @for (patient of filteredPatients(); track patient.id) {
-            <tr>
+            <tr [class.highlight]="patient.id === highlightId">
 
               <td class="bold">
                 {{ patient.firstName }} {{ patient.lastName }}

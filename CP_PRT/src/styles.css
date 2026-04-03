@@ -275,3 +275,49 @@ button:disabled {
 .mat-mdc-option.mdc-list-item--activated {
   background: rgba(74, 115, 255, 0.12) !important;
 }
+
+
+/* ===================================================== */
+/* NOTIFICATIONS */
+/* ===================================================== */
+
+.success-snackbar {
+  background: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background: #f44336;
+  color: white;
+}
+
+.info-snackbar {
+  background: #2196f3;
+  color: white;
+}
+
+/* Fix hover + ripple pe snackbar action */
+.mat-mdc-snack-bar-container .mdc-button {
+  color: white !important;
+}
+
+/* Elimină background-ul gri la hover */
+.mat-mdc-snack-bar-container .mdc-button:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 4px;
+}
+
+/* Elimină overlay-ul MDC */
+.mat-mdc-snack-bar-container .mdc-button .mdc-button__ripple {
+  display: none !important;
+}
+
+/* Elimină focus overlay */
+.mat-mdc-snack-bar-container .mdc-button:focus::before {
+  opacity: 0 !important;
+}
+
+.error-snackbar {
+  white-space: pre-line;
+}
+/* ===================================================== */

@@ -1,6 +1,6 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {Patient, PatientFilter} from '../../../../core/model/patient.model';
 import {PatientsService} from '../../../../shared/service/patient.service';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
@@ -29,6 +29,8 @@ export class PatientsListComponent implements OnInit {
   name = new FormControl('');
   cabinetId = new FormControl(null);
 
+  highlightId?: number;
+
   cabinetMap = new Map<string, string>();
 
   private filterState = signal<PatientFilter>({});
@@ -39,18 +41,20 @@ export class PatientsListComponent implements OnInit {
   constructor(
     private patientService: PatientsService,
     private cabinetService: CabinetsService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
 
+    this.highlightId = history.state?.highlightId;
+
     if (this.isSuperAdmin) {
       this.cabinetService.getAll().subscribe(cabs => {
         this.cabinets.set(cabs);
 
-        // construim map-ul
         cabs.forEach(c => this.cabinetMap.set(c.id, c.name));
       });
     }
@@ -60,6 +64,10 @@ export class PatientsListComponent implements OnInit {
     this.cabinetId.valueChanges.subscribe(() => this._updateFilters());
 
     this.refresh();
+
+    if (this.highlightId) {
+      setTimeout(() => this.highlightId = undefined, 3000);
+    }
   }
 
   private _updateFilters() {

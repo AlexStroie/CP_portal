@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ro.cabinetpro.cp_gwt.dto.user.UpdateNamePhoneRequest;
 import ro.cabinetpro.cp_gwt.dto.user.UserRequest;
 import ro.cabinetpro.cp_gwt.dto.user.UserResponse;
 import ro.cabinetpro.cp_gwt.service.UserService;
@@ -46,6 +47,11 @@ public class UserController {
     @PutMapping("/{id}")
     public UserResponse update(@PathVariable Long id, @RequestBody UserRequest req) {
         return userService.updateUser(id, req);
+    }
+
+    @PutMapping("/namePhone/{username}")
+    public UserResponse updateNamePhone(@PathVariable String username, @RequestBody UpdateNamePhoneRequest req) {
+        return userService.updateNameAndPhone(username, req);
     }
 
     @DeleteMapping("/{id}")

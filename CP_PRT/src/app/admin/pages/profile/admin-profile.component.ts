@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {UsersService} from '../../../shared/service/users.service';
+import {AuthenticationService} from '../../../core/security/authentication.service';
+import {ChangePasswordRequest, ResetPasswordRequest} from '../../../core/model/user.model';
+import {TokenStorageService} from '../../../core/security/token-storage.service';
+import {NotificationService} from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-admin-profile',
@@ -24,16 +28,21 @@ export class AdminProfileComponent implements OnInit {
   savingPassword = false;
 
   constructor(private userService: UsersService,
+              private tokenService: TokenStorageService,
+              private authService: AuthenticationService,
+              private notification: NotificationService,
+              private translate: TranslateService,
               private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
 
     this.profileForm = this.fb.group({
-      email: [{ value: '', disabled: true }],
-      username: [{ value: '', disabled: true }],
+      email: [{value: '', disabled: true}],
+      username: [{value: '', disabled: true}],
       name: ['', Validators.required],
-      role: [{ value: '', disabled: true }]
+      phone: [''],
+      role: [{value: '', disabled: true}]
     });
 
     this.userService.getCurrentUser().subscribe(user => {
@@ -42,6 +51,7 @@ export class AdminProfileComponent implements OnInit {
         email: [{value: user.email, disabled: true}],
         username: [{value: user.username, disabled: true}],
         name: [user.fullName || '', Validators.required],
+        phone: [user.phone || ''],
         role: [{value: user.role, disabled: true}]
       });
 
@@ -65,6 +75,23 @@ export class AdminProfileComponent implements OnInit {
 
     this.savingProfile = true;
 
+    this.userService.updateNamePhone(this.profileForm.get('username')?.value,
+      this.profileForm.get('name')?.value,
+      this.profileForm.get('phone')?.value).subscribe({
+
+      next: () => {
+        this.notification.success(this.translate.instant('profile.message.success'));
+        setTimeout(() => {
+          this.savingPassword = false;
+          this.securityForm.reset();
+        }, 1000);
+      },
+      error: err => {
+
+      }
+
+    });
+
     setTimeout(() => {
       this.savingProfile = false;
     }, 1000);
@@ -72,12 +99,47 @@ export class AdminProfileComponent implements OnInit {
 
   changePassword() {
     if (this.securityForm.invalid) return;
-
     this.savingPassword = true;
+
+    const request: ChangePasswordRequest = this.securityForm.value;
+    request.username = this.tokenService.getUser().username;
+
+    this.authService.changePassword(request).subscribe({
+      next: () => {
+        this.notification.success(this.translate.instant('auth.reset.success'));
+        setTimeout(() => {
+          this.savingPassword = false;
+          this.securityForm.reset();
+        }, 1000);
+      },
+
+      error: err => {
+
+        if (err.error) {
+          try {
+
+            const parsed = typeof err.error === 'string'
+              ? JSON.parse(err.error)
+              : err.error;
+
+            this.notification.error(
+              `${this.translate.instant('settings.messages.error')}\n${this.translate.instant(parsed.code)}`
+            );
+
+          } catch {
+            this.notification.error(this.translate.instant('settings.messages.error'));
+          }
+        } else {
+          this.notification.error(this.translate.instant('settings.messages.error'));
+        }
+        setTimeout(() => {
+          this.savingPassword = false;
+        }, 1000);
+      }
+    });
 
     setTimeout(() => {
       this.savingPassword = false;
-      this.securityForm.reset();
     }, 1000);
   }
 

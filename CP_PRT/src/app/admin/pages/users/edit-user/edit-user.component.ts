@@ -35,6 +35,7 @@ export class EditUserComponent implements OnInit {
     fullName: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl(''),
     role: new FormControl('USER', Validators.required),
     enabled: new FormControl(false),
     password: new FormControl('')
@@ -98,6 +99,7 @@ export class EditUserComponent implements OnInit {
       fullName: this.form.value.fullName!,
       username: this.form.value.username!,
       email: this.form.value.email!,
+      phone: this.form.value.phone!,
       role: this.form.value.role!,
       enabled: this.form.value.enabled!,
       cabinetId: this.cabinetId
