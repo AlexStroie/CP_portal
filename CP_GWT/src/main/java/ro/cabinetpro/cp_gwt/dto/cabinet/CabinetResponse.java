@@ -31,6 +31,7 @@ public class CabinetResponse extends AbstractDTO implements MicroserviceAware {
 
     private Integer maxUsers;
     private Integer maxPatients;
+    private Integer activePatients;
 
     private BigDecimal price;
     private String currency;

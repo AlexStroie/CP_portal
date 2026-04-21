@@ -45,4 +45,8 @@ export class UsersService {
   getStats(): Observable<number> {
     return this.http.get<number>(this.config.webEndpoint + "api/admin/users/count", httpOptions);
   }
+
+  invite(email: string) {
+    return this.http.post(this.config.webEndpoint + "api/auth/invite/" + email, httpOptions);
+  }
 }

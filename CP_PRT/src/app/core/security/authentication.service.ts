@@ -8,7 +8,7 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse, ResetPasswordRequest,
-  SwitchRequest
+  SwitchRequest, TokenType, UserResponse
 } from '../model/user.model';
 import {TokenStorageService} from './token-storage.service';
 
@@ -40,6 +40,10 @@ export class AuthenticationService {
     return this.http.post(this.config.webEndpoint + 'api/auth/activate', request, {responseType: 'text'});
   }
 
+  getActivateAccountType(activationToken: string): Observable<TokenType> {
+    return this.http.get<TokenType>(this.config.webEndpoint + "api/auth/activationType/" + activationToken, httpOptions);
+  }
+
   forgotPassword(emailAddress: string) {
     return this.http.post(this.config.webEndpoint + 'api/auth/forgotPassword', emailAddress, httpOptions);
   }
@@ -52,7 +56,7 @@ export class AuthenticationService {
     );
   }
 
- changePassword(changePasswordRequest: ChangePasswordRequest) {
+  changePassword(changePasswordRequest: ChangePasswordRequest) {
     return this.http.post(
       this.config.webEndpoint + 'api/auth/changePassword',
       changePasswordRequest,

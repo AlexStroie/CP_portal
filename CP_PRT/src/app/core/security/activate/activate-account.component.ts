@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {ActivateAccountRequest} from '../../model/user.model';
+import {AuthUtilsService} from '../../services/auth-utils.service';
+import {UsersService} from '../../../shared/service/users.service';
 
 @Component({
   selector: 'app-activate',
@@ -17,10 +19,15 @@ import {ActivateAccountRequest} from '../../model/user.model';
 })
 export class ActivateAccountComponent implements OnInit {
 
+  private translate = inject(TranslateService);
+
   token = '';
+  tokenType = signal<string | null>(null);
 
   form = {
     username: '',
+    password: '',
+    confirmPassword: '',
     fullName: '',
     cabinetName: ''
   };
@@ -29,22 +36,44 @@ export class ActivateAccountComponent implements OnInit {
   success = false;
   error = false;
   errorMessage = '';
+  tokenExpired = false;
+
+  passwordStrength: string = 'weak';
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthenticationService,
+    private userService: UsersService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
     this.token = this.route.snapshot.queryParamMap.get('token') || '';
-  }
 
-  onSubmit(): void {
+    if (!this.token) {
+      this.error = true;
+      this.errorMessage = 'Invalid token';
+      return;
+    }
 
     this.loading = true;
 
+    this.authService.getActivateAccountType(this.token).subscribe({
+      next: (res) => {
+        this.tokenType.set(res.tokenType);
+
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = true;
+      }
+    });
+  }
+
+  onSubmit(): void {
+    this.loading = true;
     const request: ActivateAccountRequest = {
       token: this.token,
       cabinetName: this.form.cabinetName,
@@ -70,10 +99,45 @@ export class ActivateAccountComponent implements OnInit {
         this.loading = false;
         this.error = true;
 
-        this.errorMessage =
-          err?.error?.message || 'Activation failed';
+        const raw = err.error;
+
+        let parsed;
+
+        if (typeof raw === 'string') {
+          try {
+            parsed = JSON.parse(raw);
+          } catch {
+            parsed = null;
+          }
+        } else {
+          parsed = raw;
+        }
+
+        const code = parsed?.code;
+
+        if (code === 'TOKEN_EXPIRED') {
+          this.tokenExpired = true;
+        }
+
+        this.errorMessage = '❗' + (this.translate.instant('error.code.' + code) || 'Activation failed');
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
       }
     });
   }
 
+  passwordsMatch(): boolean {
+    return this.form.password === this.form.confirmPassword;
+  }
+
+  protected checkStrength() {
+    this.passwordStrength = AuthUtilsService.checkStrength(this.form.password);
+  }
+
+  protected resendActivation() {
+    this.userService.invite(this.token).subscribe(() => {
+
+    });
+  }
 }

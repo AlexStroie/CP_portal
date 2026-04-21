@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import ro.cabinetpro.cp_gwt.dto.auth.*;
 import ro.cabinetpro.cp_gwt.dto.types.Role;
+import ro.cabinetpro.cp_gwt.dto.auth.TokenType;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.ms.Microservice;
 
@@ -46,12 +47,20 @@ public class AuthService extends AbstractService {
         return postEntity("auth/register", request, RegisterAndResetResponse.class);
     }
 
+    public RegisterAndResetResponse invite(String email) {
+        return postEntity("auth/invite/" + email, email, RegisterAndResetResponse.class);
+    }
+
     public RegisterAndResetResponse resetPassword(ResetPasswordRequest request) {
         return postEntity("auth/resetPassword", request, RegisterAndResetResponse.class);
     }
 
     public RegisterAndResetResponse changePassword(ChangePasswordRequest request) {
         return postEntity("auth/changePassword", request, RegisterAndResetResponse.class);
+    }
+
+    public TokenType getActivationType(String token) {
+        return getObjectEntity(TokenType.class, "auth/activationType/" + token);
     }
 
     public void forgotPassword(String emailAddress) {

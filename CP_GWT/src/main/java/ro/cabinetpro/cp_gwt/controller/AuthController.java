@@ -2,17 +2,14 @@ package ro.cabinetpro.cp_gwt.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.cabinetpro.cp_gwt.dto.auth.*;
 import ro.cabinetpro.cp_gwt.dto.types.Role;
+import ro.cabinetpro.cp_gwt.dto.auth.TokenType;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.exception.InvalidCredentialsException;
 import ro.cabinetpro.cp_gwt.service.AuthService;
@@ -36,6 +33,16 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/invite/{email}")
+    public ResponseEntity<?> invite(@PathVariable String email) {
+        return ResponseEntity.ok(authService.invite(email));
+    }
+
+    @GetMapping(value = "/activationType/{token}")
+    public TokenType getActivationType(@PathVariable String token) {
+        return authService.getActivationType(token);
     }
 
     @PostMapping("/forgotPassword")

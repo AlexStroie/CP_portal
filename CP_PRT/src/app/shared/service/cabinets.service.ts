@@ -19,16 +19,16 @@ export class CabinetsService {
     return this.http.get<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
 
-  create(cabinet: any): Observable<any> {
-    return this.http.post<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets", cabinet, httpOptions);
+  create(cabinet: any): Observable<Cabinet> {
+    return this.http.post<Cabinet>(this.config.webEndpoint + "api/admin/cabinets", cabinet, httpOptions);
   }
 
   update(id: number, cabinet: any): Observable<any> {
-    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, cabinet, httpOptions);
+    return this.http.put<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id, cabinet, httpOptions);
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
+    return this.http.delete<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id, httpOptions);
   }
 
   getStats(): Observable<number> {
@@ -36,7 +36,7 @@ export class CabinetsService {
   }
 
   updateCabinetDetails(id: number, cabinet: any): Observable<any> {
-    return this.http.put<Cabinet[]>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/details", cabinet, httpOptions);
+    return this.http.put<Cabinet>(this.config.webEndpoint + "api/admin/cabinets/" + id + "/details", cabinet, httpOptions);
   }
 
   getCabinetSettingsById(id: number): Observable<CabinetSettings> {

@@ -21,6 +21,48 @@
         />
       </div>
 
+      @if (tokenType() === 'INVITED') {
+        <div class="form-group">
+          <label>{{ 'auth.register.password.label' | translate }}</label>
+
+          <input
+            type="password"
+            [(ngModel)]="form.password"
+            name="password"
+            #passwordModel="ngModel"
+            required
+            minlength="6"
+            (ngModelChange)="checkStrength()"
+            [placeholder]="'auth.register.password.placeholder' | translate"
+          />
+
+          <div class="password-strength">
+            {{ 'auth.register.passwordStrength.label' | translate }}:
+            <span [class]="passwordStrength">
+            {{ ('auth.register.passwordStrength.' + passwordStrength) | translate }}
+          </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'auth.register.confirmPassword.label' | translate }}</label>
+
+          <input
+            type="password"
+            [(ngModel)]="form.confirmPassword"
+            name="confirmPassword"
+            required
+            [placeholder]="'auth.register.confirmPassword.placeholder' | translate"
+          />
+
+          @if (form.confirmPassword && !passwordsMatch()) {
+            <small class="error-field">
+              {{ 'auth.register.errors.passwordMismatch' | translate }}
+            </small>
+          }
+        </div>
+      }
+
       <div class="form-group">
         <label>{{ 'auth.activate.fullName' | translate }}</label>
 
@@ -49,16 +91,23 @@
 
     </form>
 
-    @if(success){
+    @if (success) {
       <p class="success">
         {{ 'auth.activate.success' | translate }}
       </p>
     }
 
-    @if(error){
-      <p class="error">
-        {{ errorMessage }}
-      </p>
+    @if (error) {
+      <div class="resend-container">
+         <span class="error-text">
+           {{ errorMessage }}
+         </span>
+        @if (tokenExpired) {
+          <span class="resend-link" (click)="resendActivation()">
+            🔄 {{ 'auth.activate.resend' | translate }}
+        </span>
+        }
+      </div>
     }
 
   </div>

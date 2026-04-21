@@ -71,16 +71,20 @@
 }
 
 /* OPTIONAL: diferențiere pe tip */
-.badge-plan-basic {
-  background-color: #6c757d;
+.badge-plan-bronze {
+  background-color: #5a3201;
 }
 
-.badge-plan-pro {
-  background-color: #4a73ff;
+.badge-plan-silver {
+  background-color: #9aa7af;
 }
 
-.badge-plan-premium {
-  background-color: #ff9800;
+.badge-plan-gold {
+  background-color: #f4c00d;
+}
+
+.badge-plan-platinum {
+  background-color: #0269c8;
 }
 
 /* =========================

@@ -53,12 +53,14 @@ export class SubscriptionsComponent implements OnInit{
 
   getPlanClass(code: string) {
     switch (code) {
-      case 'BASIC':
-        return 'badge-plan-basic';
-      case 'PRO':
-        return 'badge-plan-pro';
-      case 'PREMIUM':
-        return 'badge-plan-premium';
+      case 'BRONZE':
+        return 'badge-plan-bronze';
+      case 'SILVER':
+        return 'badge-plan-silver';
+      case 'GOLD':
+        return 'badge-plan-gold';
+      case 'PLATINUM':
+        return 'badge-plan-platinum';
       default:
         return 'badge-plan';
     }

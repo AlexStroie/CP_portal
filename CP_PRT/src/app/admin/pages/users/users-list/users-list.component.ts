@@ -1,6 +1,6 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
-import {UserResponse} from '../../../../core/model/user.model';
+import {Component, OnInit, signal} from '@angular/core';
+import {NgClass, NgIf} from '@angular/common';
+import {RegisterRequest, UserResponse} from '../../../../core/model/user.model';
 import {UsersService} from '../../../../shared/service/users.service';
 import {TokenStorageService} from '../../../../core/security/token-storage.service';
 import {RouterLink} from '@angular/router';
@@ -8,6 +8,7 @@ import {Role} from '../../../../shared/types/role';
 import {CabinetsService} from '../../../../shared/service/cabinets.service';
 import {Cabinet} from '../../../../core/model/cabinet.model';
 import {TranslatePipe} from '@ngx-translate/core';
+import {AuthenticationService} from '../../../../core/security/authentication.service';
 
 @Component({
   standalone: true,
@@ -23,12 +24,15 @@ export class UsersListComponent implements OnInit {
   userToDelete = signal<UserResponse | null>(null);
   currentUser = signal<any | null>(null);
 
+  inviteModalOpen = signal(false);
+  inviteEmail = signal('');
 
   constructor(
     private usersService: UsersService,
     private cabinetService: CabinetsService,
     private tokenStorage: TokenStorageService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.currentUser.set(this.tokenStorage.getUser());
@@ -75,5 +79,54 @@ export class UsersListComponent implements OnInit {
       'badge-super': role === Role.SUPER_ADMIN,
       'badge-user': role === Role.USER
     };
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'ACTIVE':
+        return 'active';
+      case 'PENDING':
+        return 'pending';
+      case 'LOCKED':
+        return 'locked';
+      case 'DISABLED':
+        return 'disabled';
+      case 'DELETED':
+        return 'deleted';
+      default:
+        return 'unknown';
+    }
+  }
+
+  getStatusLabel(status: string): string {
+    return `users.status.${status.toLowerCase()}`;
+  }
+
+  openInviteModal() {
+    this.inviteModalOpen.set(true);
+  }
+
+  closeInviteModal() {
+    this.inviteModalOpen.set(false);
+    this.inviteEmail.set('');
+    this.refresh();
+  }
+
+  sendInvite() {
+    const email = this.inviteEmail();
+
+    if (!email) return;
+
+    this.usersService.invite(email).subscribe(() => {
+      this.closeInviteModal();
+    });
+  }
+
+  resendInvite(email: string) {
+    if (!email) return;
+
+    this.usersService.invite(email).subscribe(() => {
+      this.closeInviteModal();
+    });
   }
 }

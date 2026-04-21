@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class SubscriptionPlanResponse extends AbstractDTO implements MicroserviceAware {
 
     private Long id;
-    private String code; // BASIC, PRO, PREMIUM
+    private String code; // BRONZE, SILVER, GOLD, PLATINUM
     private String name;
     private Integer maxUsers;
     private Integer maxPatients;

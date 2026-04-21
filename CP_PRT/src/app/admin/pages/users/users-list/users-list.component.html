@@ -1,8 +1,13 @@
 <div class="users-header">
   <h2>{{ 'users.title' | translate }}</h2>
-  <button class="btn-primary" [routerLink]="['/admin/users/create']">
-    {{ 'users.add' | translate }}
-  </button>
+  <div>
+    <button class="btn-invite" (click)="openInviteModal()">
+      {{ 'users.invite.title' | translate }}
+    </button>
+    <button class="btn-primary" [routerLink]="['/admin/users/create']">
+      {{ 'users.add' | translate }}
+    </button>
+  </div>
 </div>
 
 <table class="users-table">
@@ -33,16 +38,21 @@
         </td>
 
         <td>
-          <span class="status" [ngClass]="user.enabled ? 'active' : 'inactive'">
-            {{ user.enabled ? ('users.status.enabled' | translate) : ('users.status.disabled' | translate) }}
+          <span class="status" [ngClass]="getStatusClass(user.status)">
+            {{ getStatusLabel(user.status) | translate }}
           </span>
         </td>
 
         <td class="actions-col">
-          <button class="icon-button edit" [routerLink]="['/admin/users', user.id]">
-            ✏️
-          </button>
-
+          @if (user.status !== 'PENDING') {
+            <button class="icon-button edit" [routerLink]="['/admin/users', user.id]">
+              ✏️
+            </button>
+          } @else {
+            <button class="icon-button resend" (click)="resendInvite(user.email)">
+              📧
+            </button>
+          }
           <button
             class="icon-button delete"
             (click)="askDelete(user)"
@@ -61,7 +71,7 @@
     <div class="modal">
       <h3>{{ 'users.delete.title' | translate }}</h3>
       <p>
-        {{ 'users.delete.message' | translate:{ name: userToDelete()?.fullName } }}
+        {{ 'users.delete.message' | translate:{name: userToDelete()?.fullName} }}
       </p>
 
       <div class="modal-actions">
@@ -70,6 +80,32 @@
         </button>
         <button class="btn-secondary" (click)="cancelDelete()">
           {{ 'users.delete.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (inviteModalOpen()) {
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h3>{{ 'users.invite.title' | translate }}</h3>
+
+      <input
+        type="email"
+        class="invite-input"
+        [value]="inviteEmail()"
+        (input)="inviteEmail.set($any($event.target).value)"
+        placeholder="Email..."
+      />
+
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="sendInvite()" [disabled]="!inviteEmail()">
+          {{ 'users.invite.send' | translate }}
+        </button>
+
+        <button class="btn-secondary" (click)="closeInviteModal()">
+          {{ 'users.invite.cancel' | translate }}
         </button>
       </div>
     </div>

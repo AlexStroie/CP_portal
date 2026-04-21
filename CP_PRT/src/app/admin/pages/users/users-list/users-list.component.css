@@ -21,6 +21,31 @@
   background: #3358db;
 }
 
+.btn-invite {
+  background: #026d88;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.btn-invite:hover {
+  background: #014151;
+}
+
+.invite-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
 /* Table */
 .users-table {
   width: 100%;
@@ -160,4 +185,35 @@
 
 .btn-secondary:hover {
   background: #ccc;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.locked {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.disabled {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.deleted {
+  background: #343a40;
+  color: #fff;
 }

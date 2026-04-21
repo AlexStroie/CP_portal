@@ -25,6 +25,7 @@ class CabinetsListComponent implements OnInit {
   selectedCabinet = signal<any | null>(null);
 
   isSuperAdmin = false;
+  highlightId?: number;
 
   constructor(
     private authService: AuthenticationService,
@@ -36,7 +37,14 @@ class CabinetsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSuperAdmin = this.tokenStorage.isSuperAdmin();
+
+    this.highlightId = history.state?.highlightId;
+
     this.refresh();
+
+    if (this.highlightId) {
+      setTimeout(() => this.highlightId = undefined, 3000);
+    }
   }
 
   refresh() {
@@ -76,12 +84,14 @@ class CabinetsListComponent implements OnInit {
 
   getPlanClass(plan: string): string {
     switch (plan) {
-      case 'BASIC':
-        return 'plan basic';
-      case 'PRO':
-        return 'plan pro';
-      case 'PREMIUM':
-        return 'plan premium';
+      case 'BRONZE':
+        return 'plan bronze';
+      case 'SILVER':
+        return 'plan silver';
+      case 'GOLD':
+        return 'plan gold';
+      case 'PLATINUM':
+        return 'plan platinum';
       default:
         return 'plan';
     }

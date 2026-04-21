@@ -7,6 +7,7 @@ export interface UserResponse {
   email: string;
   phone: string;
   role: string;
+  status: string;
   enabled: boolean;
   createdAt: string;
   activationLink: string;
@@ -68,5 +69,9 @@ export interface ChangePasswordRequest {
   oldPassword: string,
   newPassword: string
   confirmPassword: string
+}
+
+export interface TokenType {
+  tokenType: string
 }
 

@@ -16,6 +16,7 @@
       <th>{{ 'cabinets.columns.status' | translate }}</th>
       <th>{{ 'cabinets.columns.expires' | translate }}</th>
       <th>{{ 'cabinets.columns.users' | translate }}</th>
+      <th>{{ 'cabinets.columns.maxPatients' | translate }}</th>
       <th>{{ 'cabinets.columns.patients' | translate }}</th>
       <th>{{ 'cabinets.columns.price' | translate }}</th>
       <th>{{ 'cabinets.columns.actions' | translate }}</th>
@@ -24,7 +25,10 @@
 
     <tbody>
       @for (cabinet of cabinets(); track cabinet.id) {
-        <tr [class.expired]="cabinet.subscriptionStatus === 'EXPIRED'">
+        <tr [ngClass]="{
+            'expired': cabinet.subscriptionStatus === 'EXPIRED',
+            'highlight': cabinet.id === highlightId
+        }">
 
           <td>
             <div class="cabinet-name">{{ cabinet.name }}</div>
@@ -54,6 +58,7 @@
 
           <td>{{ cabinet.maxUsers }}</td>
           <td>{{ cabinet.maxPatients }}</td>
+          <td>{{ cabinet.activePatients }}</td>
 
           <td>
             {{ cabinet.price }}
@@ -144,7 +149,7 @@
         <h4>{{ 'cabinets.sections.subscription' | translate }}</h4>
 
         <div class="detail-row">
-          <span class="plan-badge basic">{{ 'cabinets.form.plan' | translate }}</span>
+          <span class="plan-badge bronze">{{ 'cabinets.form.plan' | translate }}</span>
           <strong>
             {{ ('plans.' + selectedCabinet()?.planCode) | translate }}
           </strong>

@@ -181,7 +181,8 @@
       "submit": "Activează contul",
       "loading": "Se activează...",
       "success": "Cont activat cu succes! Se redirecționează...",
-      "error": "Activarea contului a eșuat"
+      "error": "Activarea contului a eșuat",
+      "resend": "Retrimite link de activare"
     },
     "reset": {
       "title": "Setare parolă nouă",
@@ -266,14 +267,23 @@
       "ASSISTANT": "Asistent"
     },
     "status": {
-      "enabled": "Activ",
-      "disabled": "Dezactivat"
+      "active": "Activ",
+      "pending": "În așteptare",
+      "locked": "Blocat",
+      "disabled": "Dezactivat",
+      "deleted": "Șters"
     },
     "delete": {
       "title": "Ștergere utilizator",
       "message": "Sigur doriți să ștergeți utilizatorul {{name}}?",
       "confirm": "Șterge",
       "cancel": "Anulează"
+    },
+    "invite": {
+      "title": "Invită utilizator",
+      "send": "Trimite invitația",
+      "cancel": "Anulează",
+      "emailPlaceholder": "Introduceți adresa de email"
     },
     "form": {
       "editTitle": "Editare utilizator",
@@ -300,6 +310,7 @@
       "status": "Status",
       "expires": "Expiră",
       "users": "Utilizatori",
+      "maxPatients": "Limită Pacienți",
       "patients": "Pacienți",
       "price": "Preț",
       "actions": "Acțiuni"
@@ -334,7 +345,7 @@
       "maxUsers": "Utilizatori incluși",
       "maxPatients": "Pacienți incluși",
       "priceAfterTrial": "Preț după trial",
-      "note": "După perioada de trial, cabinetul va trece automat pe planul Basic."
+      "note": "După perioada de trial, cabinetul va trece automat pe planul Bronze."
     },
     "sections": {
       "info": "Informații Cabinet",
@@ -342,9 +353,10 @@
     }
   },
   "plans": {
-    "BASIC": "Basic",
-    "PRO": "Pro",
-    "PREMIUM": "Premium"
+    "BRONZE": "Bronze",
+    "SILVER": "Silver",
+    "GOLD": "Gold",
+    "PLATINUM": "Platinum"
   },
   "subscription": {
     "status": {
@@ -578,6 +590,9 @@
       "minLength": "Parola trebuie să aibă cel puțin 6 caractere",
       "same": "Noua parolă trebuie să fie diferită de cea veche",
       "mismatch": "Parolele nu coincid"
+    },
+    "code": {
+      "TOKEN_EXPIRED": "Link-ul de activare a expirat"
     }
   }
 }

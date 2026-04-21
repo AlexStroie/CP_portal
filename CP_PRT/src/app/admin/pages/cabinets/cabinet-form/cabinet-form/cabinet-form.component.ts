@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import {Component, OnInit, signal, computed} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -7,9 +7,9 @@ import {
   AbstractControl,
   ValidationErrors
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { CabinetsService } from '../../../../../shared/service/cabinets.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {CabinetsService} from '../../../../../shared/service/cabinets.service';
 import {CabinetRequest} from '../../../../../core/model/cabinet.model';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -31,9 +31,10 @@ export class CabinetFormComponent implements OnInit {
   // ===== STATIC PLAN CONFIG (for defaults) =====
 
   plans = {
-    BASIC: { price: 99 },
-    PRO: { price: 199 },
-    PREMIUM: { price: 399 }
+    BRONZE: {price: 49},
+    SILVER: {price: 99},
+    GOLD: {price: 159},
+    PLATINUM: {price: 199}
   };
 
   // ===== FORM =====
@@ -41,7 +42,7 @@ export class CabinetFormComponent implements OnInit {
   form = new FormGroup({
 
     // Cabinet
-    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    name: new FormControl<string>('', {nonNullable: true, validators: [Validators.required]}),
     address: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null),
     email: new FormControl<string | null>(null, Validators.email),
@@ -49,24 +50,25 @@ export class CabinetFormComponent implements OnInit {
     logoUrl: new FormControl<string | null>(null),
 
     // Subscription
-    planCode: new FormControl<string>('BASIC', { nonNullable: true }),
-    subscriptionStatus: new FormControl<string>('TRIAL', { nonNullable: true }),
+    planCode: new FormControl<string>('BRONZE', {nonNullable: true}),
+    subscriptionStatus: new FormControl<string>('TRIAL', {nonNullable: true}),
 
     startDate: new FormControl<string | null>(this.today()),
     endDate: new FormControl<string | null>(null),
     trialEndDate: new FormControl<string | null>(this.addDays(14)),
 
-    autoRenew: new FormControl<boolean>(false, { nonNullable: true }),
+    autoRenew: new FormControl<boolean>(false, {nonNullable: true}),
     price: new FormControl<number | null>(99),
-    currency: new FormControl<string>('RON', { nonNullable: true })
+    currency: new FormControl<string>('RON', {nonNullable: true})
 
-  }, { validators: this.periodValidator });
+  }, {validators: this.periodValidator});
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private cabinetService: CabinetsService
-  ) {}
+  ) {
+  }
 
   // =====================================================
   // INIT
@@ -142,7 +144,7 @@ export class CabinetFormComponent implements OnInit {
         .subscribe(() => this.router.navigate(['/admin/cabinets']));
     } else {
       this.cabinetService.create(payload)
-        .subscribe(() => this.router.navigate(['/admin/cabinets']));
+        .subscribe((cabinet) => this.router.navigate(['/admin/cabinets'], {state: {highlightId: cabinet.id}}));
     }
   }
 
@@ -160,7 +162,7 @@ export class CabinetFormComponent implements OnInit {
     this.form.get('planCode')?.valueChanges.subscribe(plan => {
       const defaultPrice = this.plans[plan as keyof typeof this.plans]?.price;
       if (defaultPrice) {
-        this.form.patchValue({ price: defaultPrice }, { emitEvent: false });
+        this.form.patchValue({price: defaultPrice}, {emitEvent: false});
       }
     });
 
@@ -197,7 +199,7 @@ export class CabinetFormComponent implements OnInit {
     const end = group.get('endDate')?.value;
 
     if (start && end && new Date(end) <= new Date(start)) {
-      return { invalidPeriod: true };
+      return {invalidPeriod: true};
     }
 
     return null;

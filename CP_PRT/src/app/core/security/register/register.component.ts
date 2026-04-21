@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {RegisterRequest} from '../../model/user.model';
+import {AuthUtilsService} from '../../services/auth-utils.service';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,7 @@ export class RegisterComponent {
   registrationSuccess = false;
   errorMessage = '';
 
-  passwordStrength: 'weak' | 'medium' | 'strong' = 'weak';
+  passwordStrength: string = 'weak';
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -40,20 +41,8 @@ export class RegisterComponent {
     return this.form.password === this.form.confirmPassword;
   }
 
-  checkStrength(): void {
-
-    const password = this.form.password;
-
-    let score = 0;
-
-    if (password.length >= 8) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-
-    if (score <= 1) this.passwordStrength = 'weak';
-    else if (score <= 3) this.passwordStrength = 'medium';
-    else this.passwordStrength = 'strong';
+  protected checkStrength() {
+    this.passwordStrength = AuthUtilsService.checkStrength(this.form.password);
   }
 
   onSubmit(): void {

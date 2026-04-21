@@ -19,6 +19,7 @@ export interface Cabinet {
 
   maxUsers: number;
   maxPatients: number;
+  activePatients: number;
 
   price: number;
   currency: string;
