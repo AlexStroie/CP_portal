@@ -55,6 +55,7 @@ export interface RegisterResponse {
 export interface ActivateAccountRequest {
   token: string,
   username: string,
+  password: string,
   fullName: string,
   cabinetName: string
 }

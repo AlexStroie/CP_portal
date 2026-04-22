@@ -592,7 +592,9 @@
       "mismatch": "Parolele nu coincid"
     },
     "code": {
-      "TOKEN_EXPIRED": "Link-ul de activare a expirat"
+      "undefined": "A apărut o eroare. Te rugăm să încerci din nou",
+      "TOKEN_EXPIRED": "Link-ul de activare a expirat",
+      "USERNAME_USED": "Numele de utilizator este deja folosit"
     }
   }
 }

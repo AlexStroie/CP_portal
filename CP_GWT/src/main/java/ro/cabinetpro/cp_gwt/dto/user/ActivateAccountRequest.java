@@ -8,6 +8,7 @@ import lombok.Setter;
 public class ActivateAccountRequest {
     private String token;
     private String username;
+    private String password;
     private String fullName;
     private String cabinetName;
 }

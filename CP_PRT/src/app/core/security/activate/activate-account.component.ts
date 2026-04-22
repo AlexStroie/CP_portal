@@ -77,6 +77,7 @@ export class ActivateAccountComponent implements OnInit {
     const request: ActivateAccountRequest = {
       token: this.token,
       cabinetName: this.form.cabinetName,
+      password: this.form.password,
       username: this.form.username,
       fullName: this.form.fullName
     };
@@ -120,9 +121,7 @@ export class ActivateAccountComponent implements OnInit {
         }
 
         this.errorMessage = '❗' + (this.translate.instant('error.code.' + code) || 'Activation failed');
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1500);
+
       }
     });
   }
@@ -137,7 +136,9 @@ export class ActivateAccountComponent implements OnInit {
 
   protected resendActivation() {
     this.userService.invite(this.token).subscribe(() => {
-
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1500);
     });
   }
 }

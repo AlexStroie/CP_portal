@@ -21,19 +21,11 @@ public class UserResponse extends AbstractDTO implements MicroserviceAware {
     private boolean enabled;
     private String status;
     private String createdAt;
-    private String activationLink;
     private Long cabinetId;
 
     @Override
     @JsonIgnore
     public Microservice getMicroservice() {
         return Microservice.GWY;
-    }
-
-    public String getActivationLink() {
-        if (active) {
-            return null;
-        }
-        return activationLink;
     }
 }
