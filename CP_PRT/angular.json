@@ -64,10 +64,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "PRT:build:production"
+              "buildTarget": "CP_PRT:build:production"
             },
             "development": {
-              "buildTarget": "PRT:build:development"
+              "buildTarget": "CP_PRT:build:development"
             }
           },
           "defaultConfiguration": "development"
