@@ -1,7 +1,7 @@
 server:
   port: 28080
 angular:
-  url: http://cabinetpro.ro
+  url: https://cabinetpro.ro
 cp:
   gwy:
     base-url: 10.0.0.94
