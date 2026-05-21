@@ -364,6 +364,14 @@
       "TRIAL": "Trial",
       "EXPIRED": "Expirat",
       "SUSPENDED": "Suspendat"
+    },
+    "message": {
+      "trialExpires": "Perioada de test expiră în {{days}} zi.",
+      "trialExpiresPlural": "Perioada de test expiră în {{days}} zile.",
+      "subscriptionExpires": "Abonamentul expiră în {{days}} zi.",
+      "subscriptionExpiresPlural": "Abonamentul expiră în {{days}} zile.",
+      "expiresTodayTrial": "Perioada de test expiră astăzi.",
+      "expiresTodaySubscription": "Abonamentul expiră astăzi."
     }
   },
   "currency": {

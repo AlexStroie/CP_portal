@@ -13,6 +13,8 @@ import ro.cabinetpro.cp_gwt.dto.auth.TokenType;
 import ro.cabinetpro.cp_gwt.dto.user.ActivateAccountRequest;
 import ro.cabinetpro.cp_gwt.exception.InvalidCredentialsException;
 import ro.cabinetpro.cp_gwt.service.AuthService;
+import ro.cabinetpro.cp_gwt.service.RateLimitService;
+import ro.cabinetpro.cp_gwt.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +22,11 @@ import ro.cabinetpro.cp_gwt.service.AuthService;
 public class AuthController {
 
     private final AuthService authService;
+    private final RateLimitService rateLimitService;
 
     @PostMapping("login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletRequest req) {
+        rateLimitService.checkRateLimit("login", getClientIp(req), 100);
         LoginResponse loginResponse = authService.login(request);
         if (loginResponse == null) {
             throw new InvalidCredentialsException("Invalid credentials");
@@ -31,7 +35,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request, HttpServletRequest req) {
+        rateLimitService.checkRateLimit("register", getClientIp(req), 5);
         return ResponseEntity.ok(authService.register(request));
     }
 
@@ -46,7 +51,8 @@ public class AuthController {
     }
 
     @PostMapping("/forgotPassword")
-    public void forgotPassword(@RequestBody String emailAddress) {
+    public void forgotPassword(@RequestBody String emailAddress, HttpServletRequest req) {
+        rateLimitService.checkRateLimit("forgotPassword", getClientIp(req), 5);
         authService.forgotPassword(emailAddress);
     }
 
@@ -93,5 +99,15 @@ public class AuthController {
     public ResponseEntity<LoginResponse> exitDelegation(HttpServletRequest request) {
         LoginResponse loginResponse = authService.exitDelegation(request);
         return ResponseEntity.ok(loginResponse);
+    }
+
+    private String getClientIp(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+
+        if (xfHeader != null && !xfHeader.isBlank()) {
+            return xfHeader.split(",")[0].trim();
+        }
+
+        return request.getRemoteAddr();
     }
 }

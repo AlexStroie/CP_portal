@@ -5,9 +5,10 @@ import {TokenStorageService} from '../../../core/security/token-storage.service'
 import {UserResponse} from '../../../core/model/user.model';
 import {CabinetsService} from '../../../shared/service/cabinets.service';
 import {UsersService} from '../../../shared/service/users.service';
-import {Appointment, AppointmentExtended} from '../../../core/model/appointment.model';
+import {AppointmentExtended} from '../../../core/model/appointment.model';
 import {AppointmentService} from '../../../shared/service/appointment.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {Cabinet} from '../../../core/model/cabinet.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -17,6 +18,10 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
   styleUrl: './dashboard.component.css',
 })
 export class AdminDashboardComponent implements OnInit, AfterViewInit {
+
+  shouldDisplayExpiryWarning: boolean = false;
+  expiryMessage: string = "";
+  remainingDays: number = 0;
 
   title: string;
   setupCompleted: boolean = true;
@@ -54,14 +59,17 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       this.cabinetService.getById(Number(user.cabinetId)).subscribe(data => {
         this.title = data.name;
         this.setupCompleted = data.setupCompleted;
+        this.shouldDisplayExpiryWarning = this.shouldShowExpiryWarning(data);
+        this.expiryMessage = this.getExpiryMessage(data);
+        this.remainingDays = this.getDaysRemaining(data);
       });
 
-    const cabinetId = Number(this.tokenStorage.getCabinetId());
-    this.appointmentService
-      .getTodayExtendedForCabinet(cabinetId)
-      .subscribe(data => {
-        this.todayAppointments.set(data)
-      });
+      const cabinetId = Number(this.tokenStorage.getCabinetId());
+      this.appointmentService
+        .getTodayExtendedForCabinet(cabinetId)
+        .subscribe(data => {
+          this.todayAppointments.set(data)
+        });
     }
 
     // refresh "now" la fiecare minut
@@ -139,5 +147,62 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   dismiss(event: Event) {
     event.stopPropagation();
     this.setupCompleted = false;
+  }
+
+  getEffectiveExpiryDate(cabinet: Cabinet): Date | null {
+    if (cabinet.subscriptionStatus === 'TRIAL' && cabinet.trialEndDate) {
+      return new Date(cabinet.trialEndDate);
+    }
+
+    if (cabinet.subscriptionStatus === 'ACTIVE' && cabinet.endDate) {
+      return new Date(cabinet.endDate);
+    }
+
+    return null;
+  }
+
+  getDaysRemaining(cabinet: Cabinet): number {
+    const expiryDate = this.getEffectiveExpiryDate(cabinet);
+
+    if (!expiryDate) {
+      return 0;
+    }
+
+    const diffMs = expiryDate.getTime() - Date.now();
+    const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    return Math.max(0, days);
+  }
+
+  shouldShowExpiryWarning(cabinet: Cabinet): boolean {
+    const days = this.getDaysRemaining(cabinet);
+
+    return days !== null && days >= 0 && days <= 7;
+  }
+
+  getExpiryMessage(cabinet: Cabinet): string {
+    const days = this.getDaysRemaining(cabinet);
+
+    const plural = days > 1;
+
+    if (cabinet.subscriptionStatus === 'TRIAL') {
+      if (days == 0) {
+        return 'subscription.message.expiresTodayTrial';
+      }
+      return plural
+        ? 'subscription.message.trialExpiresPlural'
+        : 'subscription.message.trialExpires';
+    }
+
+    if (cabinet.subscriptionStatus === 'ACTIVE') {
+      if (days == 0) {
+        return 'subscription.message.expiresTodaySubscription';
+      }
+      return plural
+        ? 'subscription.message.subscriptionExpiresPlural'
+        : 'subscription.message.subscriptionExpires';
+    }
+
+    return '';
   }
 }

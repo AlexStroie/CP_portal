@@ -8,7 +8,7 @@ export const cabinetActiveGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (appState.isCabinetSuspended()) {
-    // router.navigate(['/suspended']);
+    router.navigate(['/suspended']);
     return false;
   }
 

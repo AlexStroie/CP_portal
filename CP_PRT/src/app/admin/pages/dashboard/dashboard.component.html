@@ -45,6 +45,15 @@
 
   <div class="admin-dashboard">
 
+    @if (shouldDisplayExpiryWarning) {
+      <div class="subscription-warning">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>
+          {{ expiryMessage | translate:{days: remainingDays} }}
+        </span>
+      </div>
+    }
+
     @if (!setupCompleted) {
       <div class="setup-banner" [class.visible]="!setupCompleted">
 
