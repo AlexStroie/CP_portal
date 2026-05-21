@@ -27,10 +27,10 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/nginx.conf
-COPY certificate/certificate.crt /etc/nginx/ssl/certificate.crt
-COPY certificate/private.key /etc/nginx/ssl/private.key
-COPY certificate/certificatero.crt /etc/nginx/ssl/certificatero.crt
-COPY certificate/privatero.key /etc/nginx/ssl/privatero.key
+#COPY certificate/certificate.crt /etc/nginx/ssl/certificate.crt
+#COPY certificate/private.key /etc/nginx/ssl/private.key
+#COPY certificate/certificatero.crt /etc/nginx/ssl/certificatero.crt
+#COPY certificate/privatero.key /etc/nginx/ssl/privatero.key
 
 # Copy the build output to replace the default nginx contents.
 COPY --from=build /app/dist/cp_prt /usr/share/nginx/html
