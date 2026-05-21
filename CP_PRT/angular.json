@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "CP_PRT": {
+    "PRT": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -64,10 +64,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "CP_PRT:build:production"
+              "buildTarget": "PRT:build:production"
             },
             "development": {
-              "buildTarget": "CP_PRT:build:development"
+              "buildTarget": "PRT:build:development"
             }
           },
           "defaultConfiguration": "development"

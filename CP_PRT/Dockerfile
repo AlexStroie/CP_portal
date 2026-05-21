@@ -33,7 +33,7 @@ COPY nginx.conf /etc/nginx/conf.d/nginx.conf
 #COPY certificate/privatero.key /etc/nginx/ssl/privatero.key
 
 # Copy the build output to replace the default nginx contents.
-COPY --from=build /app/dist/cp_prt /usr/share/nginx/html
+COPY --from=build /app/dist/PRT /usr/share/nginx/html
 
 
 # Expose port 80
