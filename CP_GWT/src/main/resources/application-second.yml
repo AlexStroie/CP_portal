@@ -4,4 +4,4 @@ angular:
   url: https://cabinetpro.ro
 cp:
   gwy:
-    base-url: 10.0.0.94:8080
+    base-url: http://10.0.0.94:8080
