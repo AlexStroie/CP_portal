@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+
+  # ==================
+  # Angular portal
+  # ==================
+  cp_prt:
+    image: cp_prt
+    build: ./cp_prt
+    environment:
+      NODE_ENV: production
+    ports:
+      - 443:443
+      - 80:80
+    networks:
+      - cabinetpro
+
+  # ==================
+  # Gateway
+  # ==================
+  cp_gwt_1:
+    build:
+      context: CP_GWT
+      dockerfile: Dockerfile
+    container_name: cp_gwt_1
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "18080:18080"
+    networks:
+      - cabinetpro
+
+  cp_gwt_2:
+    build:
+      context: CP_GWT
+      dockerfile: DockerfileSecond
+    container_name: cp_gwt_2
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: second
+    ports:
+      - "28080:28080"
+    networks:
+      - cabinetpro
+
+  # ==================
+  # Loadbalancer
+  # ==================
+  loadbalancer:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+            - "8080:8080"
+    networks:
+      - cabinetpro
+    depends_on:
+      - cp_gwt_1
+      - cp_gwt_2
+
+    
+networks:
+  cabinetpro:
+    driver: bridge

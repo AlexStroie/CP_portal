@@ -1,5 +1,5 @@
 server:
-  port: 18080
+  port: 28080
 angular:
   url: http://cabinetpro.ro
 cp:
