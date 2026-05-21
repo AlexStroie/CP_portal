@@ -18,7 +18,7 @@ import ro.cabinetpro.cp_gwt.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/web/v1/api/auth/")
+@RequestMapping("/v1/api/auth/")
 public class AuthController {
 
     private final AuthService authService;

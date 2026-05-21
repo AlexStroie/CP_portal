@@ -17,7 +17,7 @@ import ro.cabinetpro.cp_gwt.service.CabinetService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/admin/cabinets")
+@RequestMapping("/v1/api/admin/cabinets")
 @RequiredArgsConstructor
 public class CabinetController {
 

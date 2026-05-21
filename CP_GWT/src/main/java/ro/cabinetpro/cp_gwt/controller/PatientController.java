@@ -15,7 +15,7 @@ import ro.cabinetpro.cp_gwt.service.PatientService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/admin/patients")
+@RequestMapping("/v1/api/admin/patients")
 @RequiredArgsConstructor
 public class PatientController {
 

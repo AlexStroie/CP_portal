@@ -18,7 +18,7 @@ import ro.cabinetpro.cp_gwt.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/admin/users")
+@RequestMapping("/v1/api/admin/users")
 @RequiredArgsConstructor
 public class UserController {
 

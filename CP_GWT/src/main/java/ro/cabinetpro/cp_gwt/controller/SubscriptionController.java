@@ -10,7 +10,7 @@ import ro.cabinetpro.cp_gwt.service.SubscriptionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/admin/subscriptions")
+@RequestMapping("/v1/api/admin/subscriptions")
 @RequiredArgsConstructor
 public class SubscriptionController {
 

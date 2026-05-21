@@ -10,7 +10,7 @@ import ro.cabinetpro.cp_gwt.service.AppointmentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/web/v1/api/admin/appointments")
+@RequestMapping("/v1/api/admin/appointments")
 @RequiredArgsConstructor
 public class AppointmentController {
 
