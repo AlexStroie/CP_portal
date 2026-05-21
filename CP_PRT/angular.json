@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "PRT": {
+    "CP_PRT": {
       "projectType": "application",
       "schematics": {},
       "root": "",
