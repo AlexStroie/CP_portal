@@ -7,7 +7,7 @@ services:
   # ==================
   cp_prt:
     image: cp_prt
-    build: ./cp_prt
+    build: ./CP_PRT
     environment:
       NODE_ENV: production
     ports:
