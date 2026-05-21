@@ -7,12 +7,13 @@ services:
   # ==================
   cp_prt:
     image: cp_prt
-    build: ./CP_PRT
-    environment:
-      NODE_ENV: production
+    build:
+      context: ./CP_PRT
+    container_name: cp_prt
+    restart: unless-stopped
     ports:
-      - 443:443
-      - 80:80
+      - "80:80"
+      - "443:443"
     networks:
       - cabinetpro
 
