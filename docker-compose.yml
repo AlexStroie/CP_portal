@@ -5,11 +5,11 @@ services:
   # ==================
   # Angular portal
   # ==================
-  cp_prt:
-    image: cp_prt
+  cp-prt:
+    image: cp-prt
     build:
       context: ./CP_PRT
-    container_name: cp_prt
+    container_name: cp-prt
     restart: unless-stopped
     ports:
       - "80:80"
@@ -20,11 +20,11 @@ services:
   # ==================
   # Gateway
   # ==================
-  cp_gwt_1:
+  cp-gwt-1:
     build:
       context: CP_GWT
       dockerfile: Dockerfile
-    container_name: cp_gwt_1
+    container_name: cp-gwt-1
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: prod
@@ -33,11 +33,11 @@ services:
     networks:
       - cabinetpro
 
-  cp_gwt_2:
+  cp-gwt-2:
     build:
       context: CP_GWT
       dockerfile: DockerfileSecond
-    container_name: cp_gwt_2
+    container_name: cp-gwt-2
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: second
@@ -58,8 +58,8 @@ services:
     networks:
       - cabinetpro
     depends_on:
-      - cp_gwt_1
-      - cp_gwt_2
+      - cp-gwt-1
+      - cp-gwt-2
 
     
 networks:

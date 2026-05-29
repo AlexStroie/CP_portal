@@ -20,7 +20,7 @@ export interface IAppConfig extends ApplicationConfig {
 }
 
 export const appConfig: IAppConfig = {
-  webEndpoint: "/web/v1/",
+  webEndpoint: "http://localhost:8080/v1/",
   providers: [
     provideHttpClient(
       withFetch(),

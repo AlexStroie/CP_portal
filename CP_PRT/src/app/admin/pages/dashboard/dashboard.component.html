@@ -5,19 +5,23 @@
   <div class="super-dashboard">
 
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">
-          {{ 'dashboard.kpi.cabinets' | translate }}
+      <a class="kpi-link" routerLink="/admin/cabinets" routerLinkActive="active">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            {{ 'dashboard.kpi.cabinets' | translate }}
+          </div>
+          <div class="kpi-value">{{ stats.totalCabinets }}</div>
         </div>
-        <div class="kpi-value">{{ stats.totalCabinets }}</div>
-      </div>
+      </a>
 
-      <div class="kpi-card">
-        <div class="kpi-label">
-          {{ 'dashboard.kpi.users' | translate }}
+      <a class="kpi-link" routerLink="/admin/users" routerLinkActive="active">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            {{ 'dashboard.kpi.users' | translate }}
+          </div>
+          <div class="kpi-value">{{ stats.totalUsers }}</div>
         </div>
-        <div class="kpi-value">{{ stats.totalUsers }}</div>
-      </div>
+      </a>
 
       <div class="kpi-card">
         <div class="kpi-label">

@@ -297,3 +297,16 @@ h1 {
   font-size: 18px;
   flex-shrink: 0;
 }
+
+.kpi-link {
+  text-decoration: none;
+  color: inherit; /* păstrează culoarea textului din card */
+  display: block; /* întreg cardul devine clickabil */
+}
+
+.kpi-link:hover,
+.kpi-link:visited,
+.kpi-link:active {
+  text-decoration: none;
+  color: inherit;
+}
