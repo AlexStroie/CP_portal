@@ -20,40 +20,48 @@
 
     <nav>
       <a routerLink="/admin/dashboard" routerLinkActive="active">
-        {{ 'menu.dashboard' | translate }}
+        <i class="bi bi-house"></i>
+        <span>  {{ 'menu.dashboard' | translate }}</span>
       </a>
 
       @if (isSuperAdmin) {
         <a routerLink="/admin/cabinets" routerLinkActive="active">
-          {{ 'menu.cabinets' | translate }}
+          <i class="bi bi-hospital"></i>
+          <span>  {{ 'menu.cabinets' | translate }}</span>
         </a>
 
         <a routerLink="/admin/subscriptions" routerLinkActive="active">
-          {{ 'menu.subscriptions' | translate }}
+          <i class="bi bi-credit-card"></i>
+          <span>  {{ 'menu.subscriptions' | translate }}</span>
         </a>
 
         <a routerLink="/admin/users" routerLinkActive="active">
-          {{ 'menu.users' | translate }}
+          <i class="bi bi-person-circle"></i>
+          <span>  {{ 'menu.users' | translate }}</span>
         </a>
       }
 
       <a routerLink="/admin/patients" routerLinkActive="active">
-        {{ 'menu.patients' | translate }}
+        <i class="bi bi-people"></i>
+        <span>  {{ 'menu.patients' | translate }}</span>
       </a>
 
       @if (!isSuperAdmin) {
         <a routerLink="/admin/appointments" routerLinkActive="active">
-          {{ 'menu.appointments' | translate }}
+          <i class="bi bi-calendar3"></i>
+          <span>  {{ 'menu.appointments' | translate }}</span>
         </a>
       }
 
       <a routerLink="/admin/profile" routerLinkActive="active">
-        {{ 'menu.profile' | translate }}
+        <i class="bi bi-person"></i>
+        <span>  {{ 'menu.profile' | translate }}</span>
       </a>
 
       @if (!isSuperAdmin) {
         <a routerLink="/admin/cabinet-settings" routerLinkActive="active">
-          {{ 'menu.cabinetSettings' | translate }}
+          <i class="bi bi-gear"></i>
+          <span>  {{ 'menu.cabinetSettings' | translate }}</span>
         </a>
 
       }

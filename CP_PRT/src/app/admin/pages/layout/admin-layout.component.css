@@ -39,6 +39,12 @@ nav a:hover, nav a.active {
   color: #fff;
 }
 
+nav a i {
+  font-size: 18px;
+  min-width: 20px;
+  margin-right: 8px;
+}
+
 .logout-container {
   margin-top: auto;
   padding-top: 20px;
@@ -199,6 +205,7 @@ main {
   aside {
     width: 100%;
     padding: 10px 15px;
+    box-sizing: border-box;
   }
 
   aside h2 {
@@ -207,13 +214,23 @@ main {
 
   nav {
     display: flex;
-    gap: 10px;
+    /*gap: 10px;*/
     overflow-x: auto;
   }
 
   nav a {
     white-space: nowrap;
     margin-bottom: 0;
+  }
+
+  nav a i {
+    font-size: 18px;
+    min-width: 20px;
+    padding: 0px;
+  }
+
+  nav a span {
+    display: none;
   }
 
   main {

@@ -27,7 +27,7 @@ export class PatientFormComponent implements OnInit {
     id: new FormControl<number | null>(null),
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    dateOfBirth: new FormControl('', Validators.required),
+    dateOfBirth: new FormControl(''),
     phone: new FormControl('', Validators.required),
     email: new FormControl('', Validators.email),
     cabinetId: new FormControl('', Validators.required),
