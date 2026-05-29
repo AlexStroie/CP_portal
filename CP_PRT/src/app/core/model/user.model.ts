@@ -34,7 +34,7 @@ export interface LoginResponse {
   accessToken: string;
   tokenType?: string;
   expiresIn?: number;
-
+  fullName?: string;
   username: string;
   role: Role;
   activeRole: Role;

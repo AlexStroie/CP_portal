@@ -18,6 +18,7 @@ public class LoginResponse extends AbstractDTO implements MicroserviceAware {
     private String tokenType;     // de obicei "Bearer"
     private Long expiresIn;       // în secunde
     private String username;      // numele utilizatorului logat
+    private String fullName;
     private Role role;          // rolul (ADMIN / USER / THERAPIST)
     private boolean delegated;
     private Role activeRole;
